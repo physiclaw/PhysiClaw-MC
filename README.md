@@ -12,7 +12,7 @@ python3 tools/build.py
 
 The result is `dist/PCW-MC-01-RevA-first-article.zip`. Extract it to access the order files. The build runs ERC, refills copper in a temporary copy, runs DRC with schematic parity, and checks the Gerbers, holes, stencil and placements. The ZIP includes the reports, SHA-256 manifest, schematics, assembly drawing, purchasing and THT lists, probe coordinates, firmware and programming instructions.
 
-The build downloads the official FluidNC v4.1.1 archive and verifies its SHA-256. To build offline, use a local copy of the same archive. [FluidNC release](https://github.com/bdring/FluidNC/releases/tag/v4.1.1)
+The build uses system `curl` to download the official FluidNC v4.1.1 archive and verifies its SHA-256. To build offline, use a local copy of the same archive. [FluidNC release](https://github.com/bdring/FluidNC/releases/tag/v4.1.1)
 
 ```sh
 python3 tools/build.py --firmware-archive /path/to/fluidnc-v4.1.1-posix.zip

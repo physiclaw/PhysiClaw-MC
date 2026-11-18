@@ -10,7 +10,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import urllib.request
 from zipfile import ZIP_DEFLATED, ZIP_STORED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -178,11 +177,32 @@ def build(work, firmware):
         "Use matching KiCad 10 CLI and pcbnew versions",
     )
 
-    if firmware is not None:
-        require(
-            firmware.is_file() and digest(firmware) == DIGEST,
-            "FluidNC release archive SHA-256 mismatch",
+    if firmware is None:
+        firmware = work / ASSET
+        # System curl uses the host's trust store, including on KiCad's bundled macOS Python.
+        subprocess.run(
+            [
+                "curl",
+                "--fail",
+                "--location",
+                "--silent",
+                "--show-error",
+                "--retry",
+                "2",
+                "--connect-timeout",
+                "20",
+                "--max-time",
+                "180",
+                "--output",
+                str(firmware),
+                URL,
+            ],
+            check=True,
         )
+    require(
+        firmware.is_file() and digest(firmware) == DIGEST,
+        "FluidNC release archive SHA-256 mismatch",
+    )
 
     # Refill a private copy so every export uses the same checked copper.
     cad = work / "hardware"
@@ -305,14 +325,6 @@ def build(work, firmware):
     shutil.copyfile(process, kit / "process.md")
     archive(cam, jlc / "JLC-Gerbers.zip")
 
-    if firmware is None:
-        firmware = work / ASSET
-        with (
-            urllib.request.urlopen(URL, timeout=90) as incoming,
-            firmware.open("wb") as target,
-        ):
-            shutil.copyfileobj(incoming, target)
-        require(digest(firmware) == DIGEST, "FluidNC release archive SHA-256 mismatch")
     shutil.copyfile(firmware, flash / ASSET)
     shutil.copyfile(ROOT / "firmware/config.yaml", flash / "config.yaml")
 
