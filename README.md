@@ -45,4 +45,10 @@ Use these files from the extracted package. The bare-board order uses the first 
 | [Manufacturing instructions](manufacturing/process.md) | Stackup, assembly, orientation checks, programming and first-article acceptance |
 | [FluidNC configuration](firmware/config.yaml) | Pin assignments, motor settings and solenoid control |
 
-The design originated at `physiclaw-board` commit `6fc621a2d4e8174c19161d1886f545d6098b7343`. Library attribution is included with the design. [Library sources](pcb/kicad/libraries/sources.json) · [KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md)
+The design originated at `physiclaw-board` commit `6fc621a2d4e8174c19161d1886f545d6098b7343`.
+
+## License
+
+The original PCW-MC-01 design files, build scripts, firmware configuration and documentation are licensed under MIT. You may modify the design and make, share or sell boards based on it. Include the copyright and permission notices when redistributing copies or substantial portions of the licensed files. [MIT License](LICENSE)
+
+Third-party KiCad assets and the upstream FluidNC firmware retain their respective licenses. [Library sources](pcb/kicad/libraries/sources.json) · [KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md) · [FluidNC source and license](https://github.com/bdring/FluidNC/tree/v4.1.1)

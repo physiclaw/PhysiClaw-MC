@@ -296,6 +296,7 @@ def build(work, firmware):
     counts["stencil_apertures"] = check_paste(board, next(cam.glob("*.gtp")))
     process = ROOT / "manufacturing/process.md"
     shutil.copyfile(process, kit / "process.md")
+    shutil.copyfile(ROOT / "LICENSE", kit / "LICENSE")
     archive(cam, jlc / "JLC-Gerbers.zip")
 
     shutil.copyfile(firmware, flash / ASSET)
@@ -313,6 +314,7 @@ def build(work, firmware):
         "tools/board_data.py",
         "manufacturing/jlc-parts.csv",
         "manufacturing/process.md",
+        "LICENSE",
         "firmware/config.yaml",
     ]:
         sources[item] = digest(ROOT / item)

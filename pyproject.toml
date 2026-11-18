@@ -3,5 +3,6 @@ name = "pcw-mc-01"
 version = "1.0"
 description = "Manufacturing tools for the PCW-MC-01 motion controller"
 readme = "README.md"
+license = "MIT"
 requires-python = "==3.13.*"
 dependencies = ["sexpdata>=1.0.2,<2"]
