@@ -1,0 +1,2794 @@
+(kicad_sch
+  (version 20260306)
+  (generator eeschema)
+  (uuid "853bb181-974e-56e0-9beb-7f589ffa7d7d")
+  (paper "A4")
+  (lib_symbols
+    (symbol "Physiclaw:Protected_TPS1H200A"
+      (pin_names
+        (offset 1.016)
+      )
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "U"
+        (at 0 -17.78 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "TPS1H200A"
+        (at 0 -15.239999999999998 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (symbol "Protected_TPS1H200A_0_1"
+        (rectangle
+          (start -10.16 12.7)
+          (end 10.16 -12.7)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+      )
+      (symbol "Protected_TPS1H200A_1_1"
+        (pin input line
+          (at -12.7 7.62 0)
+          (length 2.54)
+          (name "IN"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin input line
+          (at -12.7 2.54 0)
+          (length 2.54)
+          (name "DIAG_EN"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin open_collector line
+          (at -12.7 -2.54 0)
+          (length 2.54)
+          (name "~{FAULT}"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "3"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at -12.7 -7.62 0)
+          (length 2.54)
+          (name "CL"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -15.24 90)
+          (length 2.54)
+          (name "DELAY"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 5.08 -15.24 90)
+          (length 2.54)
+          (name "GND"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "6"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin power_out line
+          (at 12.7 7.62 180)
+          (length 2.54)
+          (name "OUT"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "7"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin power_in line
+          (at 0 15.24 270)
+          (length 2.54)
+          (name "VS"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "8"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 7.62 -15.24 90)
+          (length 2.54)
+          (name "EP"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+          (number "9"
+            (effects
+              (font
+                (size 1.0 1.0)
+              )
+            )
+          )
+        )
+      )
+    )
+    (symbol "Physiclaw:Device_R"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "R"
+        (at 2.032 0 90)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "R"
+        (at 0 0 90)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at -1.778 0 90)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Resistor"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "R res resistor"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "R_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Device_R_0_1"
+        (rectangle
+          (start -1.016 -2.54)
+          (end 1.016 2.54)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Device_R_1_1"
+        (pin passive line
+          (at 0 3.81 270)
+          (length 1.27)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 1.27)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Physiclaw:Device_C"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0.254)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "C"
+        (at 0.635 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Value" "C"
+        (at 0.635 -2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (justify left)
+        )
+      )
+      (property "Footprint" ""
+        (at 0.9652 -3.81 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Unpolarized capacitor"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "cap capacitor"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "C_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Device_C_0_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762)
+          )
+          (stroke
+            (width 0.508)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762)
+          )
+          (stroke
+            (width 0.508)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Device_C_1_1"
+        (pin passive line
+          (at 0 3.81 270)
+          (length 2.794)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 2.794)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Physiclaw:Device_D_Schottky"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 1.016)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "D"
+        (at 0 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "D_Schottky"
+        (at 0 -2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Schottky diode"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "diode Schottky"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Device_D_Schottky_0_1"
+        (polyline
+          (pts
+            (xy -1.905 0.635)
+            (xy -1.905 1.27)
+            (xy -1.27 1.27)
+            (xy -1.27 -1.27)
+            (xy -0.635 -1.27)
+            (xy -0.635 -0.635)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.27 1.27)
+            (xy 1.27 -1.27)
+            (xy -1.27 0)
+            (xy 1.27 1.27)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 1.27 0)
+            (xy -1.27 0)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Device_D_Schottky_1_1"
+        (pin passive line
+          (at -3.81 0 0)
+          (length 2.54)
+          (name "K"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 3.81 0 180)
+          (length 2.54)
+          (name "A"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Physiclaw:Connector_Generic_Conn_01x02"
+      (pin_names
+        (offset 1.016)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "J"
+        (at 0 2.54 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "Conn_01x02"
+        (at 0 -5.08 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "connector"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_fp_filters" "Connector*:*_1x??_*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Connector_Generic_Conn_01x02_1_1"
+        (rectangle
+          (start -1.27 1.27)
+          (end 1.27 -3.81)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (rectangle
+          (start -1.27 0.127)
+          (end 0 -0.127)
+          (stroke
+            (width 0.1524)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (rectangle
+          (start -1.27 -2.413)
+          (end 0 -2.667)
+          (stroke
+            (width 0.1524)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (pin passive line
+          (at -5.08 0 0)
+          (length 3.81)
+          (name "Pin_1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at -5.08 -2.54 0)
+          (length 3.81)
+          (name "Pin_2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Physiclaw:DrawingPower_GND"
+      (power global)
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "#PWR"
+        (at 0 -6.35 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "GND"
+        (at 0 -3.81 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "global power"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "DrawingPower_GND_0_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 -1.27)
+            (xy 1.27 -1.27)
+            (xy 0 -2.54)
+            (xy -1.27 -1.27)
+            (xy 0 -1.27)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "DrawingPower_GND_1_1"
+        (pin power_in line
+          (at 0 0 270)
+          (length 0)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Physiclaw:DrawingPower_V12"
+      (power global)
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+        (hide yes)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (in_pos_files yes)
+      (duplicate_pin_numbers_are_jumpers no)
+      (property "Reference" "#PWR"
+        (at 0 -3.81 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "V12"
+        (at 0 3.556 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Datasheet" ""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Description" "Power symbol creates a global label with name \"VCC\""
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "ki_keywords" "global power"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "DrawingPower_V12_0_1"
+        (polyline
+          (pts
+            (xy -0.762 1.27)
+            (xy 0 2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0 2.54)
+            (xy 0.762 1.27)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "DrawingPower_V12_1_1"
+        (pin power_in line
+          (at 0 0 90)
+          (length 0)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+  )
+  (embedded_fonts no)
+  (title_block
+    (title "PhysiClaw Motion Controller")
+    (date "2026-11-17")
+    (rev "A")
+    (company "PhysiClaw")
+    (comment 2 "Protected 12 V solenoid PWM output")
+    (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")
+    (comment 1 "12 V / 3 A adapter | 2.5 A steady target | ENGINEERING DRAFT")
+  )
+  (text "PROTECTED 12 V SOLENOID / PWM OUTPUT"
+    (at 20.32 20.32 0)
+    (effects
+      (font
+        (size 2.0 2.0)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "292bb1b1-3dac-50e1-bb72-550dbd22e244")
+  )
+  (text "PROTECTED POSITIVE SUPPLY / GROUNDED RETURN"
+    (at 20.32 33.02 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "fa497726-ae8d-5796-ad09-1d8be967ee88")
+  )
+  (symbol
+    (lib_id "Physiclaw:Protected_TPS1H200A")
+    (at 119.38 81.28 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "f2e93471-dd4f-506c-9eec-ea29a8ed267d")
+    (property "Reference" "U8"
+      (at 114.3 60.96 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify right)
+      )
+    )
+    (property "Value" "TPS1H200AQDGNRQ1"
+      (at 114.3 63.5 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify right)
+      )
+    )
+    (property "Footprint" "Physiclaw:TPS1H200A_DGN0008K"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "TPS1H200AQDGNRQ1"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C2653785"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "1a7d42b9-e694-55cd-8f40-66ab87681cef")
+    )
+    (pin "2"
+      (uuid "5fb0078d-21c3-5dc6-9e9e-4073a72dd224")
+    )
+    (pin "3"
+      (uuid "3ca1876d-11d7-556f-b3e4-aa37b6fcde9b")
+    )
+    (pin "4"
+      (uuid "78baeed1-c0b9-591c-8f69-13b6b01c865a")
+    )
+    (pin "5"
+      (uuid "6f810741-7821-5218-b34b-cac6c6453a9f")
+    )
+    (pin "6"
+      (uuid "c6d98a98-741e-5c3a-85dd-552feeb9bc5e")
+    )
+    (pin "7"
+      (uuid "9d5ec6c6-d03f-53cf-9856-1c9c006c0dff")
+    )
+    (pin "8"
+      (uuid "8f666fbb-966b-5123-8f7c-d0f8c5fb3ab6")
+    )
+    (pin "9"
+      (uuid "4a601c0e-0d94-5272-b42c-c4ba36a21cf8")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "U8")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 68.58 73.66 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "0691fea3-6dd9-5446-a81e-b4b9ac5eb305")
+    (property "Reference" "R21"
+      (at 68.58 69.85 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "10k"
+      (at 68.58 77.47 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0603WAF1002T5E"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C25804"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "0bb723ad-4bfd-5dc5-8755-9657097adf0d")
+    )
+    (pin "2"
+      (uuid "e7dc862c-b5e0-5b61-9d3f-bd6989326422")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "R21")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 88.9 109.22 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "de27962e-92f7-5a86-b887-ea47aafe873c")
+    (property "Reference" "R22"
+      (at 92.71000000000001 107.95 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "47k"
+      (at 92.71000000000001 110.49 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0603WAF4702T5E"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C25819"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "cbd5f731-cf4c-5b93-aba8-0a628f40279e")
+    )
+    (pin "2"
+      (uuid "35ebbe67-1d70-5e30-abb2-a28a5ad35d47")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "R22")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Connector_Generic_Conn_01x02")
+    (at 251.46 76.2 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "fa0834da-bc02-5b9e-8e81-b2503b6a0191")
+    (property "Reference" "J5"
+      (at 251.46 55.88 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "12V SOLENOID"
+      (at 251.46 58.42 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Physiclaw:TerminalBlock_TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "MX126-5.0-02P-GN01-Cu-S-A"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C5188434"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/f81da43c133b386f14d372a038c5dc3a.pdf?productCode=C5188434"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "ce3482dc-9f92-564b-bebf-806e466e9d95")
+    )
+    (pin "2"
+      (uuid "d28dfa8d-abe4-5805-8a00-0de5d19c1211")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "J5")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_D_Schottky")
+    (at 207.01 99.06 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "45aae994-81ab-506b-9fe7-5e3dda8fd17a")
+    (property "Reference" "D4"
+      (at 219.70999999999998 97.79 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "SS34 / 3A 40V"
+      (at 219.70999999999998 100.33 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Physiclaw:Diode_SMD_D_SMA"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "SS34"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C8678"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://yibeiic-shop.oss-cn-hangzhou.aliyuncs.com/media/collection/ss34-Re3GARDep-dqR6AGM1q.pdf"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "500588c2-1b0e-5244-a78b-6f8647a43386")
+    )
+    (pin "2"
+      (uuid "7098d82b-0eef-5fe5-9294-216551677265")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "D4")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_C")
+    (at 154.94 48.26 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "c6a2a506-1843-5dfa-b530-a3b9603faeff")
+    (property "Reference" "C28"
+      (at 158.75 46.989999999999995 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "100n / 50V"
+      (at 158.75 49.53 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Capacitor_SMD_C_0603_1608Metric"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "CL10B104KB8NNNC"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C1591"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://product.samsungsem.com/mlcc/CL10B104KB8NNN.do"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "87bcdfb7-e684-5129-bd6e-a6407dd60b88")
+    )
+    (pin "2"
+      (uuid "fa2a3248-4beb-5010-9f64-c43378e01beb")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "C28")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_C")
+    (at 182.88 48.26 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "bb07c97e-352e-5562-9024-776463a6c157")
+    (property "Reference" "C34"
+      (at 186.69 46.989999999999995 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "10u / 50V"
+      (at 186.69 49.53 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Capacitor_SMD_C_1206_3216Metric"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "CL31B106KBHNNNE"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C89632"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://www.samsungsem.com"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "ae9a7003-657b-58a9-8913-ff6658ec8464")
+    )
+    (pin "2"
+      (uuid "9c57b6e1-6c7b-51be-904f-329df30fa159")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "C34")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_C")
+    (at 119.38 137.16 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "8afcc303-708a-5726-af74-33704650df93")
+    (property "Reference" "C30"
+      (at 123.19 135.89 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "1n / 50V"
+      (at 123.19 138.42999999999998 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Capacitor_SMD_C_0603_1608Metric"
+      (at 0 12.7 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "CL10B102KB8NNNC"
+      (at 0 12.7 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C1588"
+      (at 0 12.7 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://www.samsungsem.com"
+      (at 0 12.7 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "cd3222eb-3610-5baf-944d-d8a133726660")
+    )
+    (pin "2"
+      (uuid "eadc832a-2bde-536c-aa31-2cc0ca4aa8a5")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "C30")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 53.34 124.46 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "aed2af1a-738a-52d8-a6de-bb4c0feb82cc")
+    (property "Reference" "R33"
+      (at 57.150000000000006 123.19 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "1.65k"
+      (at 57.150000000000006 125.72999999999999 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0603WAF1651T5E"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C22845"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 0 0 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "51d1fd38-4944-5050-800c-54793cd52f29")
+    )
+    (pin "2"
+      (uuid "2942b7af-b04d-5367-9180-fb8dd808d97d")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "R33")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 64.77 73.66)
+      (xy 38.1 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "a65b1d51-04aa-5b90-95a0-7ae2484b2b6b")
+  )
+  (global_label "SOL_SAFE"
+    (at 38.1 73.66 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "34ba4026-2ce0-5f45-b25e-0cd36b967902")
+  )
+  (wire
+    (pts
+      (xy 72.39 73.66)
+      (xy 106.68 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "85337a74-bc0a-58af-b3e6-3091e6d5c7a7")
+  )
+  (wire
+    (pts
+      (xy 88.9 105.41)
+      (xy 88.9 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "db35bf93-3d83-5e36-a323-de18e8ae10d3")
+  )
+  (wire
+    (pts
+      (xy 106.68 78.74)
+      (xy 99.06 78.74)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "60973340-2ad3-5f22-a5df-d9da09449937")
+  )
+  (wire
+    (pts
+      (xy 88.9 113.03)
+      (xy 88.9 120.65)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "8d33bc7a-12a2-5589-ba29-33fb95c58743")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 88.9 120.65 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "9cf29e8b-4082-56b7-a71d-b80750e4d174")
+    (property "Reference" "#PWR1601"
+      (at 88.9 120.65 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 88.9 124.46 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "8d18591e-4918-5ad4-9cbd-d8a065b63b24")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1601")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 132.08 73.66)
+      (xy 190.5 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "1c5c9548-9e12-5599-8a07-a5438517faf4")
+  )
+  (wire
+    (pts
+      (xy 190.5 73.66)
+      (xy 236.22 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "902adb67-278d-51f9-973a-097dcf84d146")
+  )
+  (wire
+    (pts
+      (xy 236.22 73.66)
+      (xy 236.22 76.2)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "e0cf43db-ba37-5a72-bb17-cb146206a251")
+  )
+  (wire
+    (pts
+      (xy 236.22 76.2)
+      (xy 246.38 76.2)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "8f09ffb3-2b24-5ffe-bcd9-a96e2878d060")
+  )
+  (wire
+    (pts
+      (xy 207.01 102.87)
+      (xy 207.01 73.66)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "c1e67fb6-c816-5a31-b453-f96edac3c0d8")
+  )
+  (wire
+    (pts
+      (xy 207.01 95.25)
+      (xy 207.01 121.92)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "9cb318e1-c2c3-5cfc-ad19-dbfe4e92975b")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 207.01 121.92 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "198da0cd-7fa8-5b15-ae64-4d38c8454ac5")
+    (property "Reference" "#PWR1602"
+      (at 207.01 121.92 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 207.01 125.73 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "22f1a282-1c73-5502-bc88-a48db5d69a92")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1602")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 246.38 78.74)
+      (xy 243.84 78.74)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "e470251d-07b0-58bb-a47d-053af3a7ec30")
+  )
+  (wire
+    (pts
+      (xy 243.84 78.74)
+      (xy 243.84 121.92)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "b940ffe2-35d7-5beb-97a8-72734fe74624")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 243.84 121.92 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "b8e9a672-1edc-5544-8e00-efaa324aa13a")
+    (property "Reference" "#PWR1603"
+      (at 243.84 121.92 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 243.84 125.73 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "7da79855-2b30-5ff3-8d36-7de1cba2bcc8")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1603")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 154.94 44.45)
+      (xy 154.94 35.56)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "e50d12e0-adb0-5c3a-8102-90f20e761aa7")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_V12")
+    (at 154.94 35.56 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "58ce15ab-4a47-550d-85e8-0fe72cf6bdc8")
+    (property "Reference" "#PWR1604"
+      (at 154.94 35.56 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "V12"
+      (at 154.94 31.75 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "9328e7de-54ec-57cf-b3fe-4b802fb1b750")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1604")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 154.94 52.07)
+      (xy 154.94 60.96)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "fe28df98-baf4-511f-8825-45c4b965c7ee")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 154.94 60.96 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "8f480c41-abb0-5314-8414-2d89f224f013")
+    (property "Reference" "#PWR1605"
+      (at 154.94 60.96 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 154.94 64.77 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "2a976738-4e37-5dc1-aaeb-0f5f35056773")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1605")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 182.88 44.45)
+      (xy 182.88 35.56)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "2a35bdc5-0841-5239-b2dc-4fde8bd464df")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_V12")
+    (at 182.88 35.56 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "901f8ed4-2830-570b-b214-ce4f374da2ed")
+    (property "Reference" "#PWR1606"
+      (at 182.88 35.56 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "V12"
+      (at 182.88 31.75 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "2c282d3c-1abd-5d01-9f06-1e85a38aabb4")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1606")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 182.88 52.07)
+      (xy 182.88 60.96)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "19465aa1-b0be-5ba2-b69e-015750a3ffb1")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 182.88 60.96 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "1f5b5bc3-f756-500b-918e-2ec14fdd61ff")
+    (property "Reference" "#PWR1607"
+      (at 182.88 60.96 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 182.88 64.77 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "71126f57-468c-5c45-9238-6b26705fa2c7")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1607")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 119.38 66.04)
+      (xy 119.38 35.56)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "a911d349-3a76-5b69-b458-1886979ed108")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_V12")
+    (at 119.38 35.56 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "4b783b0b-ceae-5ccc-bd02-40890e57a7a7")
+    (property "Reference" "#PWR1608"
+      (at 119.38 35.56 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "V12"
+      (at 119.38 31.75 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "3eb56ba6-9421-5dbb-9469-264622ed925e")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1608")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 106.68 83.82)
+      (xy 68.58 83.82)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "df1c3e97-0cd6-5672-843d-90de89e6756e")
+  )
+  (global_label "SOL_FAULT_RAW"
+    (at 68.58 83.82 180)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+    (uuid "eebdde4a-13d4-5e48-a781-04e014c09fab")
+  )
+  (wire
+    (pts
+      (xy 124.46 96.52)
+      (xy 124.46 109.22)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "62a83a31-1438-5a00-afc2-68c26ec7bde6")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 124.46 109.22 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "718256f8-df71-5869-bede-feaa46e48fdc")
+    (property "Reference" "#PWR1609"
+      (at 124.46 109.22 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 124.46 113.03 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "06307764-3587-5f5e-8555-502b20b6e5bc")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1609")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 127.0 96.52)
+      (xy 127 114.3)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "13259ce0-1f4b-5538-904c-974bfd8bd36f")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 127 114.3 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "e3d7d035-f4a1-5af4-8dcd-72982463fcee")
+    (property "Reference" "#PWR1610"
+      (at 127 114.3 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 127 118.11 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "a3829d68-b13f-5739-baeb-677838e94612")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1610")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 119.38 96.52)
+      (xy 119.38 133.35)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "f25530be-64b8-5fd3-8ec5-f041c410b8c5")
+  )
+  (global_label "SOL_DELAY"
+    (at 119.38 129.54 0)
+    (uuid "82950775-652a-533c-90cc-aaf6fa15c818")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+  )
+  (wire
+    (pts
+      (xy 119.38 140.97)
+      (xy 119.38 144.78)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "acaf974c-115f-5cce-bda8-e12ab47488d4")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 119.38 144.78 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "e66089c2-472f-5281-b655-c15bd03429db")
+    (property "Reference" "#PWR1611"
+      (at 119.38 144.78 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 119.38 148.59 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "608ac8a1-7942-5ca5-9b6a-4008067ee1b4")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1611")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 106.68 88.9)
+      (xy 78.74 88.9)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "4cfde4ba-76b4-51f3-aa8d-004eef9f816c")
+  )
+  (wire
+    (pts
+      (xy 78.74 88.9)
+      (xy 78.74 120.65)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "2b0ce470-eac6-5ae9-9655-d3c3528c29e2")
+  )
+  (wire
+    (pts
+      (xy 78.74 120.65)
+      (xy 53.34 120.65)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "e5b2ddad-8247-5c05-ab0a-45208ba95d3f")
+  )
+  (wire
+    (pts
+      (xy 53.34 128.27)
+      (xy 53.34 144.78)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "7c471aaa-8b46-574f-822c-4c2afdfa0596")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 53.34 144.78 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "6c0e10f9-f661-5b87-80d0-caa4662410c5")
+    (property "Reference" "#PWR1612"
+      (at 53.34 144.78 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 53.34 148.59 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "914562a5-8995-5981-877a-1209dcf0590a")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/853bb181-974e-56e0-9beb-7f589ffa7d7d"
+          (reference "#PWR1612")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (text "SOL+"
+    (at 251.46 66.04 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "c91926a0-e612-5b8f-a904-1b66344af286")
+  )
+  (text "GND"
+    (at 251.46 86.36 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "810fe46f-d303-5114-816a-7fc6266d7158")
+  )
+  (global_label "SOL_ENABLE"
+    (at 88.9 93.98 0)
+    (uuid "8b803a1c-9f0b-55c1-a278-d6349025fbbb")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+  )
+  (global_label "SOL_POS"
+    (at 207.01 86.36 0)
+    (uuid "032cd4f9-f7e8-5848-9ca5-7d4c01402b94")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+  )
+  (global_label "SOL_CL"
+    (at 78.74 106.68 180)
+    (uuid "2490fe6b-27da-5cb5-b41a-a706f2fefe42")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+  )
+  (junction
+    (at 88.9 73.66)
+    (diameter 0)
+    (color 0 0 0 0)
+    (uuid "45d8d893-2997-5d8c-b7ab-4fbe33eb1fa4")
+  )
+  (junction
+    (at 207.01 73.66)
+    (diameter 0)
+    (color 0 0 0 0)
+    (uuid "78351606-daa3-5c7d-aee1-e3f7185ba312")
+  )
+  (global_label "V12"
+    (at 99.06 78.74 180)
+    (uuid "138f1cb4-cd87-49fc-a7d4-3a46a0159a06")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify right)
+    )
+  )
+  (text "J5: pin 1 = switched +12 V; pin 2 = GND. Coil rating: 12 V / 0.8 A."
+    (at 20.32 170.18 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "7e44f854-b4f4-56c0-8809-d37a6c272430")
+  )
+  (text "R33 sets a nominal 1.21 A fault limit. C30 selects per-pulse latch-off."
+    (at 20.32 174.625 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "abb666d8-a0e5-5a54-b46a-383e1851b4a3")
+  )
+  (text "PWM can restart U8 after a fault; the FluidNC fault/alarm action must stop PWM."
+    (at 20.32 179.07 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "147e9ccc-9c5f-53cd-a502-a8c5de32133f")
+  )
+  (text "User duty limit: ON <= 10 s, then OFF >= 60 s. No hardware timer enforces it."
+    (at 20.32 183.51500000000001 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "d4ec6380-2fd9-5132-bde7-f0d3155ac179")
+  )
+  (text "FLYBACK PATH"
+    (at 200.66 135.89 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "557da20a-03b0-50ec-8827-92dedc212890")
+  )
+  (text "D4 cathode = SOL_POS"
+    (at 190.5 141.605 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "b46fe3d3-2bc4-52ae-97a4-cbe24a921a63")
+  )
+  (text "D4 anode = GND"
+    (at 190.5 146.685 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "865a0eb0-f0a3-5962-b3e8-113074c99ebb")
+  )
+  (text "PWM FROM SHEET 9"
+    (at 20.32 62.23 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "d976e4b9-4fcc-5060-972d-043da0faf28b")
+  )
+  (text "FAULT TO SHEET 9"
+    (at 30.48 92.71 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "08e68506-eebd-51a7-b80d-41a9d3fca852")
+  )
+)

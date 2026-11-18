@@ -1,0 +1,114 @@
+(footprint "MountingHole_3.2mm_M3_Pad"
+  (version 20260206)
+  (generator "pcbnew")
+  (generator_version "10.0")
+  (layer "F.Cu")
+  (descr "M3 plated mechanical hole; 3.2mm finished bore, 6.4mm isolated annular copper on all layers; front/rear mask openings; no paste. Based on KiCad 10 MountingHole_3.2mm_M3_Pad.")
+  (tags "mountinghole M3")
+  (property "Reference" "REF**"
+    (at 0 -5 0)
+    (layer "B.SilkS")
+    (hide yes)
+    (uuid "31a04486-c312-49fe-8c98-4c615f37ac29")
+    (effects
+      (font
+        (size 1 1)
+        (thickness 0.15)
+      )
+      (justify mirror)
+    )
+  )
+  (property "Value" "MountingHole_3.2mm_M3_Pad"
+    (at 0 4.15 0)
+    (layer "F.Fab")
+    (hide yes)
+    (uuid "6111d891-c7ec-4699-b47b-ada8a512e471")
+    (effects
+      (font
+        (size 1 1)
+        (thickness 0.15)
+      )
+    )
+  )
+  (property "Datasheet" ""
+    (at 0 0 0)
+    (layer "F.Fab")
+    (hide yes)
+    (uuid "d80df576-fa2d-42e9-b4bc-a374adfe917a")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+    )
+  )
+  (property "Description" ""
+    (at 0 0 0)
+    (layer "F.Fab")
+    (hide yes)
+    (uuid "bb473935-90ae-475f-83f1-52801e7f64f4")
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+    )
+  )
+  (property "KiLib_Generator" "mounting_hardware/mounting_hole"
+    (at 0 0 0)
+    (layer "F.SilkS")
+    (hide yes)
+    (uuid "f1b19c3e-ec53-4e62-a473-47ec7d73c9e9")
+    (effects
+      (font
+        (size 1 1)
+        (thickness 0.15)
+      )
+    )
+  )
+  (attr through_hole board_only exclude_from_pos_files exclude_from_bom)
+  (duplicate_pad_numbers_are_jumpers no)
+  (fp_circle
+    (center 0 0)
+    (end 3.2 0)
+    (stroke
+      (width 0.15)
+      (type solid)
+    )
+    (fill no)
+    (layer "Cmts.User")
+    (uuid "af15d489-6fe3-4fc4-b396-f49148fe8037")
+  )
+  (fp_circle
+    (center 0 0)
+    (end 3.45 0)
+    (stroke
+      (width 0.05)
+      (type solid)
+    )
+    (fill no)
+    (layer "F.CrtYd")
+    (uuid "c288f02a-b40a-424a-93f0-ebb8daeb0bb0")
+  )
+  (fp_text user "${REFERENCE}"
+    (at 0 0 0)
+    (layer "F.Fab")
+    (uuid "3b487ac9-7d9d-4116-a9f5-f4d60cbbc2df")
+    (effects
+      (font
+        (size 1 1)
+        (thickness 0.15)
+      )
+    )
+  )
+  (pad "1" thru_hole circle
+    (at 0 0)
+    (size 6.4 6.4)
+    (drill 3.2)
+    (layers "*.Cu" "*.Mask")
+    (remove_unused_layers no)
+    (solder_mask_margin 0.05)
+    (clearance 0.3)
+    (zone_connect 0)
+    (uuid "16db209b-953a-460f-b505-09aefe4bddd7")
+  )
+  (embedded_fonts no)
+)

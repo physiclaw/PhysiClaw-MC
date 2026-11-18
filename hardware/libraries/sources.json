@@ -1,0 +1,192 @@
+{
+  "KiCad": "10.0.8",
+  "symbols": [
+    {
+      "local_symbol": "CUSTOM_AO4407A",
+      "source": "CUSTOM:AO4407A",
+      "note": "AO4407A uses generic PMOS drawing with manufacturer SOIC-8 pin mapping"
+    },
+    {
+      "local_symbol": "Connector_Barrel_Jack_Switch",
+      "source": "Connector:Barrel_Jack_Switch",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Connector_USB_C_Receptacle_USB2.0_16P",
+      "source": "Connector:USB_C_Receptacle_USB2.0_16P",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Connector_Generic_Conn_01x02",
+      "source": "Connector_Generic:Conn_01x02",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Connector_Generic_Conn_01x04",
+      "source": "Connector_Generic:Conn_01x04",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_C",
+      "source": "Device:C",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_C_Polarized",
+      "source": "Device:C_Polarized",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_D_Schottky",
+      "source": "Device:D_Schottky",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_D_Zener",
+      "source": "Device:D_Zener",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_Fuse",
+      "source": "Device:Fuse",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_L",
+      "source": "Device:L",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_LED",
+      "source": "Device:LED",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Device_R",
+      "source": "Device:R",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Driver_Motor_TMC2209_LA",
+      "source": "Driver_Motor:TMC2209-LA",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Interface_USB_CH340C",
+      "source": "Interface_USB:CH340C",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Power_Protection_USBLC6_2SC6",
+      "source": "Power_Protection:USBLC6-2SC6",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Regulator_Switching_AP63203WU",
+      "source": "Regulator_Switching:AP63203WU",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Switch_SW_Push",
+      "source": "Switch:SW_Push",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "Transistor_BJT_MMBT3904",
+      "source": "Transistor_BJT:MMBT3904",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "power_PWR_FLAG",
+      "source": "power:PWR_FLAG",
+      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+    },
+    {
+      "local_symbol": "RF_Module_ESP32_WROOM_32UE",
+      "source": "RF_Module:ESP32-WROOM-32UE",
+      "note": "Classic ESP32 module pinout shared with 32E; external-antenna UE identity and land pattern; native schematic/netlist verified."
+    },
+    {
+      "local_symbol": "CUSTOM_TS3USB221A",
+      "source": "TI SCDS277C",
+      "note": "Functional pin positions preserved from project drawing; all ten pin numbers independently remapped to RSE0010A table."
+    },
+    {
+      "local_symbol": "Protected_SN74LVC1G132",
+      "source": "TI SCES546E DBV pin table",
+      "note": "Project functional block; original pin positions retained. Explicit NAND/Schmitt labels and hysteresis glyph. Same DBV/SOT-23-5 footprint."
+    }
+  ],
+  "footprints": {
+    "Physiclaw:Connector_BarrelJack_BarrelJack_CUI_PJ-102BH_Horizontal": "Connector_BarrelJack:BarrelJack_CUI_PJ-102AH_Horizontal",
+    "Physiclaw:Fuse_Fuse_0603_1608Metric": "Fuse:Fuse_0603_1608Metric",
+    "Physiclaw:Package_SO_SOIC-8_3.9x4.9mm_P1.27mm": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+    "Physiclaw:Resistor_SMD_R_0603_1608Metric": "Resistor_SMD:R_0603_1608Metric",
+    "Physiclaw:Diode_SMD_D_SOD-123": "Diode_SMD:D_SOD-123",
+    "Physiclaw:Diode_SMD_D_SMB": "Diode_SMD:D_SMB",
+    "Physiclaw:Capacitor_THT_CP_Radial_D8.0mm_P3.50mm": "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm",
+    "Physiclaw:Capacitor_SMD_C_1206_3216Metric": "Capacitor_SMD:C_1206_3216Metric",
+    "Physiclaw:Package_TO_SOT_SMD_TSOT-23-6": "Package_TO_SOT_SMD:TSOT-23-6",
+    "Physiclaw:Capacitor_SMD_C_0603_1608Metric": "Capacitor_SMD:C_0603_1608Metric",
+    "Physiclaw:Inductor_SMD_L_Sunlord_SWPA4030S": "Inductor_SMD:L_Sunlord_SWPA4030S",
+    "Physiclaw:Capacitor_SMD_C_0805_2012Metric": "Capacitor_SMD:C_0805_2012Metric",
+    "Physiclaw:LED_SMD_LED_0603_1608Metric": "LED_SMD:LED_0603_1608Metric",
+    "Physiclaw:Button_Switch_SMD_SW_SPST_TS1187A": "Button_Switch_SMD:SW_SPST_TL3342",
+    "Physiclaw:Package_TO_SOT_SMD_SOT-23": "Package_TO_SOT_SMD:SOT-23",
+    "Physiclaw:Connector_USB_USB_C_Receptacle_HRO_TYPE-C-31-M-12": "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+    "Physiclaw:Package_TO_SOT_SMD_SOT-23-6": "Package_TO_SOT_SMD:SOT-23-6",
+    "Physiclaw:Package_SO_SOIC-16_3.9x9.9mm_P1.27mm": "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm",
+    "Physiclaw:Package_DFN_QFN_VQFN-28-1EP_5x5mm_P0.5mm_EP3.7x3.7mm_ThermalVias": "Package_DFN_QFN:VQFN-28-1EP_5x5mm_P0.5mm_EP3.7x3.7mm_ThermalVias",
+    "Physiclaw:Connector_JST_JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical": "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical",
+    "Physiclaw:Resistor_SMD_R_1206_3216Metric": "Resistor_SMD:R_1206_3216Metric",
+    "Physiclaw:Diode_SMD_D_SMA": "Diode_SMD:D_SMA",
+    "Physiclaw:TerminalBlock_TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm": "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm",
+    "Physiclaw:MountingHole_3.2mm_M3_Pad": "MountingHole:MountingHole_3.2mm_M3_Pad",
+    "Physiclaw:TestPoint_Pad_D1.0mm": "TestPoint:TestPoint_Pad_D1.0mm",
+    "Physiclaw:RF_Module_ESP32-WROOM-32UE": "RF_Module:ESP32-WROOM-32UE",
+    "Physiclaw:Texas_UQFN-10_1.5x2mm_P0.5mm": "Package_DFN_QFN:Texas_UQFN-10_1.5x2mm_P0.5mm",
+    "Physiclaw:Resistor_SMD_R_0402_1005Metric": "Resistor_SMD:R_0402_1005Metric",
+    "Physiclaw:Package_SO_SSOP-8_2.95x2.8mm_P0.65mm": "Package_SO:SSOP-8_2.95x2.8mm_P0.65mm",
+    "Physiclaw:Package_TO_SOT_SMD_SOT-23-5": "Package_TO_SOT_SMD:SOT-23-5"
+  },
+  "modifications": {
+    "Physiclaw:TestPoint_Pad_D1.0mm_Compact": "Derived from the vendored KiCad TestPoint:TestPoint_Pad_D1.0mm. The courtyard diameter is reduced to 1.5 mm. The 1.0 mm copper and mask pad is retained.",
+    "Physiclaw:RF_Module_ESP32-WROOM-32UE": "KiCad 10 ESP32-WROOM-32UE manufacturer land pattern; project 12-hole exposed-pad treatment; official Espressif STEP with verified offset.",
+    "TPS1H200A_DGN0008K": "TI DGN0008K-C01, drawing 4232899/A. Six 0.20 mm thermal holes, 1.76 × 2.11 mm central paste opening with 0.05 mm corner radius, 1.57 × 1.89 mm mask opening.",
+    "Physiclaw:Texas_UQFN-10_1.5x2mm_P0.5mm": "Installed KiCad 10 land pattern checked against TI RSE0010A. Tiny silk marker moved to Fab. Project dimensional preview, not manufacturer mechanical CAD.",
+    "Physiclaw:Button_Switch_SMD_SW_SPST_TS1187A": "XKB TS-1187A-B-A-B. Dedicated 1.00 × 0.75 mm rounded paste windows follow drawing SP-A0162-41 Rev 01. The TL3342 STEP file is a body envelope.",
+    "Physiclaw:Connector_JST_JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical": "JST XH, four circuits and 2.50 mm pitch. Finished drill target 1.00 mm with 1.70 × 1.95 mm copper lands.",
+    "Physiclaw:Connector_BarrelJack_BarrelJack_CUI_PJ-102BH_Horizontal": "Derived from installed KiCad PJ-102AH footprint; PJ-102BH Rev 1.05 confirms identical 6.0/3.0/4.7 mm terminal locations and 1.0 x 1.6 mm plated slots. Selected MPN PJ-102BH has a 2.5 mm center pin."
+  },
+  "models": {
+    "PJ-102BH-envelope.wrl": "Project-authored from Same Sky PJ-102BH Rev 1.05; 2.5 mm center pin, 5.5 mm mating plug. PJ-102AH upstream footprint is the matching mechanical template.",
+    "Fuse_0603_1608Metric.step": "KiCad packages3D/Fuse.3dshapes/Fuse_0603_1608Metric.step",
+    "SOIC-8_3.9x4.9mm_P1.27mm.step": "KiCad packages3D/Package_SO.3dshapes/SOIC-8_3.9x4.9mm_P1.27mm.step",
+    "R_0603_1608Metric.step": "KiCad packages3D/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+    "D_SOD-123.step": "KiCad packages3D/Diode_SMD.3dshapes/D_SOD-123.step",
+    "D_SMB.step": "KiCad packages3D/Diode_SMD.3dshapes/D_SMB.step",
+    "CP_Radial_D8.0mm_P3.50mm.step": "KiCad packages3D/Capacitor_THT.3dshapes/CP_Radial_D8.0mm_P3.50mm.step",
+    "C_1206_3216Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+    "TSOT-23-6.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/TSOT-23-6.step",
+    "C_0603_1608Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+    "L_Sunlord_SWPA4030S.step": "KiCad packages3D/Inductor_SMD.3dshapes/L_Sunlord_SWPA4030S.step",
+    "C_0805_2012Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+    "LED_0603_1608Metric.step": "KiCad packages3D/LED_SMD.3dshapes/LED_0603_1608Metric.step",
+    "SW_SPST_TL3342.step": "KiCad packages3D/Button_Switch_SMD.3dshapes/SW_SPST_TL3342.step",
+    "SOT-23.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23.step",
+    "HRO-TYPE-C-31-M-12-envelope.wrl": "Project-authored from cited package/connector drawings",
+    "SOT-23-6.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+    "TMC2209-envelope.wrl": "Project-authored from cited package/connector drawings",
+    "JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical.step": "KiCad packages3D/Connector_JST.3dshapes/JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical.step",
+    "R_1206_3216Metric.step": "KiCad packages3D/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
+    "D_SMA.step": "KiCad packages3D/Diode_SMD.3dshapes/D_SMA.step",
+    "MX126-5.0-02P-envelope.wrl": "Project-authored from cited package/connector drawings",
+    "SOIC-16_3.9x9.9mm_P1.27mm.step": "KiCad packages3D/Package_SO.3dshapes/SOIC-16_3.9x9.9mm_P1.27mm.step",
+    "ESP32-WROOM-32UE.step": "https://www.espressif.com/sites/default/files/3dmodel/ESP32-WROOM-32UE%203D%20Model.STEP",
+    "TS3USB221A-envelope.wrl": "Project-authored from TI SCDS277C RSE0010A package; not manufacturer mechanical CAD",
+    "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step": "KiCad packages3D/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step",
+    "R_0402_1005Metric.step": "KiCad packages3D/Resistor_SMD.3dshapes/R_0402_1005Metric.step",
+    "SSOP-8_2.95x2.8mm_P0.65mm.step": "KiCad packages3D/Package_SO.3dshapes/SSOP-8_2.95x2.8mm_P0.65mm.step",
+    "SOT-23-5.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step"
+  }
+}

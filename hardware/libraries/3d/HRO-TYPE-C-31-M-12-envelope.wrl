@@ -1,0 +1,5 @@
+#VRML V2.0 utf8
+# Simplified dimension-based preview, not manufacturer mechanical CAD.
+Transform { translation 0.000000 0.000000 0.649606  children [ Shape { appearance Appearance { material Material { diffuseColor 0.66 0.68 0.7 specularColor .2 .2 .2 shininess .35 } } geometry Box { size 3.519685 2.874016 1.259843 } } ] }
+Transform { translation 0.000000 -1.444882 0.649606  children [ Shape { appearance Appearance { material Material { diffuseColor 0.04 0.04 0.05 specularColor .2 .2 .2 shininess .35 } } geometry Box { size 3.149606 0.009843 0.944882 } } ] }
+Transform { translation 0.000000 -1.456693 0.649606  children [ Shape { appearance Appearance { material Material { diffuseColor 0.25 0.25 0.23 specularColor .2 .2 .2 shininess .35 } } geometry Box { size 2.677165 0.015748 0.196850 } } ] }

@@ -1,0 +1,107 @@
+# PCW-MC-01 Rev A; stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
+# Conservative bring-up values. Set steps/mm, travel and direction for your
+# machine. Solenoid is 12 V / 0.8 A; motor ratings remain unconfirmed.
+# Programming and first-article tests are described in manufacturing/process.md.
+name: PhysiClaw Motion Controller
+board: PCW-MC-01 Rev A
+
+stepping:
+  engine: RMT
+  idle_ms: 500
+  pulse_us: 4
+  dir_delay_us: 1
+  disable_delay_us: 0
+
+start:
+  must_home: false
+  check_limits: false
+
+# Hardware U9 remains disabled after reset. Check both TMC UART reports before
+# running macro 0 (ARM). Stock FluidNC does not guarantee a UART failure alarms.
+user_outputs:
+  digital0_pin: gpio.27
+
+macros:
+  after_reset: "M5&M65 P0"
+  macro0: "M5&$MD&M64 P0"
+  macro1: "M5&$MD&M65 P0"
+
+control:
+  fault_pin: gpio.34:low
+
+# Discrete state indicators, active high. Neither is a heartbeat/watchdog.
+status_outputs:
+  report_interval_ms: 250
+  idle_pin: gpio.18
+  alarm_pin: gpio.19
+
+uart1:
+  txd_pin: gpio.17
+  rxd_pin: gpio.16
+  rts_pin: NO_PIN
+  cts_pin: NO_PIN
+  baud: 115200
+  mode: 8N1
+
+axes:
+  # Active-high disable command passes U9 only when GPIO27 ARM is HIGH.
+  # Physical ENN has a pull-up, holding both drivers disabled while unarmed.
+  # idle_ms releases both motors after 500 ms; no indefinite holding torque.
+  shared_stepper_disable_pin: gpio.13:high
+  x:
+    steps_per_mm: 80.0
+    max_rate_mm_per_min: 500.0
+    acceleration_mm_per_sec2: 25.0
+    max_travel_mm: 100.0
+    soft_limits: false
+    motor0:
+      tmc_2209:
+        uart_num: 1
+        addr: 0
+        r_sense_ohms: 0.100
+        run_amps: 0.400
+        hold_amps: 0.150
+        microsteps: 16
+        run_mode: StealthChop
+        use_enable: false
+        step_pin: gpio.25
+        direction_pin: gpio.26
+  y:
+    steps_per_mm: 80.0
+    max_rate_mm_per_min: 500.0
+    acceleration_mm_per_sec2: 25.0
+    max_travel_mm: 100.0
+    soft_limits: false
+    motor0:
+      tmc_2209:
+        uart_num: 1
+        addr: 1
+        r_sense_ohms: 0.100
+        run_amps: 0.400
+        hold_amps: 0.150
+        microsteps: 16
+        run_mode: StealthChop
+        use_enable: false
+        step_pin: gpio.21
+        direction_pin: gpio.22
+
+# Solenoid PWM: S0..1000 commands 0..100% duty; M5 switches OFF.
+# Duty is not a measured/regulated current in amperes.
+# 200 Hz is a bring-up setting; qualify the switch/coil before changing it.
+# Pulse duration/rest are user-controlled; there is no automatic timing rule.
+# Supplied coil rating for reference: <=10 s ON, then >=60 s OFF.
+# Keep spindle override at 100% when interpreting S as duty percentage.
+# M3/M5 synchronize with queued motion; feed-hold is not solenoid OFF.
+# Do not use Z moves: FluidNC creates an unconnected virtual Z automatically.
+PWM:
+  pwm_hz: 200
+  output_pin: gpio.32
+  enable_pin: NO_PIN
+  direction_pin: NO_PIN
+  tool_num: 0
+  speed_map: 0=0% 1000=100%
+  s0_with_disable: true
+  disable_with_s0: true
+  off_on_alarm: true
+
+# No endstop, probe, SD or display is fitted. GPIO34 is the protected switch fault input.

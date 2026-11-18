@@ -1,0 +1,18 @@
+(version 1)
+
+(rule "Protected 12 V input feed minimum copper width"
+  (condition "A.NetName == 'VIN_RAW' || A.NetName == 'VIN_FUSED'")
+  (constraint track_width (min 0.8mm)))
+
+(rule "Protected solenoid positive output minimum escape width"
+  (condition "A.NetName == 'SOL_POS'")
+  (constraint track_width (min 0.4mm)))
+
+(rule "Motor phase absolute minimum at QFN escapes"
+  (condition "A.NetName == 'X_A1' || A.NetName == 'X_A2' || A.NetName == 'X_B1' || A.NetName == 'X_B2' || A.NetName == 'Y_A1' || A.NetName == 'Y_A2' || A.NetName == 'Y_B1' || A.NetName == 'Y_B2'")
+  (constraint track_width (min 0.25mm)))
+
+(rule "USB local fine-pitch capped escape vias"
+  (condition "A.Type == 'Via' && A.insideArea('USB escape and return vias') && (A.NetName == 'USB_DP_CONN' || A.NetName == 'USB_DM_CONN' || A.NetName == 'USB_OE_N' || A.NetName == 'GND')")
+  (constraint via_diameter (min 0.4mm))
+  (constraint annular_width (min 0.1mm)))

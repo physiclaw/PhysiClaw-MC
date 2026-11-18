@@ -1,0 +1,769 @@
+(kicad_sch
+  (version 20260306)
+  (generator eeschema)
+  (uuid "43c422d9-74ff-5880-b391-e1338c3eef6c")
+  (paper "A4")
+  (lib_symbols)
+  (embedded_fonts no)
+  (title_block
+    (title "PhysiClaw Motion Controller")
+    (date "2026-11-17")
+    (rev "A")
+    (company "PhysiClaw")
+    (comment 2 "System overview")
+    (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")
+    (comment 1 "12 V / 3 A adapter | 2.5 A steady target | ENGINEERING DRAFT")
+  )
+  (sheet
+    (at 20.32 48.26)
+    (size 66.04 20.32)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "860f94de-3f00-5879-b14c-fd014db3bcc7")
+    (property "Sheetname" "Protected 12 V input and 3.3 V supply"
+      (at 20.32 48.26 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/01-power.kicad_sch"
+      (at 20.32 48.26 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "2")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 106.68 60.96)
+    (size 71.12 30.48)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "93785c43-3321-5cc5-ab0a-bbfae1ae7536")
+    (property "Sheetname" "ESP32 and reset / programming controls"
+      (at 106.68 60.96 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/02-mcu.kicad_sch"
+      (at 106.68 60.96 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "3")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 20.32 85.09)
+    (size 66.04 20.32)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "4dbb0b6b-fd34-54e4-8e58-173d69adc5f8")
+    (property "Sheetname" "Self-powered USB-C programming interface"
+      (at 20.32 85.09 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/03-usb.kicad_sch"
+      (at 20.32 85.09 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "4")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 198.12 45.72)
+    (size 78.74 17.78)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "c39f2b39-7315-5d53-944d-166a4d73f0d5")
+    (property "Sheetname" "Motor X / TMC2209 address 0"
+      (at 198.12 45.72 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/04-driver-x.kicad_sch"
+      (at 198.12 45.72 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "5")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 198.12 74.93)
+    (size 78.74 17.78)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "15f153c6-160b-5756-8790-30627324021f")
+    (property "Sheetname" "Motor Y / TMC2209 address 1"
+      (at 198.12 74.93 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/05-driver-y.kicad_sch"
+      (at 198.12 74.93 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "6")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 198.12 104.14)
+    (size 78.74 17.78)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "853bb181-974e-56e0-9beb-7f589ffa7d7d")
+    (property "Sheetname" "Direct 12 V solenoid output"
+      (at 198.12 104.14 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/06-solenoid.kicad_sch"
+      (at 198.12 104.14 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "7")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 106.68 111.76)
+    (size 71.12 17.78)
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "325a3462-3fa7-5cdb-bc23-26f0c495b53c")
+    (property "Sheetname" "Power, machine state and solenoid command indicators"
+      (at 106.68 111.76 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/07-indicators.kicad_sch"
+      (at 106.68 111.76 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "8")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 20.32 121.92)
+    (size 66.04 20.32)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid "aeb7cffe-7f0f-5ed9-9e07-d55edbed23a7")
+    (property "Sheetname" "Actuator inhibit / supervisor"
+      (at 20.32 121.92 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+        (justify left)
+        (hide yes)
+      )
+    )
+    (property "Sheetfile" "schematics/08-interlock.kicad_sch"
+      (at 20.32 121.92 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c"
+          (page "9")
+        )
+      )
+    )
+  )
+  (text "PhysiClaw Motion Controller"
+    (at 20.32 21.59 0)
+    (effects
+      (font
+        (size 2.54 2.54)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "4662187d-bf19-5703-9a7e-5d2a45a25c6c")
+  )
+  (text "PCW-MC-01  |  Hardware Rev A  |  Assembly PCW-MC-01-ASM"
+    (at 20.32 30.48 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+      )
+      (justify left)
+    )
+    (uuid "b42730de-3042-5229-a47f-015658e963c4")
+  )
+  (text "2  POWER INPUT"
+    (at 24.13 53.339999999999996 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "388537bf-5933-5a32-b926-d6e0d7a0576d")
+  )
+  (text "12 V protection + 3.3 V buck"
+    (at 24.13 58.419999999999995 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "32929798-a327-58f3-b375-fb9cfc290da7")
+  )
+  (text "3  ESP32 CONTROLLER"
+    (at 110.49000000000001 66.04 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "55f27754-e123-5769-a7fe-5cb1695eed9b")
+  )
+  (text "WROOM-32UE-N4 / external antenna"
+    (at 110.49000000000001 71.12 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "597656b2-f583-5c91-8d37-49bc46f4aa51")
+  )
+  (text "UART0 + FluidNC GPIO"
+    (at 110.49000000000001 76.2 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "0cc115f6-3bab-5c56-a752-aa15e0a42425")
+  )
+  (text "4  USB-C PROGRAMMING"
+    (at 24.13 90.17 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "5c328034-56d0-5b13-95ad-8e66a024c6d1")
+  )
+  (text "ESD / isolation / CH340C"
+    (at 24.13 95.25 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "cf41101a-a81b-5f43-91a4-2f6cf2884a55")
+  )
+  (text "5  X MOTOR"
+    (at 201.93 50.8 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "86cc86ca-4bf1-5a12-b86e-bc2ba15c5a6d")
+  )
+  (text "TMC2209 / UART address 0"
+    (at 201.93 55.879999999999995 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "cf31bfaf-bf36-54a1-8a03-99ea7d80d7bd")
+  )
+  (text "6  Y MOTOR"
+    (at 201.93 80.01 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "4d21871e-cd66-5bc3-9a82-85b08d20415a")
+  )
+  (text "TMC2209 / UART address 1"
+    (at 201.93 85.09 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "12042cf4-d85f-5b01-8289-8f06c1c875c2")
+  )
+  (text "7  SOLENOID PWM"
+    (at 201.93 109.22 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "60c51072-f6f5-5785-b054-bd3e75e60062")
+  )
+  (text "Protected high-side output / 12 V"
+    (at 201.93 114.3 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "c46dbac8-53a6-590b-98bc-ec69e318fdf0")
+  )
+  (text "8  STATUS INDICATORS"
+    (at 110.49000000000001 116.84 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "6c713dbc-1937-57f2-a9dd-c98887085ccd")
+  )
+  (text "Power / idle / alarm / command"
+    (at 110.49000000000001 121.92 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "90136393-1fb2-5a3a-9a55-a90b8ac1291d")
+  )
+  (text "9  ACTUATOR INHIBIT"
+    (at 24.13 127.0 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "6d7239aa-25cb-58f7-88ab-e46ade295e41")
+  )
+  (text "ARM + reset / supply supervision"
+    (at 24.13 132.08 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "24d6bc21-9561-5717-98aa-c5884b22e341")
+  )
+  (polyline
+    (pts
+      (xy 86.36 58.42)
+      (xy 96.52 58.42)
+      (xy 96.52 68.58)
+      (xy 106.68 68.58)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "de5bb16d-0bd4-5d25-891c-33b70da2c9d5")
+  )
+  (polyline
+    (pts
+      (xy 86.36 95.25)
+      (xy 96.52 95.25)
+      (xy 96.52 83.82)
+      (xy 106.68 83.82)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "3f2d64bc-1d80-574c-9a85-05c341466ea3")
+  )
+  (polyline
+    (pts
+      (xy 177.8 68.58)
+      (xy 187.96 68.58)
+      (xy 187.96 54.61)
+      (xy 198.12 54.61)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "d908be90-ace6-520d-a2fb-b77b7c5e5813")
+  )
+  (polyline
+    (pts
+      (xy 177.8 78.74)
+      (xy 198.12 78.74)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "133c45f4-15a2-5d2b-950d-b5e2c84309bd")
+  )
+  (polyline
+    (pts
+      (xy 177.8 88.9)
+      (xy 187.96 88.9)
+      (xy 187.96 113.03)
+      (xy 198.12 113.03)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "362f2b49-6ead-5b13-b612-5081154e2a55")
+  )
+  (polyline
+    (pts
+      (xy 142.24 91.44)
+      (xy 142.24 111.76)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "c2ddcf9f-5f64-50d2-909a-d4a1edb8e693")
+  )
+  (polyline
+    (pts
+      (xy 86.36 132.08)
+      (xy 101.6 132.08)
+      (xy 101.6 96.52)
+      (xy 116.84 96.52)
+      (xy 116.84 91.44)
+    )
+    (stroke
+      (width 0.254)
+      (type default)
+    )
+    (fill
+      (type none)
+    )
+    (uuid "27f03d16-1da3-5ce1-8826-55e98a34a6ad")
+  )
+  (text "CONNECTOR / CONTROL REFERENCE"
+    (at 20.32 153.67 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "f1070604-43d0-5e2a-b93e-00e4f578eec2")
+  )
+  (text "J1   12 V / 3 A adapter, center + (5.5 / 2.5 mm)"
+    (at 20.32 161.29 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "be65fb7d-650f-5970-bbde-15fb6dea71cc")
+  )
+  (text "J2   USB-C data; external 12 V required for programming"
+    (at 20.32 166.37 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "51fe4a03-b8f7-5e9a-9186-23233baa0b5f")
+  )
+  (text "J3   X motor: 1/2 = coil A, 3/4 = coil B; top-entry XH"
+    (at 20.32 171.45 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "bbca3f04-3a49-557d-b768-8d71d2f61695")
+  )
+  (text "J4   Y motor: 1/2 = coil A, 3/4 = coil B; top-entry XH"
+    (at 20.32 176.53 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "b5019dc0-3022-5067-9428-9a66e4260ffa")
+  )
+  (text "J5   Solenoid: 1 = switched +12 V, 2 = GND; screw clamp"
+    (at 20.32 181.60999999999999 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "67d0983f-9644-51cb-b927-df080ee93e41")
+  )
+  (text "SW1  RESET; recovery pads TP1 = GPIO0, TP2 = GND"
+    (at 20.32 186.69 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "9b4dce6e-7b11-530d-8a88-6d4ab7be9262")
+  )
+  (text "READING THIS DRAWING"
+    (at 198.12 135.89 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "ba8b44d3-1bb8-53ac-9c5b-6881975b7af8")
+  )
+  (text "Click a block to open its circuit sheet."
+    (at 198.12 142.24 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "298bf190-c65e-57db-86a9-adf31c002556")
+  )
+  (text "Matching net labels are connected."
+    (at 198.12 146.685 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "3a619c41-0bb6-57d5-95d8-339a44907a52")
+  )
+  (text "_N suffix means active LOW."
+    (at 198.12 151.13 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "bea7bea0-6fcf-5a58-8b84-e59589b4321b")
+  )
+  (text "V12 = protected 12 V; V3V3 = 3.3 V."
+    (at 198.12 155.57500000000002 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "6b35da36-d756-5d88-88e1-796eead3faf9")
+  )
+  (text "Signal map above is functional only."
+    (at 198.12 160.02 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "82a76e5a-84e7-5cd7-aeb0-c780efe0cb24")
+  )
+)
