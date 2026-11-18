@@ -1,12 +1,10 @@
-"""Build the assembly tables and verify Rev A's plotted manufacturing geometry."""
+"""Build the assembly tables and verify v1.0's plotted manufacturing geometry."""
 
 import csv
 import math
 import re
 from collections import Counter, defaultdict
 import xml.etree.ElementTree as ET
-
-import pcbnew as pcb
 
 
 def require(condition, message):
@@ -26,29 +24,20 @@ def ref_key(ref):
     return prefix, int(number)
 
 
-def xy(item):
-    pos = item.GetPosition()
-    return pcb.ToMM(pos.x), pcb.ToMM(pos.y)
-
-
 def pad_center(footprint, number):
-    points = [
-        xy(p)
-        for p in footprint.Pads()
-        if p.GetNumber() == number and p.IsOnLayer(pcb.F_Cu)
-    ]
-    require(points, f"{footprint.GetReference()} has no copper pad {number}")
+    points = [p.xy for p in footprint.pads if p.number == number and p.on_layer("F.Cu")]
+    require(points, f"{footprint.ref} has no copper pad {number}")
     # SW1 uses two lands per electrical terminal. Their midpoint identifies the row.
     return tuple(sum(axis) / len(points) for axis in zip(*points))
 
 
 def placement(footprint, part, row):
-    ref = footprint.GetReference()
-    x, y = xy(footprint)
-    native = footprint.GetOrientation().AsDegrees()
+    ref = footprint.ref
+    x, y = footprint.xy
+    native = footprint.angle
     require(
         row["Side"] == "top"
-        and footprint.GetLayer() == pcb.F_Cu
+        and footprint.layer == "F.Cu"
         and abs(float(row["PosX"]) - x) < 0.00001
         and abs(float(row["PosY"]) + y) < 0.00001
         and abs(math.remainder(float(row["Rot"]) - native, 360)) < 0.00001,
@@ -83,9 +72,9 @@ def placement(footprint, part, row):
 
 def assembly(board, netlist, native_positions, package_table, out, jlc):
     parts = {
-        f.GetReference(): f
-        for f in board.GetFootprints()
-        if not f.GetAttributes() & (pcb.FP_BOARD_ONLY | pcb.FP_DNP)
+        f.ref: f
+        for f in board.footprints
+        if not f.attributes.intersection({"board_only", "dnp"})
     }
     schematic = {
         c.get("ref"): c
@@ -102,7 +91,7 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
         require(len(names) == len(catalog), "Duplicate LCSC code in package table")
     with native_positions.open(encoding="utf-8") as stream:
         positions = list(csv.DictReader(stream))
-    smt = {r for r, f in parts.items() if f.GetAttributes() & pcb.FP_SMD}
+    smt = {r for r, f in parts.items() if "smd" in f.attributes}
     require(
         len(positions) == len(smt) and {r["Ref"] for r in positions} == smt,
         "KiCad placement export does not cover the fitted SMT parts",
@@ -116,18 +105,16 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
         c = schematic[ref]
         fields = {field.get("name"): field.text for field in c.findall("fields/field")}
         mpn, code = fields["MPN"], fields["LCSC"]
-        lib_id = f.GetFPID()
-        land = f"{lib_id.GetLibNickname()}:{lib_id.GetLibItemName()}"
+        land = f.land
         require(
-            all(f.GetFieldText(k) == fields[k] for k in ("MPN", "LCSC"))
-            and f.GetValue() == c.findtext("value")
+            all(f.fields[k] == fields[k] for k in ("MPN", "LCSC"))
+            and f.fields["Value"] == c.findtext("value")
             and land == c.findtext("footprint"),
             "PCB/schematic identity mismatch at " + ref,
         )
         part = names[code]
         require(
-            part["MPN"] == mpn
-            and part["KiCad footprint"] == str(lib_id.GetLibItemName()),
+            part["MPN"] == mpn and part["KiCad footprint"] == land.split(":", 1)[1],
             "Catalog identity or footprint mismatch at " + ref,
         )
         if ref in smt:
@@ -136,11 +123,11 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
             audit.append(evidence)
         process = "SMT" if ref in smt else "THT"
         require(
-            process == "SMT" or f.GetAttributes() & pcb.FP_THROUGH_HOLE,
+            process == "SMT" or "through_hole" in f.attributes,
             "Undefined assembly process at " + ref,
         )
         grouped[(process, mpn, code, part["Package"])].append(ref)
-        lines.append((ref, mpn, code, f.GetValue(), land, process))
+        lines.append((ref, mpn, code, f.fields["Value"], land, process))
     require(
         set(names) == {r[2] for r in lines},
         "Supplier package table contains unused codes",
@@ -237,44 +224,37 @@ def read_drill(path):
 def geometry(board, cam, fabrication, out):
     expected = {"PTH": [], "NPTH": []}
     thermals, probes = [], []
-    for track in board.GetTracks():
-        if isinstance(track, pcb.PCB_VIA):
-            d = pcb.ToMM(track.GetDrill())
-            expected["PTH"].append((*xy(track), d, d, 0))
-    for f in board.GetFootprints():
-        ref = f.GetReference()
-        for pad in f.Pads():
-            x, y = xy(pad)
+    for x, y, diameter in board.vias:
+        expected["PTH"].append((x, y, diameter, diameter, 0))
+    for f in board.footprints:
+        ref = f.ref
+        for pad in f.pads:
+            x, y = pad.xy
             if ref.startswith("TP"):
                 probes.append(
                     (
                         ref,
-                        pad.GetNetname(),
-                        "Top" if pad.IsOnLayer(pcb.F_Cu) else "Bottom",
+                        pad.net,
+                        "Top" if pad.on_layer("F.Cu") else "Bottom",
                         x,
                         y,
                     )
                 )
-            size = pad.GetDrillSize()
-            w, h = pcb.ToMM(size.x), pcb.ToMM(size.y)
+            w, h = pad.drill
             if not w:
                 continue
-            kind = "NPTH" if pad.GetAttribute() == pcb.PAD_ATTRIB_NPTH else "PTH"
-            angle = (
-                (pad.GetOrientation().AsDegrees() + (90 if h > w else 0)) % 180
-                if h != w
-                else 0
-            )
+            kind = "NPTH" if pad.kind == "np_thru_hole" else "PTH"
+            angle = (pad.angle + (90 if h > w else 0)) % 180 if h != w else 0
             expected[kind].append((x, y, min(w, h), max(w, h), angle))
             if ref in {"U2", "U5", "U6", "U8"}:
                 require(
-                    pad.GetNetname() == "GND" and w == h == 0.2,
+                    pad.net == "GND" and w == h == 0.2,
                     "Unexpected exposed-pad drill",
                 )
-                thermals.append((ref, pad.GetNumber(), x, -y, w))
+                thermals.append((ref, pad.number, x, -y, w))
     require(
         Counter(row[0] for row in thermals) == {"U2": 12, "U5": 16, "U6": 16, "U8": 6},
-        "Thermal-hole counts differ from the Rev A process specification",
+        "Thermal-hole counts differ from the v1.0 process specification",
     )
     for kind, native in expected.items():
         observed = read_drill(next(cam.glob("*-" + kind + ".drl")))
@@ -332,26 +312,24 @@ def check_paste(board, path):
             m = re.fullmatch(r"X(-?\d+)Y(-?\d+)D03\*", line)
             require(m, "Unsupported paste flash")
             observed.append((int(m[1]) / 1e6, -int(m[2]) / 1e6, *apertures[tool]))
-    for f in board.GetFootprints():
-        for pad in f.Pads():
-            if not pad.IsOnLayer(pcb.F_Paste):
+    for f in board.footprints:
+        for pad in f.pads:
+            if not pad.on_layer("F.Paste"):
                 continue
-            a = pad.GetOrientation().AsDegrees() % 180
+            a = pad.angle % 180
             require(
                 min(abs(a - n) for n in (0, 90, 180)) < 0.00001,
                 "Non-orthogonal paste aperture",
             )
-            w, h = pcb.ToMM(pad.GetSize().x), pcb.ToMM(pad.GetSize().y)
-            r = (
-                pcb.ToMM(pad.GetRoundRectCornerRadius())
-                if pad.GetShape() == pcb.PAD_SHAPE_ROUNDRECT
-                else 0
+            require(
+                pad.shape in {"rect", "roundrect", "circle", "oval"},
+                "Unsupported paste shape: " + pad.shape,
             )
-            if pad.GetShape() in (pcb.PAD_SHAPE_CIRCLE, pcb.PAD_SHAPE_OVAL):
-                r = min(w, h) / 2
+            w, h = pad.size
+            r = pad.radius
             if abs(a - 90) < 0.00001:
                 w, h = h, w
-            expected.append((*xy(pad), w, h, r))
+            expected.append((*pad.xy, w, h, r))
 
     def shapes(rows):
         return Counter(tuple(round(v, 3) for v in row) for row in rows)

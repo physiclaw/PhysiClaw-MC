@@ -1,4 +1,4 @@
-"""Build the Rev A first-article package with KiCad 10 and Python 3."""
+"""Build the v1.0 first-article package with KiCad 10 and Python 3.13."""
 
 import argparse
 import hashlib
@@ -8,13 +8,23 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
-import sys
+import platform
+import tomllib
 import tempfile
 from zipfile import ZIP_DEFLATED, ZIP_STORED, ZipFile
 
+from board_data import assembly, check_paste, geometry, require
+from kicad_board import Board
+
 ROOT = Path(__file__).resolve().parents[1]
 BOARD = "PCW-MC-01"
-NAME = BOARD + "-RevA-first-article"
+VERSION = (
+    "v"
+    + tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+        "version"
+    ]
+)
+NAME = f"{BOARD}-first-article"
 MAC = Path("/Applications/KiCad/KiCad.app/Contents")
 ASSET = "fluidnc-v4.1.1-posix.zip"
 URL = "https://github.com/bdring/FluidNC/releases/download/v4.1.1/" + ASSET
@@ -66,8 +76,6 @@ def file_list(folder):
 
 
 def verify_gerbers(cam):
-    from board_data import require
-
     require(
         sorted(p.suffix[1:] for p in cam.iterdir()) == sorted(GERBERS),
         "Unexpected Gerber layer set",
@@ -100,50 +108,13 @@ def verify_gerbers(cam):
         len(edges) == 4
         and set(edges)
         == {frozenset((corners[i - 1], corner)) for i, corner in enumerate(corners)},
-        "Incorrect Rev A outline or plot origin",
+        "Incorrect v1.0 outline or plot origin",
     )
 
 
-def assembly_drawing(pcb, work, out, run):
-    import pcbnew
-
-    board = pcbnew.LoadBoard(str(pcb))
-    # Room for labels beside the switch, connector slots and polarity symbols.
-    label_offsets = {
-        "J1": (5, -2.4),
-        "J3": (-3.75, -1.8),
-        "J4": (-3.75, -1.8),
-        "SW1": (0, 0),
-        "D4": (-4, 0),
-        "D1": (0, -2.6),
-        "D2": (0, -4),
-    }
-    for footprint in board.GetFootprints():
-        labels = [
-            item
-            for item in footprint.GraphicalItems()
-            if isinstance(item, pcbnew.PCB_TEXT)
-            and item.GetLayer() == pcbnew.F_Fab
-            and item.GetText() == "${REFERENCE}"
-        ]
-        board_only = footprint.GetAttributes() & pcbnew.FP_BOARD_ONLY
-        if labels or board_only:
-            footprint.Reference().SetVisible(False)
-        if footprint.GetReference() in label_offsets:
-            offset = label_offsets[footprint.GetReference()]
-            for item in labels:
-                item.SetPosition(
-                    footprint.GetPosition()
-                    + pcbnew.VECTOR2I(*(pcbnew.FromMM(v) for v in offset))
-                )
-                item.SetTextAngle(pcbnew.EDA_ANGLE(0, pcbnew.DEGREES_T))
-        if board_only:
-            for item in labels:
-                item.SetLayer(pcbnew.Dwgs_User)
-    board.GetTitleBlock().SetTitle("PCW-MC-01 Rev A | Top assembly")
-    board.GetTitleBlock().SetRevision("A")
+def assembly_drawing(board, work, out, run):
     drawing = work / "assembly-drawing.kicad_pcb"
-    pcbnew.SaveBoard(str(drawing), board)
+    board.write_assembly_view(drawing, BOARD, VERSION)
     run(
         "pcb",
         "export",
@@ -163,23 +134,19 @@ def assembly_drawing(pcb, work, out, run):
 
 
 def build(work, firmware):
-    import pcbnew
-    from board_data import assembly, geometry, check_paste, require
-
-    cli = (
-        os.environ.get("KICAD_CLI")
-        or shutil.which("kicad-cli")
-        or str(MAC / "MacOS/kicad-cli")
-    )
+    cli = os.environ.get("KICAD_CLI") or shutil.which("kicad-cli")
+    if not cli and (MAC / "MacOS/kicad-cli").is_file():
+        cli = str(MAC / "MacOS/kicad-cli")
+    require(cli, "Install KiCad 10 and put kicad-cli on PATH, or set KICAD_CLI.")
     version = subprocess.check_output([cli, "version"], text=True).strip()
     require(
-        version.startswith("10.") and pcbnew.Version() == version,
-        "Use matching KiCad 10 CLI and pcbnew versions",
+        version.startswith("10."),
+        "Use KiCad CLI 10 for this board",
     )
 
     if firmware is None:
         firmware = work / ASSET
-        # System curl uses the host's trust store, including on KiCad's bundled macOS Python.
+        # System curl uses the host's trust store, for the firmware download.
         subprocess.run(
             [
                 "curl",
@@ -212,6 +179,11 @@ def build(work, firmware):
         ignore=shutil.ignore_patterns(
             "*.kicad_prl",
             "*.lck",
+            ".history",
+            "#auto_saved_files#",
+            "*-save.kicad_pcb",
+            "*.kicad_pcb-bak",
+            "*.kicad_sch-bak",
             "*-backups",
             "fp-info-cache",
             ".DS_Store",
@@ -309,8 +281,8 @@ def build(work, firmware):
         work / "native-pos.csv",
         pcb,
     )
-    assembly_drawing(pcb, work, assy / "top-assembly.pdf", run)
-    board = pcbnew.LoadBoard(str(pcb))
+    board = Board(pcb)
+    assembly_drawing(board, work, assy / "top-assembly.pdf", run)
     counts = assembly(
         board,
         work / "net.xml",
@@ -330,6 +302,10 @@ def build(work, firmware):
 
     sources = {"hardware/" + k: v for k, v in source_cad.items()}
     for item in [
+        "pyproject.toml",
+        "uv.lock",
+        ".python-version",
+        "tools/kicad_board.py",
         "tools/build.py",
         "tools/board_data.py",
         "manufacturing/jlc-parts.csv",
@@ -339,7 +315,8 @@ def build(work, firmware):
         sources[item] = digest(ROOT / item)
     manifest = {
         "board": BOARD,
-        "revision": "A",
+        "version": VERSION,
+        "python": platform.python_version(),
         "status": "first article pending factory and bench approval",
         "kicad": version,
         "counts": counts,
@@ -363,21 +340,6 @@ def main():
         "--firmware-archive", type=Path, help="Use the pinned official ZIP from disk"
     )
     args = parser.parse_args()
-    try:
-        __import__("pcbnew")
-    except ImportError:
-        interpreter = os.environ.get("KICAD_PYTHON") or str(
-            MAC / "Frameworks/Python.framework/Versions/Current/bin/python3"
-        )
-        if not Path(interpreter).is_file() or os.getenv("PCW_KICAD_REEXEC"):
-            parser.exit(
-                1,
-                "Use KiCad 10 Python with pcbnew, or set KICAD_PYTHON to its executable.\n",
-            )
-        os.environ["PCW_KICAD_REEXEC"] = "1"
-        os.execv(
-            interpreter, [interpreter, str(Path(__file__).resolve()), *sys.argv[1:]]
-        )
     output = ROOT / "dist"
     output.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".build-", dir=output) as temp:

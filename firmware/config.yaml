@@ -1,9 +1,9 @@
-# PCW-MC-01 Rev A; stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
+# PCW-MC-01 running stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
 # Conservative bring-up values. Set steps/mm, travel and direction for your
 # machine. Solenoid is 12 V / 0.8 A; motor ratings remain unconfirmed.
 # Programming and first-article tests are described in manufacturing/process.md.
-name: PhysiClaw Motion Controller
-board: PCW-MC-01 Rev A
+name: PCW-MC-01
+board: PCW-MC-01
 
 stepping:
   engine: RMT

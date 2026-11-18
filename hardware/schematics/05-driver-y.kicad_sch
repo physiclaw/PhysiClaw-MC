@@ -1726,9 +1726,9 @@
   )
   (embedded_fonts no)
   (title_block
-    (title "PhysiClaw Motion Controller")
+    (title "PCW-MC-01")
     (date "2026-11-17")
-    (rev "A")
+    (rev "v1.0")
     (company "PhysiClaw")
     (comment 2 "Y motor / TMC2209 address 1")
     (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")

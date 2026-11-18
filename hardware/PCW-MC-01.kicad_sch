@@ -6,9 +6,9 @@
   (lib_symbols)
   (embedded_fonts no)
   (title_block
-    (title "PhysiClaw Motion Controller")
+    (title "PCW-MC-01")
     (date "2026-11-17")
-    (rev "A")
+    (rev "v1.0")
     (company "PhysiClaw")
     (comment 2 "System overview")
     (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")
@@ -326,7 +326,7 @@
       )
     )
   )
-  (text "PhysiClaw Motion Controller"
+  (text "PCW-MC-01"
     (at 20.32 21.59 0)
     (effects
       (font
@@ -337,7 +337,7 @@
     )
     (uuid "4662187d-bf19-5703-9a7e-5d2a45a25c6c")
   )
-  (text "PCW-MC-01  |  Hardware Rev A  |  Assembly PCW-MC-01-ASM"
+  (text "Assembly PCW-MC-01-ASM"
     (at 20.32 30.48 0)
     (effects
       (font

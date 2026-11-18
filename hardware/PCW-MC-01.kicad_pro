@@ -463,13 +463,13 @@
   "sheets": [],
   "text_variables": {
     "ASSEMBLY_NUMBER": "PCW-MC-01-ASM",
-    "ASSEMBLY_REVISION": "A",
+    "ASSEMBLY_REVISION": "v1.0",
     "AUTHOR": "PhysiClaw",
     "BOARD_ID": "PCW-MC-01",
-    "BOARD_NAME": "PhysiClaw Motion Controller",
-    "HARDWARE_REVISION": "Rev A",
+    "BOARD_NAME": "PCW-MC-01",
+    "HARDWARE_REVISION": "v1.0",
     "PRODUCT": "PhysiClaw",
-    "SUBJECT": "PCW-MC-01 Rev A engineering schematic; manufacturing HOLD"
+    "SUBJECT": "PCW-MC-01 engineering schematic (first-article review)"
   },
   "tuning_profiles": {
     "meta": {

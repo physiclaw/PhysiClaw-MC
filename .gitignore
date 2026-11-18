@@ -1,9 +1,25 @@
+# Generated manufacturing packages
 /dist/
+
+# uv and Python
+/.venv/
+/.uv-cache/
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# KiCad local settings, locks, recovery files and project backups
 *.kicad_prl
-*.lck
-*-backups/
+~*.lck
 _autosave-*
+\#auto_saved_files\#
+*-save.kicad_pcb
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*-backups/
 fp-info-cache
+/hardware/.history/
+
+# macOS Finder metadata
 .DS_Store

@@ -1,10 +1,10 @@
-# PCW-MC-01 Rev A · Fabrication and first-article instructions
+# PCW-MC-01 · Fabrication and first-article instructions
 
-Assembly PCW-MC-01-ASM, revision A. Use the Gerbers, NC drills, electrical test netlist and fill-and-cap table from the same build. Record the package manifest and serial or lot number on the traveler.
+Hardware version v1.0. Assembly PCW-MC-01-ASM. Use the Gerbers, NC drills, electrical test netlist and fill-and-cap table from the same build. Record the package manifest and serial or lot number on the traveler.
 
 ## Bare board
 
-| Item | Rev A requirement |
+| Item | v1.0 requirement |
 |---|---|
 | Construction | 70 × 50 mm, 1.6 mm FR-4, four copper layers. L1/L4 nominal 1 oz, L2/L3 nominal 0.5 oz. L2 is ground. L3 carries power and local ground. |
 | Stackup | Supply the laminate code, finished copper and barrel plating, outer dielectric thickness, material and tolerances. Review the USB paths against the proposed 90 Ω differential construction before ordering. The fabrication ZIP omits KiCad's default stackup metadata. |
@@ -22,7 +22,7 @@ Populate 92 front SMT and seven THT references. Use the exact MPN and supplier c
 
 ### Placement review at JLC
 
-The CPL uses the physical body centres of the Rev A footprints. J2 uses the centre of its 8.94 × 7.30 mm shell at (166.040, −63.000) mm. U2 uses the centre of its 18.0 × 19.2 mm module at (134.000, −60.100) mm. Both are top-side coordinates in the Gerber frame. The PCB outline runs from (100, −100) to (170, −50) mm. Keep the same origin on all order files. [JLC coordinate fields](https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly) · [EasyEDA centre and origin definitions](https://docs.easyeda.com/en/PCB/Export-Coordinate/index.html)
+The CPL uses the physical body centres of the v1.0 footprints. J2 uses the centre of its 8.94 × 7.30 mm shell at (166.040, −63.000) mm. U2 uses the centre of its 18.0 × 19.2 mm module at (134.000, −60.100) mm. Both are top-side coordinates in the Gerber frame. The PCB outline runs from (100, −100) to (170, −50) mm. Keep the same origin on all order files. [JLC coordinate fields](https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly) · [EasyEDA centre and origin definitions](https://docs.easyeda.com/en/PCB/Export-Coordinate/index.html)
 
 The part table records the direction between two named pads on each catalog footprint at 0°. The exporter measures the same directed line on the placed PCB, subtracts the catalog direction and wraps the result to 0–360° (360° becomes 0°). Both directions are measured counterclockwise in top view. This applies each correction once. The 39 available footprint records were matched to the local lands by geometry. For the four-contact SW1, the two electrically common lands in each row form one terminal. C859927 is a nonpolar 1206 resistor without an EasyEDA footprint record in this lookup. Its two-terminal long axis is used, with 180° symmetry. [JLCEDA / EasyEDA Official Library](https://lceda.cn/) · [EasyEDA](https://easyeda.com/) · [JLC C859927](https://jlcpcb.com/partdetail/YAGEO-RL1206FR7W0R1L/C859927)
 
@@ -30,7 +30,7 @@ Use the package marks in JLC's preview. A red dot can denote another orientation
 
 | Component | Top-view check |
 |---|---|
-| U4 CH340C, U5/U6 TMC2209, U7 USB mux, U8 protected switch | Pin 1 matches the first pad in the review CSV. Rev A CPL angles are 0°, 90°/0°, 0° and 90° respectively. |
+| U4 CH340C, U5/U6 TMC2209, U7 USB mux, U8 protected switch | Pin 1 matches the first pad in the review CSV. v1.0 CPL angles are 0°, 90°/0°, 0° and 90° respectively. |
 | D1–D4 and D6–D8 | Align the part's cathode mark with pad 1. Inspect each LED color and diode package in the preview. |
 | J2 USB-C | Opening faces +X at the right board edge. The signal contact row sits inboard of the shell centre. Check the two locating holes and all four shell slots. |
 | U2 ESP32 | RF connector end faces the top board edge (+Y in Gerber coordinates). Pin 1 is at (125.250, −51.690) mm. Use the 32UE external-antenna module. |
