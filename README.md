@@ -1,54 +1,93 @@
-# PCW-MC-01
+# PhysiClaw-MC
 
-PCW-MC-01 is a 70 × 50 mm, four-layer ESP32 motion controller for two bipolar stepper motors and a 12 V / 0.8 A solenoid. The `01` suffix identifies hardware version 1.0. The release is for **first-article review**. JLC process approval and measurements on a populated board are pending.
+PCW-MC-01 (hardware v1.0) is a 70 × 50 mm, four-layer ESP32 controller for two
+bipolar stepper motors and a 12 V / 0.8 A solenoid.
 
-## Build
+- **Open the design.** Clone or download this repository and open
+  [PCW-MC-01.kicad_pro](pcb/kicad/PCW-MC-01.kicad_pro) in KiCad 10.
+- **Make a prototype.** [Generate the order files](#generate-the-manufacturing-files)
+  and [upload them to JLC](#order-a-prototype-at-jlc).
+- **Program an assembled board.**
+  [Install FluidNC and the board configuration][Programming guide].
 
-Install **uv** and **KiCad 10**. The build uses the KiCad command-line tools and runs under uv-managed **Python 3.13**. On macOS it detects a standard KiCad installation. On other systems put `kicad-cli` on PATH, or set `KICAD_CLI` to the executable. This board was verified with KiCad 10.0.8. [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
+## Generate the manufacturing files
 
-From the repository root, run
+Install [KiCad 10] and [uv]. The build was verified with KiCad 10.0.8.
 
 ```sh
+git clone https://github.com/physiclaw/PhysiClaw-MC.git
+cd PhysiClaw-MC
 uv run --locked tools/build.py
 ```
 
-uv selects Python 3.13 and installs the dependencies recorded in `uv.lock`. The build downloads the official FluidNC v4.1.1 archive with system `curl` and verifies its SHA-256. For an offline build, first provision Python and the locked dependencies with `uv sync --locked`, then supply the archive locally. [FluidNC release](https://github.com/bdring/FluidNC/releases/tag/v4.1.1)
+Each successful build replaces `dist/` with JLC order files and `build/` with
+review drawings, checks, and `manifest.json`.
+
+uv uses Python 3.13 and installs dependencies from `uv.lock`. The build finds
+`kicad-cli` on `PATH` or in the standard macOS installation. Set `KICAD_CLI` to
+select a different executable.
+
+For offline builds, run `uv sync --locked` once while online, then use
+`uv run --locked --offline tools/build.py`.
+
+### Review the PCB
+
+The views are in `build/view/`.
+
+- **Copper.** The `L1-*` through `L4-*` SVGs show filled copper in top-view
+  alignment. `L3-power.svg` distinguishes 12 V, 3.3 V, and ground pours.
+- **Routing.** `top-routing.svg`, `bottom-routing.svg`, and
+  `top-bottom-routing.svg` show traces, pads, and vias with pours hidden.
+  `usb-routing.svg` is the D+/D− close-up.
+- **Reference.** `component-reference.svg` maps designators to footprints.
+  `probe-map.svg` locates test points on both sides.
+- **Fabrication.** `drill-and-slot-map.svg` shows holes, slots, and capped vias.
+  `mask-and-paste.svg` shows mask and stencil apertures.
+- **3D.** `3d-assembly.png` is the tabletop view. `3d-top.png` and
+  `3d-underside.png` show both faces straight on. Some component models use
+  simplified bodies.
+
+## Order a prototype at JLC
+
+Factory approval and bench qualification are pending.
+
+| JLC upload field | File |
+| --- | --- |
+| PCB (Gerbers and drills) | `dist/JLC-Gerbers.zip` |
+| SMT bill of materials (BOM) | `dist/JLC-BOM.csv` |
+| SMT placement file (CPL) | `dist/JLC-CPL-mm.csv` |
+
+Check the outline, drills, mask, and silkscreen in a Gerber viewer, then upload
+the ZIP. For top-side SMT assembly through JLC China, upload each CSV separately
+and set placement units to millimetres.
+
+Send JLC the [manufacturing guide](manufacturing/process.md) and both files in
+`dist/fabrication/`. Confirm the stackup and via fill and cap with CAM before
+ordering.
+
+Approve the assembly preview against `build/assembly/top-assembly.pdf` and
+`build/assembly/placement-review.csv`. Use `build/assembly/tht-bom.csv` for
+through-hole assembly.
+
+## Edit and verify the design
+
+Edit parts and their MPN and LCSC fields in the schematic, then run
+**Update PCB from Schematic**. For substitutions, verify the footprint and
+update the [JLC part table](manufacturing/jlc-parts.csv). Rebuild after changes.
+
+Run the placement geometry tests.
 
 ```sh
-uv run --locked --offline tools/build.py --firmware-archive /path/to/fluidnc-v4.1.1-posix.zip
+uv run --locked python -m unittest discover -s tests
 ```
-
-Extract **`dist/PCW-MC-01-first-article.zip`** to access the order files. The build runs ERC, refills copper in a temporary copy, runs DRC with schematic parity, and checks the Gerbers, holes, stencil and placements. The ZIP also includes the schematics, assembly drawing, THT and purchasing lists, probe coordinates, firmware, programming instructions and SHA-256 manifest.
-
-The placement geometry tests run with `uv run --locked python -m unittest discover -s tests`.
-
-## Order at JLC
-
-Use these files from the extracted package. The bare-board order uses the first file. For assembly on JLC China, add the second and third files and select **top side, millimetres**.
-
-| JLC order field | File | What to expect |
-|---|---|---|
-| PCB / Gerber | `JLC/JLC-Gerbers.zip` | Four copper layers, both masks and silkscreens, top paste, one outline, separate plated and non-plated drills |
-| SMT bill of materials | `JLC/JLC-BOM.csv` | 40 exact LCSC part numbers for 92 placements. The supplier-code column is `嘉立创元件编号`. |
-| SMT coordinates / CPL | `JLC/JLC-CPL-mm.csv` | 92 top-side body centres and rotations corrected for the selected parts |
-
-1. In the Gerber viewer verify one **70 × 50 mm** board and copper order **F.Cu → In1.Cu (GND) → In2.Cu (power) → B.Cu**. Send `fabrication/fill-and-cap.csv`, the IPC-D-356 netlist and `process.md` with the engineering instructions. Obtain JLC's acceptance of the stackup and the 50 filled and capped holes. [JLC Gerber and drill guide](https://jlcpcb.com/help/article/how-to-generate-gerber-and-drill-files-in-kicad-6)
-2. For SMT, confirm 92 matched designators. Positions, drill coordinates and the board outline share KiCad's absolute origin, X right and Y up. Negative Y values are intentional. Rotation is in degrees counterclockwise, viewed from the top. Seven through-hole placements are listed in `assembly/tht-bom.csv` for a separate operation. [JLC BOM and CPL formats](https://www.jlc.com/portal/server_guide_48022.html)
-3. In the JLC placement preview, compare pin 1, cathodes, the USB opening and the ESP32 antenna connector with `assembly/top-assembly.pdf` and `assembly/placement-review.csv`. The CSV gives the board coordinates of the named pads and the angle actually uploaded. For example, **U4 (CH340C) is 0°**, **U9 is 180°**, and **J2's opening faces the right board edge**. Confirm the actual JLC models and reflow profile before authorizing assembly. [JLC placement FAQ](https://jlcpcb.com/help/article/pcb-assembly-faqs-part-2)
-
-## Change the design
-
-| Source | Edit here |
-|---|---|
-| [KiCad project](pcb/kicad/PCW-MC-01.kicad_pro) | Schematic, PCB, design rules and project-local libraries. Edit MPN and LCSC fields in the schematic, then update the board. |
-| [JLC part table](manufacturing/jlc-parts.csv) | Supplier package and orientation basis for each fitted part. Recheck the matching catalog footprint when substituting parts. |
-| [Manufacturing instructions](manufacturing/process.md) | Stackup, assembly, orientation checks, programming and first-article acceptance |
-| [FluidNC configuration](firmware/config.yaml) | Pin assignments, motor settings and solenoid control |
-
-The design originated at `physiclaw-board` commit `6fc621a2d4e8174c19161d1886f545d6098b7343`.
 
 ## License
 
-The original PCW-MC-01 design files, build scripts, firmware configuration and documentation are licensed under MIT. You may modify the design and make, share or sell boards based on it. Include the copyright and permission notices when redistributing copies or substantial portions of the licensed files. [MIT License](LICENSE)
+The original design files, tools, firmware configuration, and documentation are
+under the [MIT License](LICENSE). Third-party assets retain their own terms.
+[KiCad library sources](pcb/kicad/libraries/sources.json) ·
+[KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md)
 
-Third-party KiCad assets and the upstream FluidNC firmware retain their respective licenses. [Library sources](pcb/kicad/libraries/sources.json) · [KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md) · [FluidNC source and license](https://github.com/bdring/FluidNC/tree/v4.1.1)
+[KiCad 10]: https://www.kicad.org/download/
+[uv]: https://docs.astral.sh/uv/getting-started/installation/
+[Programming guide]: manufacturing/process.md#programming

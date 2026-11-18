@@ -1,4 +1,4 @@
-"""Read the manufacturing geometry in a KiCad 10 PCB and prepare the assembly view."""
+"""Read manufacturing geometry and prepare review copies of a KiCad 10 PCB."""
 
 import math
 from copy import deepcopy
@@ -108,6 +108,22 @@ class Footprint:
         )
 
 
+def write_pcb(path, items):
+    # Keep each top-level element on a separate line for KiCad's file reader.
+    with path.open("w", encoding="utf-8") as output:
+        output.write("(kicad_pcb\n")
+        for item in items:
+            output.write(dumps(item) + "\n")
+        output.write(")\n")
+
+
+def hide_property(prop):
+    if hide := children(prop, "hide"):
+        hide[0][1:] = [Symbol("yes")]
+    else:
+        prop.append([Symbol("hide"), Symbol("yes")])
+
+
 class Board:
     def __init__(self, path: Path):
         self.tree = loads(
@@ -146,11 +162,7 @@ class Board:
                 reference = next(
                     p for p in children(node, "property") if p[1] == "Reference"
                 )
-                hide = children(reference, "hide")
-                if hide:
-                    hide[0][1:] = [Symbol("yes")]
-                else:
-                    reference.append([Symbol("hide"), Symbol("yes")])
+                hide_property(reference)
             for label in labels:
                 if board_only:
                     children(label, "layer")[0][1] = "Dwgs.User"
@@ -163,9 +175,45 @@ class Board:
         ]:
             raise ValueError("PCB title block disagrees with the board name or version")
         children(title_block, "title")[0][1] = f"{board_name} | Top assembly"
-        # Keep each top-level element on a separate line for KiCad's file reader.
-        with path.open("w", encoding="utf-8") as output:
-            output.write("(kicad_pcb\n")
-            for item in drawing[1:]:
-                output.write(dumps(item) + "\n")
-            output.write(")\n")
+        write_pcb(path, drawing[1:])
+
+    def write_routing_view(self, path: Path):
+        # Omit board zones in this temporary copy to make individual traces visible.
+        write_pcb(path, (item for item in self.tree[1:] if item[0] != Symbol("zone")))
+
+    def write_zone_view(self, path: Path, layer: str, net: str):
+        zone = Symbol("zone")
+        write_pcb(path, (
+            item for item in self.tree[1:]
+            if item[0] != zone or (
+                layer in values(item, "layers", values(item, "layer", []))
+                and values(item, "net", []) == [net]
+            )
+        ))
+
+    def write_outline_view(self, path: Path):
+        items = self.tree[1:]
+        for index, item in enumerate(items):
+            if item[0] != Symbol("footprint"):
+                continue
+            footprint = deepcopy(item)
+            for prop in children(footprint, "property"):
+                if prop[1] in {"Reference", "Value"}:
+                    hide_property(prop)
+            for label in children(footprint, "fp_text"):
+                footprint.remove(label)
+            items[index] = footprint
+        write_pcb(path, items)
+
+    def write_aperture_view(self, path: Path, references):
+        # Keep the requested footprints and the original board outline and setup.
+        omitted = {
+            Symbol(name) for name in ("footprint", "segment", "arc", "via", "zone", "group")
+        }
+        items = [item for item in self.tree[1:] if item[0] not in omitted]
+        items.extend(
+            node for node, footprint in zip(children(self.tree, "footprint"),
+                                            self.footprints, strict=True)
+            if footprint.ref in references
+        )
+        write_pcb(path, items)

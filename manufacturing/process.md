@@ -1,56 +1,158 @@
-# PCW-MC-01 · Fabrication and first-article instructions
+# PCW-MC-01 manufacturing and first-article guide
 
-Hardware version v1.0. Assembly PCW-MC-01-ASM. Use the Gerbers, NC drills, electrical test netlist and fill-and-cap table from the same build. Record the package manifest and serial or lot number on the traveler.
+Hardware v1.0 · Assembly PCW-MC-01-ASM
 
-## Bare board
+Factory approval and bench qualification are pending. Use the
+[order files from one build]. All paths start at the repository root.
 
-| Item | v1.0 requirement |
-|---|---|
-| Construction | 70 × 50 mm, 1.6 mm FR-4, four copper layers. L1/L4 nominal 1 oz, L2/L3 nominal 0.5 oz. L2 is ground. L3 carries power and local ground. |
-| Stackup | Supply the laminate code, finished copper and barrel plating, outer dielectric thickness, material and tolerances. Review the USB paths against the proposed 90 Ω differential construction before ordering. The fabrication ZIP omits KiCad's default stackup metadata. |
-| Holes | Separate metric PTH and NPTH files, absolute origin and G85 plated slots. Confirm J1's three 1.0 × 1.6 mm finished slots, J2's four 0.60 mm wide shell slots and two 0.65 mm NPTH locating holes, and the eight 1.0 mm finished J3/J4 holes against actual connector samples. Preserve the isolated plated M3 mounting rings. |
-| Thermal pads | Resin-fill, planarize and copper-cap the 50 holes in `fabrication/fill-and-cap.csv` on both faces. Counts are U2 × 12, U5 × 16, U6 × 16, U8 × 6. The fill/cap CSV, Gerbers, Excellon and CPL all use millimetres, X right and Y up, in the same absolute coordinate system. |
-| Finish and electrical test | Confirm flat finish, mask registration and fine-pitch dams in CAM. Preserve supplied paste and mask geometries. Use the IPC-D-356 netlist for bare-board electrical test. |
+## Bare-board fabrication
+
+Upload `dist/JLC-Gerbers.zip`. Send this guide to CAM with
+`dist/fabrication/fill-and-cap.csv` and `dist/fabrication/PCW-MC-01.d356`.
+Use the IPC-D-356 netlist for bare-board electrical test.
+
+- **Construction.** 70 × 50 mm, 1.6 mm FR-4, four layers. Nominal copper weight
+  is 1 oz on L1 and L4 and 0.5 oz on L2 and L3. L2 is ground. L3 carries power
+  and local ground.
+- **Stackup.** Confirm the laminate code, finished copper thickness, barrel
+  plating thickness, and outer dielectric material, thickness, and tolerances
+  with CAM. Check the routed USB pair against that stackup for a 90 Ω
+  differential target.
+- **Drills and slots.** Use the separate plated (PTH) and non-plated (NPTH)
+  metric drill files and retain the G85 plated slots. Check finished dimensions
+  against connector samples. J1 has three 1.0 × 1.6 mm slots. J2 has four
+  0.60 mm-wide shell slots and two 0.65 mm non-plated locating holes. J3 and J4
+  have eight 1.0 mm holes in total.
+  Preserve the isolated plated M3 mounting rings.
+- **Filled and capped vias.** Resin-fill, planarize, and copper-cap both faces
+  of the 50 vias listed in the CSV (12 at U2, 16 each at U5 and U6, six at U8).
+- **Finish and mask.** Confirm a flat finish, solder-mask registration, and
+  fine-pitch mask dams in CAM. Preserve the supplied paste and mask geometry.
+
+Keep the absolute origin across the Gerber, drill, via-list, and placement
+files. Coordinates are in millimetres with X to the right and Y up.
 
 ## Assembly
 
-Populate 92 front SMT and seven THT references. Use the exact MPN and supplier code, including **F1 Littelfuse 0467005.NRHF (5 A), C151140**. Confirm stock allocation for the order quantity and feeder losses. The SMT BOM and CPL use the JLC China importer. Use the seven-reference THT list for the separate soldering operation.
+Upload `dist/JLC-BOM.csv` and `dist/JLC-CPL-mm.csv` separately for JLC China
+SMT assembly. Verify 92 top-side placements. Confirm MPNs, LCSC codes, and
+stock including feeder losses. Fit Littelfuse `0467005.NRHF` (5 A, LCSC
+`C151140`) at F1.
 
-- **Reflow.** The selected JLC China economy process lists 255 ±5 °C. Obtain a compatible measured component-body profile. U2 calls for one pass at 235–250 °C peak. F1 recommends 245–250 °C. Agree on moisture handling and the actual assembly route before placing the order. [JLC process](https://www.jlc-smt.com/vtechnology) · [Espressif §12.3](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Littelfuse 467](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d)
-- **Stencil.** Use the front paste Gerber with the proposed 0.10 mm foil. Verify U7's 0.55 × 0.20 mm openings and U8's 1.76 × 2.11 mm opening in stencil CAM. Arrange first-article hidden-joint inspection, including U5/U6 voiding and at least 85% actual U8 exposed-pad solder coverage. [TI layout and package drawing](https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf)
-- **Through-hole work.** Fit J1, J3, J4, J5 and C1/C15/C22. Inspect hole fill at solid plane connections, USB shell anchors and capacitor polarity. Verify insertion, solder fill and retention with the actual parts.
+### Reflow and stencil
 
-### Placement review at JLC
+JLC lists a fixed 255 ±5 °C for economy reflow. Before ordering, confirm the
+assembly process, moisture handling, and a measured component-body profile that
+meets the U2 and F1 requirements. [JLC process limits]
 
-The CPL uses the physical body centres of the v1.0 footprints. J2 uses the centre of its 8.94 × 7.30 mm shell at (166.040, −63.000) mm. U2 uses the centre of its 18.0 × 19.2 mm module at (134.000, −60.100) mm. Both are top-side coordinates in the Gerber frame. The PCB outline runs from (100, −100) to (170, −50) mm. Keep the same origin on all order files. [JLC coordinate fields](https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly) · [EasyEDA centre and origin definitions](https://docs.easyeda.com/en/PCB/Export-Coordinate/index.html)
+- **U2.** Espressif specifies a single reflow pass with a 235–250 °C peak.
+  [Espressif reflow profile]
+- **F1.** Littelfuse specifies a 245–250 °C lead-free peak in its recommended
+  profile. [Littelfuse 467 datasheet]
 
-The part table records the direction between two named pads on each catalog footprint at 0°. The exporter measures the same directed line on the placed PCB, subtracts the catalog direction and wraps the result to 0–360° (360° becomes 0°). Both directions are measured counterclockwise in top view. This applies each correction once. The 39 available footprint records were matched to the local lands by geometry. For the four-contact SW1, the two electrically common lands in each row form one terminal. C859927 is a nonpolar 1206 resistor without an EasyEDA footprint record in this lookup. Its two-terminal long axis is used, with 180° symmetry. [JLCEDA / EasyEDA Official Library](https://lceda.cn/) · [EasyEDA](https://easyeda.com/) · [JLC C859927](https://jlcpcb.com/partdetail/YAGEO-RL1206FR7W0R1L/C859927)
+Use the front paste Gerber with the proposed 0.10 mm stencil. Check the
+0.55 × 0.20 mm apertures at U7 and the 1.76 × 2.11 mm exposed-pad aperture at U8.
+Inspect hidden joints on the first article. Record voiding at U5 and U6 and
+verify at least 85% exposed-pad solder coverage at U8.
+[TI layout and stencil guidance]
 
-Use the package marks in JLC's preview. A red dot can denote another orientation feature. Compare the actual package, the drawing and the two named pads in `assembly/placement-review.csv`. Save the approved preview for this assembly lot. [JLC placement FAQ](https://jlcpcb.com/help/article/pcb-assembly-faqs-part-2)
+### Placement approval
 
-| Component | Top-view check |
-|---|---|
-| U4 CH340C, U5/U6 TMC2209, U7 USB mux, U8 protected switch | Pin 1 matches the first pad in the review CSV. v1.0 CPL angles are 0°, 90°/0°, 0° and 90° respectively. |
-| D1–D4 and D6–D8 | Align the part's cathode mark with pad 1. Inspect each LED color and diode package in the preview. |
-| J2 USB-C | Opening faces +X at the right board edge. The signal contact row sits inboard of the shell centre. Check the two locating holes and all four shell slots. |
-| U2 ESP32 | RF connector end faces the top board edge (+Y in Gerber coordinates). Pin 1 is at (125.250, −51.690) mm. Use the 32UE external-antenna module. |
-| SW1 RESET | Switch terminals run in two horizontal rows. JLC footprint pins 1/2 form the upper row and 3/4 the lower row in the zero-angle view. Check that RESET opens at rest. |
-| C1, C15, C22 | These are THT electrolytics. Install the positive lead at pad 1. Check the polarity band against the negative terminal before soldering. |
+Check package marks in JLC’s preview against `build/assembly/top-assembly.pdf`
+and `build/assembly/placement-review.csv`. Verify pin 1 from the package
+marking. The CSV records two reference pads and the final JLC angle after any
+correction in `manufacturing/jlc-parts.csv`. Save the approved preview for the
+lot. [JLC placement FAQ]
+
+- **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
+  are U4 0°, U5 90°, U6 0°, U7 0°, U8 90°, and U9 180°.
+- **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D8. Check
+  LED colour and diode package against the BOM.
+- **J2 USB-C.** The 8.94 × 7.30 mm shell is centred at (166.040, −63.000) mm.
+  The opening faces +X at the right edge, with the contact row inboard.
+  Check both locating holes and all four shell slots.
+- **U2 ESP32.** Use the `ESP32-WROOM-32UE-N4` external-antenna module. Its
+  18.0 × 19.2 mm body is centred at (134.000, −60.100) mm. Pin 1 is at
+  (125.250, −51.690) mm. The antenna connector faces +Y at the top board edge.
+- **SW1 RESET.** In the catalog’s zero-angle view, pins 1 and 2 form the upper
+  terminal and pins 3 and 4 form the lower terminal. Verify open at rest.
+- **C859927 shunt resistors.** Align the long axis. A 180° rotation is
+  electrically equivalent.
+
+The CPL uses physical body centres and counterclockwise angles in top view.
+The board outline spans X = 100–170 mm and Y = −100 to −50 mm.
+[JLC coordinate fields]
+
+### Through-hole assembly
+
+Fit the seven references in `build/assembly/tht-bom.csv` in a separate pass.
+Check fit and retention at J1, J3, J4, and J5. Check solder fill at
+plane-connected holes and USB shell anchors. Verify polarity and fit C1, C15,
+and C22 with the positive lead in pad 1.
 
 ## Programming
 
-1. Keep actuator loads disconnected. Attach the external antenna, regulated **12 V / 3 A, 5.5/2.5 mm centre-positive** adapter and a USB-C data cable. USB supplies the data interface only.
-2. Extract the verified FluidNC v4.1.1 POSIX archive supplied in `programming/`. From its extracted directory run `sh install-wifi.sh` for the classic ESP32. Leave its serial terminal, then run `sh install-fs.sh` on a new module. Installing the filesystem replaces its contents.
-3. Upload the supplied `config.yaml` to the local filesystem, select it with `$Config/Filename=config.yaml`, then restart. Save the 115200-baud boot log. Confirm UART1 reports both TMC2209s at addresses 0 and 1 and startup leaves the actuators disarmed. For manual download, bridge rear TP1 (IO0) to TP2 (GND), press and release RESET, then release the bridge once the installer connects.
+Complete the unpowered checks in [First-article acceptance] before power-up.
+
+1. Keep the motors and solenoid disconnected. Attach the external antenna
+   and a USB-C data cable. Power J1 with a regulated 12 V / 3 A adapter and
+   a 5.5/2.5 mm centre-positive plug.
+2. On macOS or Linux, extract `fluidnc-v4.1.1-posix.zip`. From the extracted
+   directory, run `sh install-wifi.sh` for the ESP32. On a new module, close
+   FluidTerm and run `sh install-fs.sh` to initialize the filesystem. This
+   replaces its contents. [FluidNC v4.1.1 release] · [FluidNC installation guide]
+3. Upload this revision’s `firmware/config.yaml` to the board. Set
+   `$Config/Filename=config.yaml` and restart. Save the 115200-baud boot log.
+   Verify both TMC2209s respond on UART1 at addresses 0 and 1 and the actuators
+   remain disarmed at startup.
+
+If automatic bootloader entry fails, bridge rear TP1 (IO0) to TP2 (GND),
+press and release RESET, and remove the bridge once the installer connects.
 
 ## First-article acceptance
 
-| Test | Evidence to record |
-|---|---|
-| Passive inspection and startup | Check supply resistance, polarity, solder joints and fit before power. Use a current-limited supply initially. Capture V12 at TP10, 3V3 at TP3, ESP_EN at TP9, OE_N at TP12, ENN at TP5 and U8 IN at TP14 with local grounds. Verify inhibition through cold start, slow ramp, brownout, RESET and bootloader entry. |
-| Motor and coil wiring | J3/J4 use JST XH, 2.50 mm. Pins 1/2 are winding A and 3/4 are winding B. With the component side up and USB at right, J5 **upper pin 1 = switched positive**, **lower pin 2 = GND**. Verify winding pairs before connecting with power off. |
-| Combined load | Confirm motor ratings before using the initial 0.400 A RMS run / 0.150 A hold settings. Record input, Wi-Fi load, motor acceleration/braking and 3.3 V transients. The total steady input target is 2.5 A. D2 is the SMBJ15A on V12. Measure hot-plug and braking peaks and verify actual adapter overload recovery. |
-| Solenoid and faults | Rated 12 V / 0.8 A, maximum 10 s on followed by at least 60 s off, operator controlled. After deliberate ARM (`$RM=0`), `M3 S1000` at 100% override requests full duty, `M5` requests off and `$RM=1` disarms. Use a limited-energy fault fixture to check FAULT at TP7, shutoff latency and re-arm. Subsequent PWM edges can restart U8 after per-pulse latch-off. |
-| Thermal and communications | Record temperatures to equilibrium at 40 °C still air and 50 °C enclosure air using permitted coil pulses. Check J1, F1, Q1, U1/L1, both drivers and U8/D4. Verify USB enumeration, flashing and streaming in both orientations, USB-only isolation, external antenna performance and cable fit in the enclosure. |
+- **Startup.** Before power-up, measure input resistance and check polarity,
+  joints, and fit. Use a current-limited supply. Capture V12 (TP10), V3V3 (TP3),
+  ESP_EN (TP9), ACT_OE_N (TP12), DRIVERS_DISABLE (TP5), and SOL_ENABLE (TP14)
+  against local ground. Verify the actuators stay inhibited during cold start,
+  a slow supply ramp, brownout, RESET, and bootloader entry.
+- **Motor and coil wiring.** J3 and J4 are JST XH, 2.50 mm. Pins 1 and 2
+  connect to winding A, and pins 3 and 4 to winding B. With the component
+  side up and USB at right, J5's upper pin 1 is switched positive and
+  lower pin 2 is ground. Verify winding pairs and connect with power off.
+- **Combined load.** Confirm motor ratings before using 0.400 A RMS run and
+  0.150 A hold. Record input current, Wi-Fi activity, acceleration, braking,
+  and 3.3 V transients. The steady input target is 2.5 A. With the SMBJ15A at D2
+  on V12, measure hot-plug and braking peaks and verify adapter overload recovery.
+- **Solenoid and faults.** Use a 12 V / 0.8 A coil. The operator must limit
+  each pulse to 10 s and allow at least 60 s off between pulses. After
+  deliberate arming with `$RM=0`, `M3 S1000` at 100% override requests full
+  duty. Use `M5` to switch off and `$RM=1` to disarm. With a limited-energy
+  fault fixture, monitor SOL_FAULT_N at TP7 and verify shutoff latency and
+  re-arm behaviour. A later PWM edge can restart U8 after per-pulse latch-off.
+- **Thermal and communications.** Record steady-state temperatures at 40 °C
+  in still air and at 50 °C enclosure air temperature, using the permitted
+  coil pulses. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify USB
+  enumeration, flashing, and streaming in both plug orientations, USB-only
+  isolation, external antenna performance, and cable fit.
 
-Before batch release, retain the approved factory stackup, placement preview, thermal profile, hidden-joint inspection and first-article measurements with the corresponding manifest. Record firmware/config identity and the agreed functional-test result for each shipped board.
+Before batch release, file the approved stackup, placement preview, thermal
+profile, hidden-joint inspection, and bench results with `build/manifest.json`.
+Record the serial or lot number on the traveler. For each shipped board,
+record the firmware version, configuration revision, and functional test result.
+
+[First-article acceptance]: #first-article-acceptance
+[order files from one build]: ../README.md#generate-the-manufacturing-files
+[JLC process limits]: https://jlcpcb.com/capabilities/pcb-assembly-capabilities
+[Espressif reflow profile]:
+  https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html
+[Littelfuse 467 datasheet]:
+  https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d
+[TI layout and stencil guidance]:
+  https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf
+[JLC placement FAQ]: https://jlcpcb.com/help/article/pcb-assembly-faqs-part-2
+[JLC coordinate fields]:
+  https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly
+[FluidNC v4.1.1 release]: https://github.com/bdring/FluidNC/releases/tag/v4.1.1
+[FluidNC installation guide]:
+  https://github.com/bdring/fluidnc-wiki-content/blob/main/installation.md

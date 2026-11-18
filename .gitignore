@@ -1,5 +1,7 @@
 # Generated manufacturing packages
 /dist/
+/build/
+/.dist-*/
 
 # uv and Python
 /.venv/
