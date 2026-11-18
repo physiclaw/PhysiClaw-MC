@@ -19,7 +19,7 @@ _autosave-*
 *.kicad_sch-bak
 *-backups/
 fp-info-cache
-/hardware/kicad/.history/
+/pcb/kicad/.history/
 
 # macOS Finder metadata
 .DS_Store

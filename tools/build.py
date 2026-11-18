@@ -172,7 +172,7 @@ def build(work, firmware):
     )
 
     # Refill a private copy so every export uses the same checked copper.
-    cad_source = ROOT / "hardware" / "kicad"
+    cad_source = ROOT / "pcb" / "kicad"
     cad = work / "kicad"
     shutil.copytree(
         cad_source,

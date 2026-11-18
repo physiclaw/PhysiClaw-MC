@@ -40,9 +40,9 @@ Use these files from the extracted package. The bare-board order uses the first 
 
 | Source | Edit here |
 |---|---|
-| [KiCad project](hardware/kicad/PCW-MC-01.kicad_pro) | Schematic, PCB, design rules and project-local libraries. Edit MPN and LCSC fields in the schematic, then update the board. |
+| [KiCad project](pcb/kicad/PCW-MC-01.kicad_pro) | Schematic, PCB, design rules and project-local libraries. Edit MPN and LCSC fields in the schematic, then update the board. |
 | [JLC part table](manufacturing/jlc-parts.csv) | Supplier package and orientation basis for each fitted part. Recheck the matching catalog footprint when substituting parts. |
 | [Manufacturing instructions](manufacturing/process.md) | Stackup, assembly, orientation checks, programming and first-article acceptance |
 | [FluidNC configuration](firmware/config.yaml) | Pin assignments, motor settings and solenoid control |
 
-The design originated at `physiclaw-board` commit `6fc621a2d4e8174c19161d1886f545d6098b7343`. Library attribution is included with the design. [Library sources](hardware/kicad/libraries/sources.json) · [KiCad library license](hardware/kicad/libraries/KICAD-LICENSE.md)
+The design originated at `physiclaw-board` commit `6fc621a2d4e8174c19161d1886f545d6098b7343`. Library attribution is included with the design. [Library sources](pcb/kicad/libraries/sources.json) · [KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md)

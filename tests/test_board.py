@@ -12,7 +12,7 @@ class PlacementGeometryTests(unittest.TestCase):
     def setUpClass(cls):
         pcb = (
             Path(__file__).resolve().parents[1]
-            / "hardware"
+            / "pcb"
             / "kicad"
             / "PCW-MC-01.kicad_pcb"
         )
