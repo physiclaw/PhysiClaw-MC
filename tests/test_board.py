@@ -10,7 +10,12 @@ from tools.kicad_board import Board
 class PlacementGeometryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        pcb = Path(__file__).resolve().parents[1] / "hardware" / "PCW-MC-01.kicad_pcb"
+        pcb = (
+            Path(__file__).resolve().parents[1]
+            / "hardware"
+            / "kicad"
+            / "PCW-MC-01.kicad_pcb"
+        )
         cls.footprints = {f.ref: f for f in Board(pcb).footprints}
 
     def test_rotated_pin_one_and_slot_angle(self):

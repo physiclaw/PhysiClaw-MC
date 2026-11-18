@@ -172,9 +172,10 @@ def build(work, firmware):
     )
 
     # Refill a private copy so every export uses the same checked copper.
-    cad = work / "hardware"
+    cad_source = ROOT / "hardware" / "kicad"
+    cad = work / "kicad"
     shutil.copytree(
-        ROOT / "hardware",
+        cad_source,
         cad,
         ignore=shutil.ignore_patterns(
             "*.kicad_prl",
@@ -300,7 +301,9 @@ def build(work, firmware):
     shutil.copyfile(firmware, flash / ASSET)
     shutil.copyfile(ROOT / "firmware/config.yaml", flash / "config.yaml")
 
-    sources = {"hardware/" + k: v for k, v in source_cad.items()}
+    sources = {
+        (cad_source / k).relative_to(ROOT).as_posix(): v for k, v in source_cad.items()
+    }
     for item in [
         "pyproject.toml",
         "uv.lock",
