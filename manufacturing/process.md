@@ -18,7 +18,8 @@ electrical testing.
 - **Stackup.** Use JLC04161H-7628 with 0.2104 mm nominal outer dielectric.
   Confirm the laminate, finished copper and barrel plating thicknesses, and
   dielectric tolerances with CAM. Check the 90 Ω differential L1 pair over L2 at 0.28 mm
-  width / 0.18 mm edge gap and the L4 crossover's L3 ground and stitching.
+  width / 0.18 mm edge gap. Preserve the local 0.26 mm D− fanout at U7
+  pin 4 and check the L4 crossover's L3 ground and stitching.
   Recheck the routing if the stackup changes. Request a TDR coupon report
   when ordering impedance control. [JLC stackups]
 - **Drills and slots.** Use the separate plated (PTH) and non-plated (NPTH)

@@ -43,8 +43,10 @@ CH340C (U4) runs from the board's 3.3 V rail with V3 and VCC tied together.
 [USBLC6-2 datasheet] · [CH340C datasheet]
 
 The L1 USB trunks use 0.28 mm traces and a 0.18 mm edge gap over L2 ground.
-JLC estimates 89.4 Ω for these uniform sections on JLC04161H-7628. Check the
-short 0.18–0.20 mm pad fanouts and nearby same-layer copper separately.
+JLC estimates 89.4 Ω for these uniform sections on JLC04161H-7628. Near U7 pin 4,
+the 0.29 mm horizontal D− segment uses a 0.26 mm width before the final
+0.20 mm pad entry. Its modeled local differential impedance is 89.7 Ω
+with 40.64 µm finished outer copper. Other pad escapes use 0.18–0.20 mm widths.
 
 Each J2 data pad connects to its via along the X axis on L1. The D− vias
 are offset 0.259 mm toward the connector opening relative to the D+ vias.

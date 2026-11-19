@@ -220,6 +220,15 @@ class PlacementGeometryTests(unittest.TestCase):
                     for m in m_tracks
                 ))
 
+    def test_u7_dm_fanout_width(self):
+        endpoints = {(156.165, 67.6), (155.875, 67.6)}
+        widths = [
+            values(track, "width")[0]
+            for track in self.segments["F.Cu", "USB_DM_ESD"]
+            if {tuple(values(track, key)) for key in ("start", "end")} == endpoints
+        ]
+        self.assertEqual(widths, [0.26])
+
     def test_usb_c_horizontal_escapes_and_mirrored_45_degree_ties(self):
         usb = self.footprints["J2"]
         columns = []
