@@ -248,7 +248,7 @@ def geometry(board, cam, fill_and_cap, out):
             expected[kind].append((x, y, min(w, h), max(w, h), angle))
             if ref in {"U2", "U5", "U6", "U8"}:
                 require(
-                    pad.net == "GND" and w == h == 0.2,
+                    pad.net == "GND" and w == h == 0.3,
                     "Unexpected exposed-pad drill",
                 )
                 thermals.append((ref, pad.number, x, -y, w))

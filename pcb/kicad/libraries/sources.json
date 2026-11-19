@@ -151,8 +151,8 @@
   },
   "modifications": {
     "Physiclaw:TestPoint_Pad_D1.0mm_Compact": "Derived from the vendored KiCad TestPoint:TestPoint_Pad_D1.0mm. The courtyard diameter is reduced to 1.5 mm. The 1.0 mm copper and mask pad is retained.",
-    "Physiclaw:RF_Module_ESP32-WROOM-32UE": "KiCad 10 ESP32-WROOM-32UE manufacturer land pattern; project 12-hole exposed-pad treatment; official Espressif STEP with verified offset.",
-    "TPS1H200A_DGN0008K": "TI DGN0008K-C01, drawing 4232899/A. Six 0.20 mm thermal holes, 1.76 × 2.11 mm central paste opening with 0.05 mm corner radius, 1.57 × 1.89 mm mask opening.",
+    "Physiclaw:RF_Module_ESP32-WROOM-32UE": "KiCad 10 ESP32-WROOM-32UE manufacturer land pattern; project 12-hole exposed-pad treatment with 0.30 mm drills; official Espressif STEP with verified offset.",
+    "TPS1H200A_DGN0008K": "TI DGN0008K-C01, drawing 4232899/A. Six 0.30 mm thermal holes with 0.60 mm lands at the project via locations, 1.76 × 2.11 mm central paste opening with 0.05 mm corner radius, 1.57 × 1.89 mm mask opening.",
     "Physiclaw:Texas_UQFN-10_1.5x2mm_P0.5mm": "Installed KiCad 10 land pattern checked against TI RSE0010A. Tiny silk marker moved to Fab. Project dimensional preview, not manufacturer mechanical CAD.",
     "Physiclaw:Button_Switch_SMD_SW_SPST_TS1187A": "XKB TS-1187A-B-A-B. Dedicated 1.00 × 0.75 mm rounded paste windows follow drawing SP-A0162-41 Rev 01. The TL3342 STEP file is a body envelope.",
     "Physiclaw:Connector_JST_JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical": "JST XH, four circuits and 2.50 mm pitch. Finished drill target 1.00 mm with 1.70 × 1.95 mm copper lands.",

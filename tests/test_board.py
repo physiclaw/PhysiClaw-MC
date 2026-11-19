@@ -8,7 +8,22 @@ from collections import defaultdict
 from pathlib import Path
 
 from tools.board_data import pad_center
-from tools.kicad_board import Board, children, values
+from tools.kicad_board import Board, children, rotate, values
+
+
+USB_C_CONTACTS = (
+    ("USB_DP_CONN", "A6", "B6"),
+    ("USB_DM_CONN", "A7", "B7"),
+)
+
+
+def distance_to_pad(point, pad):
+    """Return the signed distance to a rotated SMT copper pad."""
+    x, y = rotate(point[0] - pad.xy[0], point[1] - pad.xy[1], -pad.angle)
+    width, height = pad.size
+    radius = pad.radius
+    dx, dy = abs(x) - width / 2 + radius, abs(y) - height / 2 + radius
+    return math.hypot(max(dx, 0), max(dy, 0)) + min(max(dx, dy), 0) - radius
 
 
 def planar_trace_length(board, net, start, end):
@@ -143,12 +158,25 @@ class PlacementGeometryTests(unittest.TestCase):
         self.assertTrue(probe.on_layer("B.Cu"))
         self.assertFalse(probe.on_layer("F.Cu"))
 
+    def test_routed_via_drills_clear_smt_pads(self):
+        # Same-net pad and via overlap can pass KiCad's copper clearance DRC.
+        smt = [
+            (footprint.ref, pad)
+            for footprint in self.board.footprints
+            for pad in footprint.pads
+            if pad.kind == "smd" and (pad.on_layer("F.Cu") or pad.on_layer("B.Cu"))
+        ]
+        for at, via in self.vias.items():
+            drill, = values(via, "drill")
+            distance, ref, number = min(
+                (distance_to_pad(at, pad), ref, pad.number) for ref, pad in smt
+            )
+            self.assertGreater(distance - drill / 2, 0,
+                               f"Via at {at} touches SMT pad {ref}.{number}")
+
     def test_usb_c_contact_ties_are_short(self):
         usb = self.footprints["J2"]
-        for net, first, second in (
-            ("USB_DP_CONN", "A6", "B6"),
-            ("USB_DM_CONN", "A7", "B7"),
-        ):
+        for net, first, second in USB_C_CONTACTS:
             with self.subTest(net=net):
                 start = ("F.Cu", pad_center(usb, first))
                 end = ("F.Cu", pad_center(usb, second))
@@ -192,9 +220,65 @@ class PlacementGeometryTests(unittest.TestCase):
                     for m in m_tracks
                 ))
 
+    def test_usb_c_horizontal_escapes_and_mirrored_45_degree_ties(self):
+        usb = self.footprints["J2"]
+        columns = []
+        for net, *pins in USB_C_CONTACTS:
+            via_x = []
+            for pin in pins:
+                pad_x, pad_y = pad_center(usb, pin)
+                at, = [
+                    point for point, via in self.vias.items()
+                    if values(via, "net") == [net] and point[1] == pad_y
+                ]
+                self.assertGreater(at[0], pad_x)
+                endpoints = {(pad_x, pad_y), at}
+                self.assertTrue(any(
+                    {tuple(values(t, "start")), tuple(values(t, "end"))} == endpoints
+                    for t in self.segments["F.Cu", net]
+                ), pin)
+                via_x.append(at[0])
+            self.assertEqual(via_x[0], via_x[1], net)
+            columns.append(via_x[0])
+
+        plus_x, minus_x = columns
+        self.assertGreater(minus_x, plus_x)
+        x_sum = plus_x + minus_x
+        y_offset = pad_center(usb, "A7")[1] - pad_center(usb, "B6")[1]
+        plus_tracks, minus_tracks = (
+            self.segments["B.Cu", net] for net, _, _ in USB_C_CONTACTS
+        )
+        mirrored = set()
+        for track in plus_tracks:
+            self.assertEqual(values(track, "width"), [0.20])
+            ax, ay = values(track, "start")
+            bx, by = values(track, "end")
+            dx, dy = abs(ax - bx), abs(ay - by)
+            self.assertTrue(dx == 0 or dy == 0 or math.isclose(dx, dy, abs_tol=1e-6))
+            mirrored.add(frozenset(
+                (round(x_sum - x, 6), round(y + y_offset, 6))
+                for x, y in ((ax, ay), (bx, by))
+            ))
+        actual = set()
+        for track in minus_tracks:
+            self.assertEqual(values(track, "width"), [0.20])
+            actual.add(frozenset(tuple(values(track, key)) for key in ("start", "end")))
+        self.assertEqual(mirrored, actual)
+
+    def test_usb_controlled_traces_keep_l2_ground(self):
+        ground = ground_fills(self.board)["In1.Cu"]
+        for (layer, net), tracks in self.segments.items():
+            if layer != "F.Cu" or not net.startswith(("USB_DP", "USB_DM")):
+                continue
+            for track in tracks:
+                if values(track, "width") != [0.28]:
+                    continue
+                for point in track_samples(track):
+                    self.assertTrue(in_ground_fill(point, ground), (net, point))
+
     def test_usb_c_bottom_ties_have_a_local_ground_return(self):
         fills = ground_fills(self.board)
-        for stitch in ((163.67, 62.24), (163.72, 63.92)):
+        for stitch in ((160.25, 61.88), (165.04, 62.12), (165.04, 63.93)):
             with self.subTest(stitch=stitch):
                 self.assertIn(stitch, self.vias)
                 via = self.vias[stitch]
@@ -205,17 +289,24 @@ class PlacementGeometryTests(unittest.TestCase):
                 for layer in ("In1.Cu", "In2.Cu", "B.Cu"):
                     self.assertTrue(in_ground_fill(stitch, fills[layer]), layer)
 
-        # Signal via drill radius plus hole-to-copper clearance and contour tolerance.
-        antipad_radius = 0.1 + 0.25 + 0.01
-        for net in ("USB_DP_CONN", "USB_DM_CONN"):
-            signal_vias = [
-                at for at, via in self.vias.items() if values(via, "net") == [net]
-            ]
-            self.assertEqual(len(signal_vias), 2)
+        # Either contact tie can cross the clearance around a signal via.
+        # Use the greater of L3 zone-to-copper and hole-to-copper clearances.
+        diameter, drill = 0.40, 0.30
+        antipad_radius = max(diameter / 2 + 0.20, drill / 2 + 0.25) + 0.01
+        signal_positions = []
+        for net, _, _ in USB_C_CONTACTS:
+            vias = {at: via for at, via in self.vias.items() if values(via, "net") == [net]}
+            self.assertEqual(len(vias), 2)
+            for via in vias.values():
+                self.assertEqual(values(via, "size"), [diameter])
+                self.assertEqual(values(via, "drill"), [drill])
+            signal_positions.extend(vias)
+
+        for net, _, _ in USB_C_CONTACTS:
             covered = False
             for segment in self.segments["B.Cu", net]:
                 for point in track_samples(segment):
-                    if all(math.dist(point, via) > antipad_radius for via in signal_vias):
+                    if all(math.dist(point, at) > antipad_radius for at in signal_positions):
                         self.assertTrue(in_ground_fill(point, fills["In2.Cu"]), (net, point))
                         covered = True
             self.assertTrue(covered, net)

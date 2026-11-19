@@ -31,10 +31,11 @@ components and cables.
 
 ## USB-C
 
-J2 ties its two D+ contacts together and does the same for D−. Each CC pin
-has its own 5.1 kΩ pull-down. Use 3.5 mm for the planar trace check on
-each tie and include the vias in electrical validation.
-[USB Type-C Rev 2.4, Table 3-5]
+J2 ties A6 to B6 (D+) and A7 to B7 (D−). CC1 and CC2 each have a 5.1 kΩ
+pull-down. The USB Type-C specification recommends a 3.5 mm maximum
+shorting trace length. The layout check measures the planar copper path
+between each pair of contacts. Electrical validation includes the via
+transitions. [USB Type-C Rev 2.4, Table 3-5, note 2]
 
 Keep the USBLC6-2 (U3) close to J2 with a short ground return. VBUS connects
 to U3's clamp rail and enables the TS3USB221A switch (U7) through Q5. The
@@ -45,11 +46,17 @@ The L1 USB trunks use 0.28 mm traces and a 0.18 mm edge gap over L2 ground.
 JLC estimates 89.4 Ω for these uniform sections on JLC04161H-7628. Check the
 short 0.18–0.20 mm pad fanouts and nearby same-layer copper separately.
 
-L3 ground covers both J2 contact ties on L4 between their via clearances.
-Two 0.60/0.30 mm ground vias join L2, L3 and L4 near the layer transitions.
+Each J2 data pad connects to its via along the X axis on L1. The D− vias
+are offset 0.259 mm toward the connector opening relative to the D+ vias.
+The L4 ties use 0.20 mm traces with mirrored 45° bends. Each tie connects
+two vias with 0.40 mm lands and 0.30 mm drills.
+
+L3 ground provides the reference for both L4 ties outside the signal via
+antipads. Four nearby ground vias stitch L2, L3 and L4 together. Each has
+a 0.60 mm land and a 0.30 mm drill.
 [TI USB layout guidance] · [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
 
-[USB Type-C Rev 2.4, Table 3-5]:
+[USB Type-C Rev 2.4, Table 3-5, note 2]:
   https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/USB-Type_2D00_C-Spec-R2.4-_2D00_-October-2024.pdf
 [USBLC6-2 datasheet]: https://www.st.com/resource/en/datasheet/usblc6-2.pdf
 [CH340C datasheet]:

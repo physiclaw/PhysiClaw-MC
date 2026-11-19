@@ -22,13 +22,21 @@ electrical testing.
   Recheck the routing if the stackup changes. Request a TDR coupon report
   when ordering impedance control. [JLC stackups]
 - **Drills and slots.** Use the separate plated (PTH) and non-plated (NPTH)
-  metric drill files and retain the G85 plated slots. Check finished dimensions
-  against connector samples. J1 has three 1.0 × 1.6 mm slots. J2 has four
-  0.60 mm-wide shell slots and two 0.65 mm non-plated locating holes. J3 and J4
-  have eight 1.0 mm holes in total.
-  Preserve the isolated plated M3 mounting rings.
-- **Filled and capped vias.** Resin-fill, planarize, and copper-cap both faces
-  of the 50 vias listed in the CSV (12 at U2, 16 each at U5 and U6, six at U8).
+  metric drill files and retain the G85 plated slots. The drill files specify
+  three 1.0 × 1.6 mm slots at J1. J2 has two 0.60 × 1.20 mm slots, two
+  0.60 × 1.70 mm slots, and two 0.65 mm non-plated locating holes. J3 and J4
+  each have four 1.0 mm plated holes. Confirm finished dimensions against
+  connector samples. Preserve the isolated plated M3 mounting rings.
+- **Via clearances.** The smallest plated round drill is 0.30 mm. The four
+  J2 data vias use 0.40 mm lands, giving a nominal 0.05 mm annular ring.
+  Verify drill registration and clearance to the J2 solder lands in CAM.
+  The general hole-to-copper DRC minimum is 0.25 mm, with a 0.21 mm
+  exception from a J2 data via hole to copper on the opposite data net.
+  JLC lists a 0.20 mm minimum from a via hole to a trace. [JLC PCB capabilities]
+- **Filled and capped vias.** Resin-fill and planarize the 50 thermal vias
+  identified by coordinate in `PHYSICLAW-JLC-fill-and-cap.csv`, then copper-cap
+  both faces. The 0.30 mm drills are distributed across U2 (12), U5 (16),
+  U6 (16), and U8 (6).
 - **Finish and mask.** Confirm a flat finish, solder-mask registration, and
   fine-pitch mask dams in CAM. Preserve the supplied paste and mask geometry.
 
@@ -167,6 +175,7 @@ and functional test result with the [board and source identifiers](../CONTRIBUTI
 
 [First-article acceptance]: #first-article-acceptance
 [JLC stackups]: https://jlcpcb.com/impedance
+[JLC PCB capabilities]: https://jlcpcb.com/capabilities/Capabilities?type=1
 [order files from one build]: ../README.md#generate-the-manufacturing-files
 [JLC panel guidelines]: https://www.jlc.com/portal/server_guide_51514.html
 [Espressif reflow profile]:
