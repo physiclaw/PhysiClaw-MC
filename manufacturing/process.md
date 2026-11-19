@@ -8,9 +8,8 @@ Factory acceptance and bench qualification are pending. Use the
 ## Bare-board fabrication
 
 Upload `dist/PHYSICLAW-JLC-Gerbers.zip`. Send CAM this guide and both files
-in `dist/fabrication/`. The `PHYSICLAW-JLC-fill-and-cap.csv` file lists the
-holes that need filling and capping. Use `PHYSICLAW-JLC.d356` for bare-board
-electrical testing.
+in `dist/fabrication/`. Use `PHYSICLAW-JLC.d356` for bare-board electrical
+testing.
 
 - **Construction.** 70 × 50 mm, 1.6 mm FR-4, four layers. Nominal copper weight
   is 1 oz on L1 and L4 and 0.5 oz on L2 and L3. L2 is ground. L3 carries power
@@ -35,9 +34,11 @@ electrical testing.
   exception from a J2 data via hole to copper on the opposite data net.
   JLC lists a 0.20 mm minimum from a via hole to a trace. [JLC PCB capabilities]
 - **Filled and capped vias.** Resin-fill and planarize the 50 thermal vias
-  identified by coordinate in `PHYSICLAW-JLC-fill-and-cap.csv`, then copper-cap
-  both faces. The 0.30 mm drills are distributed across U2 (12), U5 (16),
-  U6 (16), and U8 (6).
+  marked in the Gerber ZIP's `sk` layer and listed in
+  `PHYSICLAW-JLC-fill-and-cap.csv`. Copper-cap both faces per IPC-4761 Type VII.
+  The 0.30 mm holes are at U2 (12), U5 and U6 (16 each), and U8 (6, including
+  four mask-covered corner holes). Identify `sk` as the via-fill layer for CAM
+  and confirm all 50 in the production files. [JLC Gerber preparation]
 - **Finish and mask.** Confirm a flat finish, solder-mask registration, and
   fine-pitch mask dams in CAM. Preserve the supplied paste and mask geometry.
 
@@ -177,6 +178,7 @@ and functional test result with the [board and source identifiers](../CONTRIBUTI
 [First-article acceptance]: #first-article-acceptance
 [JLC stackups]: https://jlcpcb.com/impedance
 [JLC PCB capabilities]: https://jlcpcb.com/capabilities/Capabilities?type=1
+[JLC Gerber preparation]: https://jlcpcb.com/help/article/gerber-files-preparation
 [order files from one build]: ../README.md#generate-the-manufacturing-files
 [JLC panel guidelines]: https://www.jlc.com/portal/server_guide_51514.html
 [Espressif reflow profile]:
