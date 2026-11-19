@@ -74,12 +74,12 @@ and CPL from that build together.
 | SMT placement file (CPL) | `dist/PHYSICLAW-JLC-CPL-mm.csv` |
 
 Check the outline, drills, mask, and silkscreen in a Gerber viewer, then upload
-the ZIP. For top-side SMT assembly through JLC China, upload each CSV separately
-and set placement units to millimetres.
+the ZIP. Select **Standard SMT assembly (标准型)** at JLC China for the top
+side. Upload each CSV separately and set placement units to millimetres.
 
 Send JLC the [manufacturing guide](manufacturing/process.md) and both files in
-`dist/fabrication/`. Confirm the stackup and via fill and cap with CAM before
-ordering.
+`dist/fabrication/`. Before ordering, confirm the stackup, via fill and cap,
+and assembly panel with CAM.
 
 Approve the assembly preview against `build/assembly/top-assembly.pdf` and
 `build/assembly/placement-review.csv`. Use `build/assembly/tht-bom.csv` for

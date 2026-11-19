@@ -2728,16 +2728,6 @@
     )
     (uuid "147e9ccc-9c5f-53cd-a502-a8c5de32133f")
   )
-  (text "User duty limit: ON <= 10 s, then OFF >= 60 s. No hardware timer enforces it."
-    (at 20.32 183.51500000000001 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left)
-    )
-    (uuid "d4ec6380-2fd9-5132-bde7-f0d3155ac179")
-  )
   (text "FLYBACK PATH"
     (at 200.66 135.89 0)
     (effects

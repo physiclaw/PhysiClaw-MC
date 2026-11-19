@@ -89,7 +89,6 @@ axes:
 # Duty is not a measured/regulated current in amperes.
 # 200 Hz is a bring-up setting; qualify the switch/coil before changing it.
 # Pulse duration/rest are user-controlled; there is no automatic timing rule.
-# Supplied coil rating for reference: <=10 s ON, then >=60 s OFF.
 # Keep spindle override at 100% when interpreting S as duty percentage.
 # M3/M5 synchronize with queued motion; feed-hold is not solenoid OFF.
 # Do not use Z moves: FluidNC creates an unconnected virtual Z automatically.

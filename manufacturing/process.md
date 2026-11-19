@@ -37,16 +37,21 @@ files. Coordinates are in millimetres with X to the right and Y up.
 
 ## Assembly
 
-For JLC China SMT assembly, upload `dist/PHYSICLAW-JLC-BOM.csv` and
+Select **Standard SMT assembly (标准型)** at JLC China. The supplied Gerbers
+and CPL use single-board coordinates. For the 70 × 50 mm board, confirm a
+panel layout with JLC that meets the 70 × 70 mm minimum assembly size and
+includes tooling rails and fiducials. [JLC panel guidelines]
+
+Upload `dist/PHYSICLAW-JLC-BOM.csv` and
 `dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 92 top-side placements.
 Confirm MPNs, LCSC codes, and stock including feeder losses. Fit Littelfuse `0467005.NRHF` (5 A, LCSC
 `C151140`) at F1.
 
 ### Reflow and stencil
 
-JLC lists a fixed 255 ±5 °C for economy reflow. Before ordering, confirm the
-assembly process, moisture handling, and a measured component-body profile that
-meets the U2 and F1 requirements. [JLC process limits]
+Agree on the lead-free reflow profile and moisture handling with JLC before
+ordering. Verify the temperatures at the U2 and F1 package bodies on the
+first article and retain the measured profile with the lot records.
 
 - **U2.** Espressif specifies a single reflow pass with a 235–250 °C peak.
   [Espressif reflow profile]
@@ -140,9 +145,8 @@ press and release RESET, and remove the bridge once the installer connects.
   0.150 A hold. Record input current, Wi-Fi activity, acceleration, braking,
   and 3.3 V transients. The steady input target is 2.5 A. With the SMBJ15A at D2
   on V12, measure hot-plug and braking peaks and verify adapter overload recovery.
-- **Solenoid and faults.** Use a 12 V / 0.8 A coil. The operator must limit
-  each pulse to 10 s and allow at least 60 s off between pulses. After
-  deliberate arming with `$RM=0`, `M3 S1000` at 100% override requests full
+- **Solenoid and faults.** Use a 12 V / 0.8 A coil. After deliberate arming
+  with `$RM=0`, `M3 S1000` at 100% override requests full
   duty. Use `M5` to switch off and `$RM=1` to disarm. With a limited-energy
   fault fixture, monitor SOL_FAULT_N at TP7 and verify shutoff latency and
   re-arm behaviour. A later PWM edge can restart U8 after per-pulse latch-off.
@@ -152,8 +156,8 @@ press and release RESET, and remove the bridge once the installer connects.
   Repeat after cycling 12 V with USB connected and during normal motor and
   solenoid operation.
 - **Thermal and communications.** Record steady-state temperatures at 40 °C
-  in still air and at 50 °C enclosure air temperature, using the permitted
-  coil pulses. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify
+  in still air and at 50 °C enclosure air temperature while pulsing the
+  coil. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify
   external antenna performance and cable fit.
 
 Before batch release, file the approved stackup, placement preview, thermal
@@ -164,7 +168,7 @@ and functional test result with the [board and source identifiers](../CONTRIBUTI
 [First-article acceptance]: #first-article-acceptance
 [JLC stackups]: https://jlcpcb.com/impedance
 [order files from one build]: ../README.md#generate-the-manufacturing-files
-[JLC process limits]: https://jlcpcb.com/capabilities/pcb-assembly-capabilities
+[JLC panel guidelines]: https://www.jlc.com/portal/server_guide_51514.html
 [Espressif reflow profile]:
   https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html
 [Littelfuse 467 datasheet]:

@@ -12,11 +12,8 @@ configuration disables homing and soft limits. The virtual Z axis has no
 physical output. The stepper drivers disable after 500 ms of idle time.
 
 Complete the [first-article checks](../manufacturing/process.md#first-article-acceptance)
-before operating the solenoid. Use `$RM=0` to arm and `$RM=1` to disarm.
+before operating the 12 V / 0.8 A solenoid. Use `$RM=0` to arm and `$RM=1` to disarm.
 At 100% spindle override, `M3 S500` commands 50% duty and `M3 S1000` commands
 100% duty. The provisional PWM frequency is 200 Hz. `M5` turns the output
 off after queued motion finishes. Feed hold or a lost connection can leave
-PWM active.
-
-For the specified 12 V / 0.8 A coil, limit each ON period to 10 s and allow
-at least 60 s OFF between periods. Keep the 12 V disconnect accessible.
+PWM active. Keep the 12 V disconnect accessible.
