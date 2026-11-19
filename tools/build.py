@@ -424,7 +424,7 @@ def build(work):
         cam,
         pcb,
     )
-    # KiCad synthesizes an unapproved default material stack in this optional file.
+    # Use the manufacturing guide for the stackup submitted to CAM.
     for job in cam.glob("*.gbrjob"):
         job.unlink()
     verify_gerbers(cam)

@@ -15,12 +15,12 @@ electrical testing.
 - **Construction.** 70 × 50 mm, 1.6 mm FR-4, four layers. Nominal copper weight
   is 1 oz on L1 and L4 and 0.5 oz on L2 and L3. L2 is ground. L3 carries power
   and local ground.
-- **Stackup.** Request JLC04161H-2116 with nominal 0.1164 mm outer dielectric.
-  Confirm laminate, finished copper and barrel plating thicknesses, and
-  dielectric tolerances with CAM. Check the 90 Ω differential target for the
-  L1 USB pair over L2 and review the L4 crossover over local L3 ground.
-  Request the impedance coupon TDR report. Recheck the routing if the
-  stackup changes. [JLC stackups]
+- **Stackup.** Use JLC04161H-7628 with 0.2104 mm nominal outer dielectric.
+  Confirm the laminate, finished copper and barrel plating thicknesses, and
+  dielectric tolerances with CAM. Check the 90 Ω differential L1 pair over L2 at 0.28 mm
+  width / 0.18 mm edge gap and the L4 crossover's L3 ground and stitching.
+  Recheck the routing if the stackup changes. Request a TDR coupon report
+  when ordering impedance control. [JLC stackups]
 - **Drills and slots.** Use the separate plated (PTH) and non-plated (NPTH)
   metric drill files and retain the G85 plated slots. Check finished dimensions
   against connector samples. J1 has three 1.0 × 1.6 mm slots. J2 has four
@@ -148,8 +148,9 @@ press and release RESET, and remove the bridge once the installer connects.
   re-arm behaviour. A later PWM edge can restart U8 after per-pulse latch-off.
 - **USB.** With USB alone, verify that the 3.3 V rail stays off and the host
   detects no USB device. Apply 12 V and verify enumeration, flashing, and
-  streaming in both plug orientations. Repeat after cycling 12 V with USB
-  connected and during normal motor and solenoid operation.
+  streaming in both plug orientations with A-to-C and C-to-C data cables.
+  Repeat after cycling 12 V with USB connected and during normal motor and
+  solenoid operation.
 - **Thermal and communications.** Record steady-state temperatures at 40 °C
   in still air and at 50 °C enclosure air temperature, using the permitted
   coil pulses. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify

@@ -41,9 +41,13 @@ to U3's clamp rail and enables the TS3USB221A switch (U7) through Q5. The
 CH340C (U4) runs from the board's 3.3 V rail with V3 and VCC tied together.
 [USBLC6-2 datasheet] · [CH340C datasheet]
 
-The data traces from U3 through U7 to U4 are 0.20 mm wide on L1 over L2.
-The parallel sections are about 0.26–0.28 mm apart edge to edge, with short
-fanouts at the pads. [TI USB layout guidance] · [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
+The L1 USB trunks use 0.28 mm traces and a 0.18 mm edge gap over L2 ground.
+JLC estimates 89.4 Ω for these uniform sections on JLC04161H-7628. Check the
+short 0.18–0.20 mm pad fanouts and nearby same-layer copper separately.
+
+L3 ground covers both J2 contact ties on L4 between their via clearances.
+Two 0.60/0.30 mm ground vias join L2, L3 and L4 near the layer transitions.
+[TI USB layout guidance] · [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
 
 [USB Type-C Rev 2.4, Table 3-5]:
   https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/USB-Type_2D00_C-Spec-R2.4-_2D00_-October-2024.pdf
