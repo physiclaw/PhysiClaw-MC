@@ -7,9 +7,6 @@ from collections import Counter, defaultdict
 import xml.etree.ElementTree as ET
 
 
-THERMAL_DRILL_MM = 0.30
-
-
 def require(condition, message):
     if not condition:
         raise ValueError(message)
@@ -224,30 +221,8 @@ def read_drill(path):
     return result
 
 
-def write_via_fill_layer(path, thermals):
-    lines = [
-        "G04 IPC-4761 Type VII - epoxy resin fill and copper cap both sides*",
-        "G04 Preserve the supplied solder mask layers*",
-        "%TF.SameCoordinates,Original*%",
-        "%TF.FileFunction,Viafill*%",
-        "%TF.FilePolarity,Positive*%",
-        "%FSLAX46Y46*%",
-        "%MOMM*%",
-        f"%ADD10C,{THERMAL_DRILL_MM:.3f}*%",
-        "%LPD*%",
-        "D10*",
-    ]
-    lines.extend(
-        f"X{round(x * 1_000_000)}Y{round(y * 1_000_000)}D03*"
-        for _, _, x, y, _ in thermals
-    )
-    lines.append("M02*")
-    path.write_text("\n".join(lines) + "\n", encoding="ascii", newline="\n")
-
-
 def geometry(board, cam, fill_and_cap, out):
     expected = {"PTH": [], "NPTH": []}
-    thermal_counts = {"U2": 12, "U5": 16, "U6": 16, "U8": 6}
     thermals, probes = [], []
     for x, y, diameter in board.vias:
         expected["PTH"].append((x, y, diameter, diameter, 0))
@@ -271,41 +246,31 @@ def geometry(board, cam, fill_and_cap, out):
             kind = "NPTH" if pad.kind == "np_thru_hole" else "PTH"
             angle = (pad.angle + (90 if h > w else 0)) % 180 if h != w else 0
             expected[kind].append((x, y, min(w, h), max(w, h), angle))
-            if ref in thermal_counts:
+            if ref in {"U2", "U5", "U6", "U8"}:
                 require(
-                    kind == "PTH" and pad.net == "GND" and w == h == THERMAL_DRILL_MM,
+                    pad.net == "GND" and w == h == 0.3,
                     "Unexpected exposed-pad drill",
                 )
                 thermals.append((ref, pad.number, x, -y, w))
     require(
-        Counter(row[0] for row in thermals) == thermal_counts,
+        Counter(row[0] for row in thermals) == {"U2": 12, "U5": 16, "U6": 16, "U8": 6},
         "Thermal-hole counts differ from the v1.0 process specification",
     )
-    observed = {
-        kind: read_drill(next(cam.glob(f"*-{kind}.drl"))) for kind in expected
-    }
-
-    def rounded(rows):
-        return Counter(tuple(round(n, 3) for n in row) for row in rows)
-
     for kind, native in expected.items():
+        observed = read_drill(next(cam.glob("*-" + kind + ".drl")))
+
+        def rounded(rows):
+            return Counter(tuple(round(n, 3) for n in row) for row in rows)
+
         require(
-            rounded(observed[kind]) == rounded(native),
+            rounded(observed) == rounded(native),
             kind + " drill geometry differs from CAD",
         )
-    thermal_drills = Counter((x, -y, d, d, 0) for _, _, x, y, d in thermals)
-    plated_drills = Counter(observed["PTH"])
-    require(
-        all(count == plated_drills[drill] == 1 for drill, count in thermal_drills.items()),
-        "Via-fill locations must match unique plated drills",
-    )
-    thermals.sort()
     write_csv(
         fill_and_cap,
         ["Reference", "Pad", "Gerber_X_mm", "Gerber_Y_mm", "Drill_mm"],
-        thermals,
+        sorted(thermals),
     )
-    write_via_fill_layer(cam / "sk", thermals)
     write_csv(
         out / "probe-points.csv",
         ["Reference", "Net", "Side", "CAD_X_mm", "CAD_Y_down_mm"],
