@@ -1,7 +1,9 @@
-.PHONY: build test
+.PHONY: build check test
 
 build:
-	uv run --locked tools/build.py
+	uv run --locked python tools/build.py
 
-test:
+check:
 	uv run --locked python -m unittest discover -s tests
+
+test: check

@@ -1,0 +1,138 @@
+name: Build and check
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  versions:
+    name: Select KiCad releases
+    runs-on: ubuntu-latest
+    outputs:
+      linux: ${{ steps.releases.outputs.linux }}
+      desktop: ${{ steps.releases.outputs.desktop }}
+    steps:
+      - id: releases
+        env:
+          KICAD_BASELINE: '10.0.8'
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          repo=KiCad/kicad-source-mirror
+          releases=$(gh api "repos/$repo/releases/latest")
+          latest=$(jq -er '.tag_name' <<< "$releases")
+          [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+
+          linux_versions=("$KICAD_BASELINE")
+          if [[ "$latest" != "$KICAD_BASELINE" ]]; then
+            baseline=$(gh api "repos/$repo/releases/tags/$KICAD_BASELINE")
+            releases="$baseline"$'\n'"$releases"
+
+            # Linux images can be published after the desktop installers.
+            if docker manifest inspect "ghcr.io/kicad/kicad:$latest" >/dev/null; then
+              linux_versions+=("$latest")
+            else
+              echo "::notice::The KiCad $latest Linux image is unavailable."
+            fi
+          fi
+          linux=$(jq -cn --args '$ARGS.positional' "${linux_versions[@]}")
+
+          desktop=$(jq -cs '
+            map(.tag_name as $version | .assets[]
+              | select((.digest // "") | test("^sha256:[a-f0-9]{64}$"))
+              | (if (.name | endswith("-x86_64.exe")) then "windows-latest"
+                elif (.name | test("^kicad-unified-universal-[0-9].*\\.dmg$")) then "macos-latest"
+                else empty end) as $os
+              | {os: $os, kicad: $version, url: .browser_download_url,
+                 sha256: (.digest | ltrimstr("sha256:"))})
+          ' <<< "$releases")
+          jq -e --arg baseline "$KICAD_BASELINE" '
+            [.[] | select(.kicad == $baseline) | .os] | sort == ["macos-latest", "windows-latest"]
+          ' <<< "$desktop" >/dev/null
+          printf 'linux=%s\ndesktop=%s\n' "$linux" "$desktop" >> "$GITHUB_OUTPUT"
+
+  linux:
+    name: Linux / KiCad ${{ matrix.kicad }}
+    needs: versions
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kicad/kicad:${{ matrix.kicad }}
+      options: --user 0
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        kicad: ${{ fromJSON(needs.versions.outputs.linux) }}
+    steps:
+      - &checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - &setup_uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+
+      - name: Install GNU Make and Xvfb
+        run: |
+          apt-get update
+          apt-get install --yes --no-install-recommends make xvfb xauth libgl1-mesa-dri
+
+      - name: Run checks
+        run: make check
+
+      - name: Build
+        run: xvfb-run -a make build
+
+  desktop:
+    name: ${{ matrix.os }} / KiCad ${{ matrix.kicad }}
+    needs: versions
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.versions.outputs.desktop) }}
+    env:
+      KICAD_VERSION: ${{ matrix.kicad }}
+      KICAD_URL: ${{ matrix.url }}
+      KICAD_SHA256: ${{ matrix.sha256 }}
+    steps:
+      - *checkout
+      - *setup_uv
+
+      - name: Install GNU Make and KiCad on Windows
+        if: runner.os == 'Windows'
+        run: |
+          choco install make --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          $installer = Join-Path $env:RUNNER_TEMP 'kicad.exe'
+          curl.exe --fail --silent --show-error --location --retry 3 --output $installer $env:KICAD_URL
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash $installer -Algorithm SHA256).Hash -ne $env:KICAD_SHA256) {
+            throw 'KiCad installer checksum mismatch'
+          }
+
+          $install = Start-Process -FilePath $installer -ArgumentList '/S', '/allusers' -Wait -PassThru
+          if ($install.ExitCode -notin 0, 1641, 3010) { exit $install.ExitCode }
+          $series = $env:KICAD_VERSION -replace '\.\d+$', ''
+          $cli = Join-Path $env:ProgramFiles "KiCad/$series/bin/kicad-cli.exe"
+          if (-not (Test-Path -LiteralPath $cli -PathType Leaf)) { throw "KiCad CLI not found at $cli" }
+          "KICAD_CLI=$cli" >> $env:GITHUB_ENV
+
+      - name: Install KiCad on macOS
+        if: runner.os == 'macOS'
+        run: |
+          dmg="$RUNNER_TEMP/kicad.dmg"
+          mount="$RUNNER_TEMP/kicad"
+          curl --fail --silent --show-error --location --retry 3 --output "$dmg" "$KICAD_URL"
+          printf '%s  %s\n' "$KICAD_SHA256" "$dmg" | shasum -a 256 --check
+          mkdir "$mount"
+          hdiutil attach "$dmg" -readonly -nobrowse -mountpoint "$mount"
+          printf 'KICAD_CLI=%s\n' "$mount/KiCad/KiCad.app/Contents/MacOS/kicad-cli" >> "$GITHUB_ENV"
+
+      - name: Run checks
+        run: make check
+
+      - name: Build
+        run: make build

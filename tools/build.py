@@ -24,13 +24,13 @@ from kicad_board import Board
 
 ROOT = Path(__file__).resolve().parents[1]
 BOARD = "PCW-MC-01"
+DIST_PREFIX = "PHYSICLAW-JLC"
 VERSION = (
     "v"
     + tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"][
         "version"
     ]
 )
-MAC = Path("/Applications/KiCad/KiCad.app/Contents")
 LAYERS = (
     "F.Cu,In1.Cu,In2.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.Silkscreen,B.Silkscreen,Edge.Cuts"
 )
@@ -79,7 +79,7 @@ def verify_gerbers(cam):
         "Unexpected Gerber layer set",
     )
     for layer, function in GERBERS.items():
-        plot = next(cam.glob("*." + layer)).read_text()
+        plot = next(cam.glob("*." + layer)).read_text(encoding="utf-8")
         require(
             all(
                 record in plot
@@ -92,7 +92,7 @@ def verify_gerbers(cam):
             ),
             "Incorrect Gerber layer or origin: " + layer,
         )
-    outline = next(cam.glob("*.gm1")).read_text()
+    outline = next(cam.glob("*.gm1")).read_text(encoding="utf-8")
     edges = []
     previous = None
     for x, y, mode in re.findall(r"^X(-?\d+)Y(-?\d+)D0([12])\*$", outline, re.M):
@@ -249,7 +249,7 @@ def l3_zone_colours(board, routing, work, complete, run):
     return zones
 
 
-def pcb_views(board, pcb, work, out, cam, fabrication, assy, run):
+def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
     routing = work / "routing-view.kicad_pcb"
     board.write_routing_view(routing)
 
@@ -288,7 +288,7 @@ def pcb_views(board, pcb, work, out, cam, fabrication, assy, run):
             )
 
     component_reference(out, board, bounds, fab, BOARD, VERSION)
-    drill_map(out, cam, fabrication / "fill-and-cap.csv", edges, bounds, board)
+    drill_map(out, cam, fill_and_cap, edges, bounds, board)
     mask_and_paste(out, pcb, work, board, bounds,
                    lambda source, layer, path: plot_board_svg(source, layer, path, run, drills="0"))
     usb_review(out, board, bounds, fab)
@@ -297,8 +297,8 @@ def pcb_views(board, pcb, work, out, cam, fabrication, assy, run):
     for side, rotation, zoom, filename, quality, background_options in (
         (
             "top",
-            "-42,0,0",
-            "0.9",
+            "-20,0,0",
+            "1.02",
             "3d-assembly.png",
             "high",
             ("opaque", "--floor", "--perspective"),
@@ -331,14 +331,19 @@ def pcb_views(board, pcb, work, out, cam, fabrication, assy, run):
 
 def build(work):
     cli = os.environ.get("KICAD_CLI") or shutil.which("kicad-cli")
-    if not cli and (MAC / "MacOS/kicad-cli").is_file():
-        cli = str(MAC / "MacOS/kicad-cli")
-    require(cli, "Install KiCad 10 and put kicad-cli on PATH, or set KICAD_CLI.")
+    if not cli:
+        default_paths = {
+            "Darwin": Path("/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"),
+            "Windows": Path(os.environ.get("ProgramFiles", "C:/Program Files"))
+            / "KiCad/10.0/bin/kicad-cli.exe",
+        }
+        default_cli = default_paths.get(platform.system())
+        if default_cli and default_cli.is_file():
+            cli = str(default_cli)
+    require(cli, "Put KiCad 10 or newer on PATH, or set KICAD_CLI to its executable.")
     version = subprocess.check_output([cli, "version"], text=True).strip()
-    require(
-        version.startswith("10."),
-        "Use KiCad CLI 10 for this board",
-    )
+    major = re.match(r"(\d+)\.", version)
+    require(major and int(major[1]) >= 10, "Use KiCad CLI 10 or newer for this board")
 
     # Refill a private copy so every export uses the same checked copper.
     cad_source = ROOT / "pcb" / "kicad"
@@ -366,7 +371,9 @@ def build(work):
     dist, review, cam = work / "dist", work / "build", work / "cam"
     assy, checks, fabrication = review / "assembly", review / "checks", dist / "fabrication"
     view = review / "view"
-    for directory in (cam, assy, checks, fabrication, view):
+    fill_and_cap = fabrication / f"{DIST_PREFIX}-fill-and-cap.csv"
+    firmware_config = Path("firmware/config.yaml")
+    for directory in (cam, assy, checks, fabrication, view, review / firmware_config.parent):
         directory.mkdir(parents=True)
 
     def run(*args):
@@ -401,6 +408,10 @@ def build(work):
     run("sch", "export", "netlist", "--format", "kicadxml", "-o", work / "net.xml", sch)
     run("sch", "export", "pdf", "--black-and-white", "-o", review / "schematic.pdf", sch)
     run(
+        "pcb", "export", "step", "--board-only", "-o",
+        review / f"{BOARD}-bare-board.step", pcb,
+    )
+    run(
         "pcb",
         "export",
         "gerbers",
@@ -434,7 +445,7 @@ def build(work):
         cam,
         pcb,
     )
-    run("pcb", "export", "ipcd356", "-o", fabrication / (BOARD + ".d356"), pcb)
+    run("pcb", "export", "ipcd356", "-o", fabrication / f"{DIST_PREFIX}.d356", pcb)
     run(
         "pcb",
         "export",
@@ -459,15 +470,16 @@ def build(work):
         work / "native-pos.csv",
         ROOT / "manufacturing/jlc-parts.csv",
         assy,
-        dist,
+        bom_path=dist / f"{DIST_PREFIX}-BOM.csv",
+        cpl_path=dist / f"{DIST_PREFIX}-CPL-mm.csv",
     )
-    counts.update(geometry(board, cam, fabrication, assy))
+    counts.update(geometry(board, cam, fill_and_cap, assy))
     counts["stencil_apertures"] = check_paste(board, next(cam.glob("*.gtp")))
-    pcb_views(board, pcb, work, view, cam, fabrication, assy, run)
-    process = ROOT / "manufacturing/process.md"
-    shutil.copyfile(process, review / "process.md")
+    pcb_views(board, pcb, work, view, cam, fill_and_cap, assy, run)
+    shutil.copyfile(ROOT / "manufacturing/process.md", review / "process.md")
+    shutil.copyfile(ROOT / firmware_config, review / firmware_config)
     shutil.copyfile(ROOT / "LICENSE", review / "LICENSE")
-    gerbers = dist / "JLC-Gerbers.zip"
+    gerbers = dist / f"{DIST_PREFIX}-Gerbers.zip"
     archive(cam, gerbers)
     with ZipFile(gerbers) as check:
         require(check.testzip() is None, "Gerber archive integrity check failed")
@@ -486,6 +498,7 @@ def build(work):
         "tools/inspection_views.py",
         "manufacturing/jlc-parts.csv",
         "manufacturing/process.md",
+        firmware_config.as_posix(),
         "LICENSE",
     ]:
         sources[item] = digest(ROOT / item)

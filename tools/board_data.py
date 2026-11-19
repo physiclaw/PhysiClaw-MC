@@ -70,7 +70,7 @@ def placement(footprint, part, row):
     return cpl, audit
 
 
-def assembly(board, netlist, native_positions, package_table, out, jlc):
+def assembly(board, netlist, native_positions, package_table, out, *, bom_path, cpl_path):
     parts = {
         f.ref: f
         for f in board.footprints
@@ -138,7 +138,7 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
         lines,
     )
     write_csv(
-        jlc / "JLC-CPL-mm.csv",
+        cpl_path,
         ["Designator", "Mid X", "Mid Y", "Layer", "Rotation"],
         placements,
     )
@@ -167,7 +167,7 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
         purchase.append((mpn, code, len(refs), ",".join(refs), package, process))
     for process, rows in handles.items():
         write_csv(
-            jlc / "JLC-BOM.csv" if process == "SMT" else out / "tht-bom.csv",
+            bom_path if process == "SMT" else out / "tht-bom.csv",
             ["Comment", "Designator", "Footprint", "Quantity", "嘉立创元件编号"],
             rows,
         )
@@ -190,7 +190,7 @@ def assembly(board, netlist, native_positions, package_table, out, jlc):
 
 def read_drill(path):
     """Read KiCad's absolute metric Excellon, including two-endpoint G85 slots."""
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     require("METRIC" in text and "G90" in text, "Unexpected drill format")
     tools = dict(re.findall(r"^T(\d+)C([\d.]+)$", text, re.M))
     result = []
@@ -221,7 +221,7 @@ def read_drill(path):
     return result
 
 
-def geometry(board, cam, fabrication, out):
+def geometry(board, cam, fill_and_cap, out):
     expected = {"PTH": [], "NPTH": []}
     thermals, probes = [], []
     for x, y, diameter in board.vias:
@@ -267,7 +267,7 @@ def geometry(board, cam, fabrication, out):
             kind + " drill geometry differs from CAD",
         )
     write_csv(
-        fabrication / "fill-and-cap.csv",
+        fill_and_cap,
         ["Reference", "Pad", "Gerber_X_mm", "Gerber_Y_mm", "Drill_mm"],
         sorted(thermals),
     )
@@ -287,7 +287,7 @@ def geometry(board, cam, fabrication, out):
 
 def check_paste(board, path):
     """Compare KiCad's plotted flashes with native paste land shapes at 1 µm."""
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     require(
         "%MOMM*%" in text and "%FSLAX46Y46*%" in text and "G36*" not in text,
         "Unsupported stencil format",

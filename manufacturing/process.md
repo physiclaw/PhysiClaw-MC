@@ -2,14 +2,15 @@
 
 Hardware v1.0 · Assembly PCW-MC-01-ASM
 
-Factory approval and bench qualification are pending. Use the
+Factory acceptance and bench qualification are pending. Use the
 [order files from one build]. All paths start at the repository root.
 
 ## Bare-board fabrication
 
-Upload `dist/JLC-Gerbers.zip`. Send this guide to CAM with
-`dist/fabrication/fill-and-cap.csv` and `dist/fabrication/PCW-MC-01.d356`.
-Use the IPC-D-356 netlist for bare-board electrical test.
+Upload `dist/PHYSICLAW-JLC-Gerbers.zip`. Send CAM this guide and both files
+in `dist/fabrication/`. The `PHYSICLAW-JLC-fill-and-cap.csv` file lists the
+holes that need filling and capping. Use `PHYSICLAW-JLC.d356` for bare-board
+electrical testing.
 
 - **Construction.** 70 × 50 mm, 1.6 mm FR-4, four layers. Nominal copper weight
   is 1 oz on L1 and L4 and 0.5 oz on L2 and L3. L2 is ground. L3 carries power
@@ -34,9 +35,9 @@ files. Coordinates are in millimetres with X to the right and Y up.
 
 ## Assembly
 
-Upload `dist/JLC-BOM.csv` and `dist/JLC-CPL-mm.csv` separately for JLC China
-SMT assembly. Verify 92 top-side placements. Confirm MPNs, LCSC codes, and
-stock including feeder losses. Fit Littelfuse `0467005.NRHF` (5 A, LCSC
+For JLC China SMT assembly, upload `dist/PHYSICLAW-JLC-BOM.csv` and
+`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 92 top-side placements.
+Confirm MPNs, LCSC codes, and stock including feeder losses. Fit Littelfuse `0467005.NRHF` (5 A, LCSC
 `C151140`) at F1.
 
 ### Reflow and stencil
@@ -90,13 +91,25 @@ Check fit and retention at J1, J3, J4, and J5. Check solder fill at
 plane-connected holes and USB shell anchors. Verify polarity and fit C1, C15,
 and C22 with the positive lead in pad 1.
 
+## Equipment and accessories
+
+Use a Gerber viewer for fabrication review. For bench testing, have a
+current-limited supply, a multimeter, an oscilloscope with short probe
+grounds, and a USB-C data cable. Arrange X-ray inspection of the exposed-pad
+solder joints with the assembler.
+
+The assembled machine needs an external antenna with a U.FL/MHF-I cable,
+two JST XH motor harnesses, a 12 V / 0.8 A solenoid, and the DC adapter
+specified below. [Mounting and clearance](../docs/design.md#layout-and-enclosure)
+
 ## Programming
 
 Complete the unpowered checks in [First-article acceptance] before power-up.
 
 1. Keep the motors and solenoid disconnected. Attach the external antenna
-   and a USB-C data cable. Power J1 with a regulated 12 V / 3 A adapter and
-   a 5.5/2.5 mm centre-positive plug.
+   and a USB-C data cable. Power J1 with a regulated 12 V / 3 A adapter.
+   Use a centre-positive barrel plug with a 5.5 mm outer diameter and a
+   2.5 mm inner diameter.
 2. On macOS or Linux, extract `fluidnc-v4.1.1-posix.zip`. From the extracted
    directory, run `sh install-wifi.sh` for the ESP32. On a new module, close
    FluidTerm and run `sh install-fs.sh` to initialize the filesystem. This
@@ -138,8 +151,8 @@ press and release RESET, and remove the bridge once the installer connects.
 
 Before batch release, file the approved stackup, placement preview, thermal
 profile, hidden-joint inspection, and bench results with `build/manifest.json`.
-Record the serial or lot number on the traveler. For each shipped board,
-record the firmware version, configuration revision, and functional test result.
+For each shipped board, record the firmware version, configuration revision,
+and functional test result with the [board and source identifiers](../CONTRIBUTING.md#release-a-hardware-revision).
 
 [First-article acceptance]: #first-article-acceptance
 [order files from one build]: ../README.md#generate-the-manufacturing-files

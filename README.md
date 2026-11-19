@@ -1,18 +1,30 @@
 # PhysiClaw-MC
 
-PCW-MC-01 (hardware v1.0) is a 70 × 50 mm, four-layer ESP32 controller for two
-bipolar stepper motors and a 12 V / 0.8 A solenoid.
+PCW-MC-01 v1.0 is a 70 × 50 mm, four-layer ESP32 controller for two bipolar
+stepper motors and one 12 V / 0.8 A solenoid. Factory acceptance and bench
+qualification are pending.
 
-- **Open the design.** Clone or download this repository and open
-  [PCW-MC-01.kicad_pro](pcb/kicad/PCW-MC-01.kicad_pro) in KiCad 10.
-- **Make a prototype.** [Generate the order files](#generate-the-manufacturing-files)
-  and [upload them to JLC](#order-a-prototype-at-jlc).
-- **Program an assembled board.**
-  [Install FluidNC and the board configuration][Programming guide].
+![KiCad render of the component side of the v1.0 PCB](docs/v1.0/board-assembly.png)
+
+## Repository layout
+
+| Directory | Start here |
+| --- | --- |
+| `pcb/kicad/` | [Editable KiCad project](pcb/kicad/PCW-MC-01.kicad_pro) with local libraries |
+| `docs/` | [Schematic PDF](docs/v1.0/schematic.pdf), [bill of materials](docs/v1.0/bom.csv), [board views](docs/v1.0/README.md), [design notes](docs/design.md) |
+| `firmware/` | [FluidNC configuration and operation](firmware/README.md) |
+| `manufacturing/` | [Fabrication, assembly, and first-article guide](manufacturing/process.md) |
+| `tools/`, `tests/` | [Build](#generate-the-manufacturing-files) and [verification](#edit-and-verify-the-design) |
 
 ## Generate the manufacturing files
 
-Install [KiCad 10], [uv], and Make. The build was verified with KiCad 10.0.8.
+Install [KiCad 10 or newer], [uv], and GNU Make. On Windows, install GNU Make with
+`choco install make` if it is missing, then open a new terminal.
+
+The build checks `PATH` and the standard KiCad 10 installation paths on macOS
+and Windows. For a different installation, set `KICAD_CLI` to the executable's
+full path. On headless Linux, install Xvfb and run `xvfb-run -a make build` to
+generate the 3D renders.
 
 ```sh
 git clone https://github.com/physiclaw/PhysiClaw-MC.git
@@ -20,15 +32,16 @@ cd PhysiClaw-MC
 make build
 ```
 
-Each successful build replaces `dist/` with JLC order files and `build/` with
-review drawings, checks, and `manifest.json`.
+Each successful build replaces `dist/` with JLC order files and `build/`
+with review outputs. The BOMs are in `build/assembly/` and the FluidNC
+configuration is in `build/firmware/config.yaml`. The build also exports a
+bare-board STEP model and records source and output checksums in
+`build/manifest.json`.
 
-uv uses Python 3.13 and installs dependencies from `uv.lock`. The build finds
-`kicad-cli` on `PATH` or in the standard macOS installation. Set `KICAD_CLI` to
-select a different executable.
+`uv` uses Python 3.12 and installs dependencies from `uv.lock`.
 
 For offline builds, run `uv sync --locked` once while online, then use
-`UV_OFFLINE=1 make build`.
+`make UV_OFFLINE=1 build`.
 
 ### Review the PCB
 
@@ -43,19 +56,17 @@ The views are in `build/view/`.
   `probe-map.svg` locates test points on both sides.
 - **Fabrication.** `drill-and-slot-map.svg` shows holes, slots, and capped vias.
   `mask-and-paste.svg` shows mask and stencil apertures.
-- **3D.** `3d-assembly.png` is the tabletop view. `3d-top.png` and
-  `3d-underside.png` show both faces straight on. Some component models use
-  simplified bodies.
+- **3D renders.** `3d-assembly.png` shows the populated board in perspective.
+  `3d-top.png` and `3d-underside.png` show the two faces directly. Some package
+  models use simplified geometry.
 
 ## Order a prototype at JLC
 
-Factory approval and bench qualification are pending.
-
 | JLC upload field | File |
 | --- | --- |
-| PCB (Gerbers and drills) | `dist/JLC-Gerbers.zip` |
-| SMT bill of materials (BOM) | `dist/JLC-BOM.csv` |
-| SMT placement file (CPL) | `dist/JLC-CPL-mm.csv` |
+| PCB (Gerbers and drills) | `dist/PHYSICLAW-JLC-Gerbers.zip` |
+| SMT bill of materials (BOM) | `dist/PHYSICLAW-JLC-BOM.csv` |
+| SMT placement file (CPL) | `dist/PHYSICLAW-JLC-CPL-mm.csv` |
 
 Check the outline, drills, mask, and silkscreen in a Gerber viewer, then upload
 the ZIP. For top-side SMT assembly through JLC China, upload each CSV separately
@@ -71,24 +82,35 @@ through-hole assembly.
 
 ## Edit and verify the design
 
-Edit parts and their MPN and LCSC fields in the schematic, then run
-**Update PCB from Schematic**. For substitutions, verify the footprint and
-update the [JLC part table](manufacturing/jlc-parts.csv).
-Rebuild with `make build`.
-
-Run the placement geometry tests.
+Update the schematic, including each changed part's MPN and LCSC fields,
+then run **Update PCB from Schematic**. For substitutions, verify the
+footprint and update the [JLC part table](manufacturing/jlc-parts.csv).
+Run the placement geometry checks and regenerate the outputs. The build also
+runs KiCad ERC and DRC.
 
 ```sh
-make test
+make check
+make build
 ```
+
+The [CI workflow](.github/workflows/ci.yml) runs both commands on GitHub's
+latest Linux, Windows, and macOS runners with KiCad 10.0.8. It also tests
+newer stable releases as their installers and Linux images become available.
+
+## Contributing and releases
+
+See [contribution and release instructions](CONTRIBUTING.md) and the
+[changelog](CHANGELOG.md). [OSHWA sharing best practices](https://oshwa.org/resources/sharing-best-practices/)
 
 ## License
 
-The original design files, tools, firmware configuration, and documentation are
-under the [MIT License](LICENSE). Third-party assets retain their own terms.
+Copyright © 2026 QiaoQian
+
+The original hardware design and its source files, documentation, firmware
+configuration, and tools use the [MIT License](LICENSE). The KiCad libraries
+and upstream FluidNC firmware retain their respective licenses.
 [KiCad library sources](pcb/kicad/libraries/sources.json) ·
 [KiCad library license](pcb/kicad/libraries/KICAD-LICENSE.md)
 
-[KiCad 10]: https://www.kicad.org/download/
+[KiCad 10 or newer]: https://www.kicad.org/download/
 [uv]: https://docs.astral.sh/uv/getting-started/installation/
-[Programming guide]: manufacturing/process.md#programming
