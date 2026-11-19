@@ -476,6 +476,7 @@ def build(work):
         (cad_source / k).relative_to(ROOT).as_posix(): v for k, v in source_cad.items()
     }
     for item in [
+        "Makefile",
         "pyproject.toml",
         "uv.lock",
         ".python-version",

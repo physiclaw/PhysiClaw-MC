@@ -12,12 +12,12 @@ bipolar stepper motors and a 12 V / 0.8 A solenoid.
 
 ## Generate the manufacturing files
 
-Install [KiCad 10] and [uv]. The build was verified with KiCad 10.0.8.
+Install [KiCad 10], [uv], and Make. The build was verified with KiCad 10.0.8.
 
 ```sh
 git clone https://github.com/physiclaw/PhysiClaw-MC.git
 cd PhysiClaw-MC
-uv run --locked tools/build.py
+make build
 ```
 
 Each successful build replaces `dist/` with JLC order files and `build/` with
@@ -28,7 +28,7 @@ uv uses Python 3.13 and installs dependencies from `uv.lock`. The build finds
 select a different executable.
 
 For offline builds, run `uv sync --locked` once while online, then use
-`uv run --locked --offline tools/build.py`.
+`UV_OFFLINE=1 make build`.
 
 ### Review the PCB
 
@@ -73,12 +73,13 @@ through-hole assembly.
 
 Edit parts and their MPN and LCSC fields in the schematic, then run
 **Update PCB from Schematic**. For substitutions, verify the footprint and
-update the [JLC part table](manufacturing/jlc-parts.csv). Rebuild after changes.
+update the [JLC part table](manufacturing/jlc-parts.csv).
+Rebuild with `make build`.
 
 Run the placement geometry tests.
 
 ```sh
-uv run --locked python -m unittest discover -s tests
+make test
 ```
 
 ## License
