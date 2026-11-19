@@ -1,10 +1,52 @@
-"""Geometry regressions that would place polarized parts on the wrong pads."""
+"""Geometry regressions for footprint placement and USB-C routing."""
 
+import heapq
+import math
 import unittest
+from collections import defaultdict
 from pathlib import Path
 
 from tools.board_data import pad_center
-from tools.kicad_board import Board
+from tools.kicad_board import Board, children, values
+
+
+def planar_trace_length(board, net, start, end):
+    """Return the shortest planar trace length in millimetres."""
+    edges = defaultdict(list)
+
+    def connect(a, b, length):
+        edges[a].append((b, length))
+        edges[b].append((a, length))
+
+    for segment in children(board.tree, "segment"):
+        if values(segment, "net") != [net]:
+            continue
+        a = tuple(values(segment, "start"))
+        b = tuple(values(segment, "end"))
+        layer = values(segment, "layer")[0]
+        connect((layer, a), (layer, b), math.dist(a, b))
+
+    for via in children(board.tree, "via"):
+        if values(via, "net") != [net]:
+            continue
+        at = tuple(values(via, "at"))
+        top, bottom = values(via, "layers")
+        # This check measures planar trace length and excludes via barrels.
+        connect((top, at), (bottom, at), 0)
+
+    pending = [(0, start)]
+    visited = set()
+    while pending:
+        distance, node = heapq.heappop(pending)
+        if node == end:
+            return distance
+        if node in visited:
+            continue
+        visited.add(node)
+        for neighbour, length in edges[node]:
+            if neighbour not in visited:
+                heapq.heappush(pending, (distance + length, neighbour))
+    return math.inf
 
 
 class PlacementGeometryTests(unittest.TestCase):
@@ -16,7 +58,8 @@ class PlacementGeometryTests(unittest.TestCase):
             / "kicad"
             / "PCW-MC-01.kicad_pcb"
         )
-        cls.footprints = {f.ref: f for f in Board(pcb).footprints}
+        cls.board = Board(pcb)
+        cls.footprints = {f.ref: f for f in cls.board.footprints}
 
     def test_rotated_pin_one_and_slot_angle(self):
         usb = self.footprints["J2"]
@@ -31,3 +74,14 @@ class PlacementGeometryTests(unittest.TestCase):
         probe = self.footprints["TP2"].pads[0]
         self.assertTrue(probe.on_layer("B.Cu"))
         self.assertFalse(probe.on_layer("F.Cu"))
+
+    def test_usb_c_contact_ties_are_short(self):
+        usb = self.footprints["J2"]
+        for net, first, second in (
+            ("USB_DP_CONN", "A6", "B6"),
+            ("USB_DM_CONN", "A7", "B7"),
+        ):
+            with self.subTest(net=net):
+                start = ("F.Cu", pad_center(usb, first))
+                end = ("F.Cu", pad_center(usb, second))
+                self.assertLessEqual(planar_trace_length(self.board, net, start, end), 3.5)

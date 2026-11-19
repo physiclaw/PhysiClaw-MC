@@ -15,10 +15,12 @@ electrical testing.
 - **Construction.** 70 × 50 mm, 1.6 mm FR-4, four layers. Nominal copper weight
   is 1 oz on L1 and L4 and 0.5 oz on L2 and L3. L2 is ground. L3 carries power
   and local ground.
-- **Stackup.** Confirm the laminate code, finished copper thickness, barrel
-  plating thickness, and outer dielectric material, thickness, and tolerances
-  with CAM. Check the routed USB pair against that stackup for a 90 Ω
-  differential target.
+- **Stackup.** Request JLC04161H-2116 with nominal 0.1164 mm outer dielectric.
+  Confirm laminate, finished copper and barrel plating thicknesses, and
+  dielectric tolerances with CAM. Check the 90 Ω differential target for the
+  L1 USB pair over L2 and review the L4 crossover over local L3 ground.
+  Request the impedance coupon TDR report. Recheck the routing if the
+  stackup changes. [JLC stackups]
 - **Drills and slots.** Use the separate plated (PTH) and non-plated (NPTH)
   metric drill files and retain the G85 plated slots. Check finished dimensions
   against connector samples. J1 has three 1.0 × 1.6 mm slots. J2 has four
@@ -67,8 +69,9 @@ lot. [JLC placement FAQ]
 
 - **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
   are U4 0°, U5 90°, U6 0°, U7 0°, U8 90°, and U9 180°.
-- **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D8. Check
-  LED colour and diode package against the BOM.
+- **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D8. D4
+  uses a 180° CPL rotation, with its cathode facing +X. Check LED colour
+  and diode package against the BOM.
 - **J2 USB-C.** The 8.94 × 7.30 mm shell is centred at (166.040, −63.000) mm.
   The opening faces +X at the right edge, with the contact row inboard.
   Check both locating holes and all four shell slots.
@@ -143,11 +146,14 @@ press and release RESET, and remove the bridge once the installer connects.
   duty. Use `M5` to switch off and `$RM=1` to disarm. With a limited-energy
   fault fixture, monitor SOL_FAULT_N at TP7 and verify shutoff latency and
   re-arm behaviour. A later PWM edge can restart U8 after per-pulse latch-off.
+- **USB.** With USB alone, verify that the 3.3 V rail stays off and the host
+  detects no USB device. Apply 12 V and verify enumeration, flashing, and
+  streaming in both plug orientations. Repeat after cycling 12 V with USB
+  connected and during normal motor and solenoid operation.
 - **Thermal and communications.** Record steady-state temperatures at 40 °C
   in still air and at 50 °C enclosure air temperature, using the permitted
-  coil pulses. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify USB
-  enumeration, flashing, and streaming in both plug orientations, USB-only
-  isolation, external antenna performance, and cable fit.
+  coil pulses. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify
+  external antenna performance and cable fit.
 
 Before batch release, file the approved stackup, placement preview, thermal
 profile, hidden-joint inspection, and bench results with `build/manifest.json`.
@@ -155,6 +161,7 @@ For each shipped board, record the firmware version, configuration revision,
 and functional test result with the [board and source identifiers](../CONTRIBUTING.md#release-a-hardware-revision).
 
 [First-article acceptance]: #first-article-acceptance
+[JLC stackups]: https://jlcpcb.com/impedance
 [order files from one build]: ../README.md#generate-the-manufacturing-files
 [JLC process limits]: https://jlcpcb.com/capabilities/pcb-assembly-capabilities
 [Espressif reflow profile]:

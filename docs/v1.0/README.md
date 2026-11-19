@@ -1,11 +1,13 @@
 # PCW-MC-01 v1.0 reference files
 
+The schematic, BOM, and renders below document the v1.0 engineering baseline.
+
 - [Nine-sheet schematic PDF](schematic.pdf)
 - [Bill of materials for all 99 fitted reference designators](bom.csv)
-- [Editable KiCad project](../../pcb/kicad/PCW-MC-01.kicad_pro)
+- [KiCad project for this checkout](../../pcb/kicad/PCW-MC-01.kicad_pro)
 
-Run `make build` to regenerate the exports for your checkout. The build
-records source and generated-file checksums in `build/manifest.json`.
+Run `make build` for current exports and board views. The build records
+their checksums and the source checksums in `build/manifest.json`.
 [Build instructions](../../README.md#generate-the-manufacturing-files)
 
 ![KiCad render of the component side](board-assembly.png)

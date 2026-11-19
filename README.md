@@ -4,7 +4,9 @@ PCW-MC-01 v1.0 is a 70 × 50 mm, four-layer ESP32 controller for two bipolar
 stepper motors and one 12 V / 0.8 A solenoid. Factory acceptance and bench
 qualification are pending.
 
-![KiCad render of the component side of the v1.0 PCB](docs/v1.0/board-assembly.png)
+![Component side of the v1.0 engineering baseline](docs/v1.0/board-assembly.png)
+
+*V1.0 engineering baseline. [Generate board views for your checkout](#generate-the-manufacturing-files).*
 
 ## Repository layout
 
@@ -61,6 +63,9 @@ The views are in `build/view/`.
   models use simplified geometry.
 
 ## Order a prototype at JLC
+
+Run `make build` from the checkout you intend to order. Use the Gerbers, BOM,
+and CPL from that build together.
 
 | JLC upload field | File |
 | --- | --- |

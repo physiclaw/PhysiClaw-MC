@@ -12,7 +12,7 @@
   (condition "A.NetName == 'X_A1' || A.NetName == 'X_A2' || A.NetName == 'X_B1' || A.NetName == 'X_B2' || A.NetName == 'Y_A1' || A.NetName == 'Y_A2' || A.NetName == 'Y_B1' || A.NetName == 'Y_B2'")
   (constraint track_width (min 0.25mm)))
 
-(rule "USB local fine-pitch capped escape vias"
+(rule "USB local fine-pitch escape vias"
   (condition "A.Type == 'Via' && A.insideArea('USB escape and return vias') && (A.NetName == 'USB_DP_CONN' || A.NetName == 'USB_DM_CONN' || A.NetName == 'USB_OE_N' || A.NetName == 'GND')")
   (constraint via_diameter (min 0.4mm))
   (constraint annular_width (min 0.1mm)))
