@@ -224,7 +224,7 @@ def read_drill(path):
     return result
 
 
-def write_via_fill_layer(path, thermals):
+def write_via_fill_layer(path, holes):
     lines = [
         "G04 IPC-4761 Type VII - epoxy resin fill and copper cap both sides*",
         "G04 Preserve the supplied solder mask layers*",
@@ -233,28 +233,38 @@ def write_via_fill_layer(path, thermals):
         "%TF.FilePolarity,Positive*%",
         "%FSLAX46Y46*%",
         "%MOMM*%",
-        f"%ADD10C,{THERMAL_DRILL_MM:.3f}*%",
-        "%LPD*%",
-        "D10*",
     ]
-    lines.extend(
-        f"X{round(x * 1_000_000)}Y{round(y * 1_000_000)}D03*"
-        for _, _, x, y, _ in thermals
-    )
+    by_drill = defaultdict(list)
+    for _, _, x, y, diameter in holes:
+        by_drill[diameter].append((x, y))
+    apertures = list(enumerate(sorted(by_drill), start=10))
+    for code, diameter in apertures:
+        lines.append(f"%ADD{code}C,{diameter:.3f}*%")
+    lines.append("%LPD*%")
+    for code, diameter in apertures:
+        lines.append(f"D{code}*")
+        lines.extend(
+            f"X{round(x * 1_000_000)}Y{round(y * 1_000_000)}D03*"
+            for x, y in by_drill[diameter]
+        )
     lines.append("M02*")
     path.write_text("\n".join(lines) + "\n", encoding="ascii", newline="\n")
 
 
 def geometry(board, cam, fill_and_cap, out):
-    expected = {"PTH": [], "NPTH": []}
+    expected = {
+        "PTH": [(x, y, drill, drill, 0) for x, y, drill in board.vias],
+        "NPTH": [],
+    }
     thermal_counts = {"U2": 12, "U5": 16, "U6": 16, "U8": 6}
-    thermals, probes = [], []
-    for x, y, diameter in board.vias:
-        expected["PTH"].append((x, y, diameter, diameter, 0))
+    usb_fill_pins = {("J2", "A6"), ("J2", "A7"), ("U3", "1"), ("U3", "3")}
+    thermals, probes, usb_pads = [], [], []
     for f in board.footprints:
         ref = f.ref
         for pad in f.pads:
             x, y = pad.xy
+            if (ref, pad.number) in usb_fill_pins:
+                usb_pads.append((ref, pad))
             if ref.startswith("TP"):
                 probes.append(
                     (
@@ -269,8 +279,14 @@ def geometry(board, cam, fill_and_cap, out):
             if not w:
                 continue
             kind = "NPTH" if pad.kind == "np_thru_hole" else "PTH"
+            diameter, length = sorted(pad.drill)
+            if kind == "PTH" and length != diameter:
+                require(
+                    length >= 2 * diameter,
+                    f"{ref}.{pad.number}: JLC plated slot length must be at least twice its width",
+                )
             angle = (pad.angle + (90 if h > w else 0)) % 180 if h != w else 0
-            expected[kind].append((x, y, min(w, h), max(w, h), angle))
+            expected[kind].append((x, y, diameter, length, angle))
             if ref in thermal_counts:
                 require(
                     kind == "PTH" and pad.net == "GND" and w == h == THERMAL_DRILL_MM,
@@ -293,19 +309,37 @@ def geometry(board, cam, fill_and_cap, out):
             rounded(observed[kind]) == rounded(native),
             kind + " drill geometry differs from CAD",
         )
-    thermal_drills = Counter((x, -y, d, d, 0) for _, _, x, y, d in thermals)
+    # Associate each off-pad USB via with its nearby contact on the same data net.
+    data_holes = []
+    for x, y, drill, net in board.capped_vias:
+        at = (x, y)
+        matches = [
+            (ref, pad.number)
+            for ref, pad in usb_pads
+            if pad.net == net
+            and math.dist(at, pad.xy) <= 1.25
+            and pad.edge_distance(at) - drill / 2 >= 0.20 - 1e-6
+        ]
+        require(len(matches) == 1 and drill == 0.30, f"Unexpected capped via at {at}")
+        (ref, pin), = matches
+        data_holes.append((ref, pin, x, -y, drill))
+    require(
+        Counter(row[:2] for row in data_holes) == Counter(usb_fill_pins),
+        "Expected one off-pad capped data via at each J2 and U3 data fanout",
+    )
+    holes = sorted(thermals + data_holes)
+    fill_drills = Counter((x, -y, d, d, 0) for _, _, x, y, d in holes)
     plated_drills = Counter(observed["PTH"])
     require(
-        all(count == plated_drills[drill] == 1 for drill, count in thermal_drills.items()),
+        all(count == plated_drills[drill] == 1 for drill, count in fill_drills.items()),
         "Via-fill locations must match unique plated drills",
     )
-    thermals.sort()
     write_csv(
         fill_and_cap,
         ["Reference", "Pad", "Gerber_X_mm", "Gerber_Y_mm", "Drill_mm"],
-        thermals,
+        holes,
     )
-    write_via_fill_layer(cam / "sk.gbr", thermals)
+    write_via_fill_layer(cam / "sk.gbr", holes)
     write_csv(
         out / "probe-points.csv",
         ["Reference", "Net", "Side", "CAD_X_mm", "CAD_Y_down_mm"],
@@ -315,7 +349,7 @@ def geometry(board, cam, fill_and_cap, out):
         "PTH_including_slots": len(expected["PTH"]),
         "NPTH": len(expected["NPTH"]),
         "plated_slots": sum(w != h for _, _, w, h, _ in expected["PTH"]),
-        "filled_and_capped": len(thermals),
+        "filled_and_capped": len(holes),
         "test_pads": len(probes),
     }
 

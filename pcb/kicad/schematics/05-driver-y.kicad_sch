@@ -2738,7 +2738,7 @@
         (justify left)
       )
     )
-    (property "Value" "2.2u / 16V"
+    (property "Value" "4.7u / 25V"
       (at 207.01 69.85 0)
       (effects
         (font
@@ -2747,7 +2747,7 @@
         (justify left)
       )
     )
-    (property "Footprint" "Physiclaw:Capacitor_SMD_C_0603_1608Metric"
+    (property "Footprint" "Physiclaw:Capacitor_SMD_C_0805_2012Metric"
       (at 154.94 48.26 0)
       (effects
         (font
@@ -2756,7 +2756,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "CL10A225KO8NNNC"
+    (property "MPN" "CL21B475KAFNNNE"
       (at 154.94 48.26 0)
       (effects
         (font
@@ -2765,7 +2765,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C23630"
+    (property "LCSC" "C98195"
       (at 154.94 48.26 0)
       (effects
         (font
@@ -2774,7 +2774,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://product.samsungsem.com/mlcc/CL10A225KO8NNN.do"
+    (property "Datasheet" "https://product.samsungsem.com/mlcc/CL21B475KAFNNN.do"
       (at 154.94 48.26 0)
       (effects
         (font

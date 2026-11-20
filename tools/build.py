@@ -4,13 +4,15 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import re
 from pathlib import Path
 import shutil
 import subprocess
-import platform
-import tomllib
+import sys
 import tempfile
+from time import perf_counter
+import tomllib
 from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -46,6 +48,64 @@ GERBERS = {
     "gbo": "Legend,Bot",
     "gm1": "Profile,NP",
 }
+
+
+def styled(label, colour):
+    if (sys.stdout.isatty() and "NO_COLOR" not in os.environ
+            and os.environ.get("TERM") not in (None, "dumb")):
+        return f"\033[{colour}m{label}\033[0m"
+    return label
+
+
+def stage(number, description):
+    print(f"{styled(f'[{number}/5]', '36')} {description}", flush=True)
+
+
+def kicad_environment(cli, work):
+    env = os.environ.copy()
+    if platform.system() != "Darwin":
+        return env
+
+    # KiCad CLI instances otherwise share the same wxWidgets lock file.
+    scratch = work / "tmp"
+    scratch.mkdir()
+    env["TMPDIR"] = str(scratch)
+
+    # The macOS bundle's Fontconfig can choke on newer system Fontconfig rules.
+    in_bundle = Path(cli).resolve().parts[-3:-1] == ("Contents", "MacOS")
+    if in_bundle and not {"FONTCONFIG_FILE", "FONTCONFIG_PATH"}.intersection(env):
+        config = ET.Element("fontconfig")
+        for path in ("/System/Library/Fonts", "/Library/Fonts", "~/Library/Fonts"):
+            ET.SubElement(config, "dir").text = path
+        ET.SubElement(config, "cachedir").text = str(scratch / "font-cache")
+        fonts = scratch / "fonts.conf"
+        ET.ElementTree(config).write(fonts, encoding="utf-8", xml_declaration=True)
+        env["FONTCONFIG_FILE"] = str(fonts)
+    return env
+
+
+def check_design(run, editor, check, report, source, *options):
+    try:
+        run(
+            editor, check, *options, "--format", "json", "--severity-all",
+            "--exit-code-violations", "-o", report, source,
+        )
+    except subprocess.CalledProcessError:
+        try:
+            data = json.loads(report.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            data = {}
+        sections = (data, *data.get("sheets", []))
+        issues = (
+            issue for section in sections
+            for key in ("violations", "unconnected_items", "schematic_parity")
+            for issue in section.get(key, [])
+        )
+        for issue in issues:
+            print(f"  {issue['severity'].upper()}  {issue['description']}", file=sys.stderr)
+            for item in issue.get("items", []):
+                print(f"      {item['description']}", file=sys.stderr)
+        raise
 
 
 def digest(path):
@@ -294,6 +354,7 @@ def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
     usb_review(out, board, bounds, fab)
     probe_map(out, assy / "probe-points.csv", bounds, fab, board)
 
+    print("      Rendering assembly, top and underside views…", flush=True)
     for side, rotation, zoom, filename, quality, background_options in (
         (
             "top",
@@ -329,7 +390,7 @@ def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
         )
 
 
-def build(work):
+def build(work, *, verbose=False):
     cli = os.environ.get("KICAD_CLI") or shutil.which("kicad-cli")
     if not cli:
         default_paths = {
@@ -341,10 +402,27 @@ def build(work):
         if default_cli and default_cli.is_file():
             cli = str(default_cli)
     require(cli, "Put KiCad 10 or newer on PATH, or set KICAD_CLI to its executable.")
-    version = subprocess.check_output([cli, "version"], text=True).strip()
+    env = kicad_environment(shutil.which(cli) or cli, work)
+
+    def run(*args, capture=False):
+        result = subprocess.run(
+            [cli, *map(str, args)], env=env, text=True, errors="replace",
+            stdout=subprocess.PIPE if capture or not verbose else None,
+        )
+        if result.stdout and (result.returncode or re.search(
+            r"\b(?:warning|error|fatal)\s*:|^\s*(?:warning|error|fatal)\b",
+            result.stdout, re.IGNORECASE | re.MULTILINE,
+        )):
+            print(result.stdout.rstrip(), file=sys.stderr)
+        result.check_returncode()
+        return result.stdout
+
+    version = run("version", capture=True).strip()
     major = re.match(r"(\d+)\.", version)
     require(major and int(major[1]) >= 10, "Use KiCad CLI 10 or newer for this board")
+    print(f"{styled(f'{BOARD} {VERSION}', '1')}  |  KiCad {version}\n", flush=True)
 
+    stage(1, "Check the schematic and PCB")
     # Refill a private copy so every export uses the same checked copper.
     cad_source = ROOT / "pcb" / "kicad"
     cad = work / "kicad"
@@ -376,41 +454,19 @@ def build(work):
     for directory in (cam, assy, checks, fabrication, view, review / firmware_config.parent):
         directory.mkdir(parents=True)
 
-    def run(*args):
-        subprocess.run([cli, *map(str, args)], check=True)
-
-    run(
-        "sch",
-        "erc",
-        "--format",
-        "json",
-        "--severity-all",
-        "--exit-code-violations",
-        "-o",
-        checks / "erc.json",
-        sch,
-    )
-    run(
-        "pcb",
-        "drc",
+    check_design(run, "sch", "erc", checks / "erc.json", sch)
+    print(f"      {styled('PASS', '32')}  Schematic electrical rules (ERC)", flush=True)
+    check_design(
+        run, "pcb", "drc", checks / "drc.json", pcb,
         "--refill-zones",
         "--save-board",
         "--schematic-parity",
         "--all-track-errors",
-        "--format",
-        "json",
-        "--severity-all",
-        "--exit-code-violations",
-        "-o",
-        checks / "drc.json",
-        pcb,
     )
+    print(f"      {styled('PASS', '32')}  Board design rules and schematic match (DRC)", flush=True)
+
+    stage(2, "Export fabrication and assembly files")
     run("sch", "export", "netlist", "--format", "kicadxml", "-o", work / "net.xml", sch)
-    run("sch", "export", "pdf", "--black-and-white", "-o", review / "schematic.pdf", sch)
-    run(
-        "pcb", "export", "step", "--board-only", "-o",
-        review / f"{BOARD}-bare-board.step", pcb,
-    )
     run(
         "pcb",
         "export",
@@ -463,7 +519,6 @@ def build(work):
         pcb,
     )
     board = Board(pcb)
-    assembly_drawing(board, work, assy / "top-assembly.pdf", run)
     counts = assembly(
         board,
         work / "net.xml",
@@ -475,10 +530,26 @@ def build(work):
     )
     counts.update(geometry(board, cam, fill_and_cap, assy))
     counts["stencil_apertures"] = check_paste(board, next(cam.glob("*.gtp")))
+    print(f"      {counts['SMT']} surface-mount parts, {counts['THT']} through-hole parts, "
+          f"{counts['filled_and_capped']} filled and capped vias", flush=True)
+
+    stage(3, "Generate review drawings and 3D views")
+    run("sch", "export", "pdf", "--black-and-white", "-o", review / "schematic.pdf", sch)
+    step = review / f"{BOARD}-bare-board.step"
+    step_options = ()
+    if platform.system() == "Darwin":
+        # KiCad's macOS STEP exporter reads attributes of the destination before writing.
+        step.touch()
+        step_options = ("--force",)
+    run("pcb", "export", "step", "--board-only", *step_options, "-o", step, pcb)
+    require(step.stat().st_size > 0, "KiCad wrote an empty STEP model")
+    assembly_drawing(board, work, assy / "top-assembly.pdf", run)
     pcb_views(board, pcb, work, view, cam, fill_and_cap, assy, run)
     shutil.copyfile(ROOT / "manufacturing/process.md", review / "process.md")
     shutil.copyfile(ROOT / firmware_config, review / firmware_config)
     shutil.copyfile(ROOT / "LICENSE", review / "LICENSE")
+
+    stage(4, "Verify the Gerber archive and record file checksums")
     gerbers = dist / f"{DIST_PREFIX}-Gerbers.zip"
     archive(cam, gerbers)
     with ZipFile(gerbers) as check:
@@ -547,13 +618,33 @@ def publish(work, outputs):
 
 
 def main():
-    argparse.ArgumentParser(description=__doc__).parse_args()
-    with tempfile.TemporaryDirectory(prefix=".dist-", dir=ROOT) as temp:
-        work = Path(temp)
-        outputs = build(work)
-        publish(work, outputs)
-    for output in outputs:
-        print(ROOT / output.name)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--verbose", action="store_true", help="show all KiCad output")
+    args = parser.parse_args()
+    start = perf_counter()
+    try:
+        with tempfile.TemporaryDirectory(prefix=".dist-", dir=ROOT) as temp:
+            work = Path(temp)
+            outputs = build(work, verbose=args.verbose)
+            stage(5, "Publish the build outputs")
+            publish(work, outputs)
+    except subprocess.CalledProcessError as error:
+        operation = " ".join(arg for arg in error.cmd[1:4] if not arg.startswith("-"))
+        raise SystemExit(
+            f"Build failed. KiCad {operation} exited with status {error.returncode}."
+        ) from None
+    except (OSError, RuntimeError, ValueError) as error:
+        raise SystemExit(f"Build failed. {error}") from None
+
+    print(f"\n{styled('BUILD COMPLETE', '1;32')}  {perf_counter() - start:.1f} s")
+    print(f"Files in {ROOT}")
+    for path, description in (
+        ("dist/", "JLCPCB order files"),
+        ("build/", "Schematic, assembly drawings and 3D views"),
+        ("build/checks/", "KiCad check reports"),
+        ("build/manifest.json", "Build details and file checksums"),
+    ):
+        print(f"  {path:<21} {description}")
 
 
 if __name__ == "__main__":

@@ -99,13 +99,17 @@ def place_labels(panel, anchors, bounds, *, size, clearance, spacing,
                 continue
             choices.append(box)
         close = sum((a+w/2-x)**2 + (b+h/2-y)**2 < 6 for a, b, _, _ in choices)
-        layouts.append((close, x, y, label, choices))
+        priority = (len(choices), close)
+        layouts.append((priority, x, y, label, choices))
 
-    # Give footprints with the least nearby space first choice.
-    for _, x, y, label, choices in sorted(layouts, key=lambda layout: layout[0]):
+    # Place the most constrained label first. Break ties using the close candidates.
+    layouts.sort(key=lambda layout: layout[0])
+    for _, x, y, label, choices in layouts:
         # A pad callout may leave its own trace and marker.
-        blocked = [(a, b, c, d) for a, b, c, d in leader_obstacles.get(label, ())
+        obstacles = (*leader_obstacles.get(label, ()), *occupied)
+        blocked = [(a, b, c, d) for a, b, c, d in obstacles
                    if not (a <= x <= c and b <= y <= d)]
+        blocked.extend(placed)
         for box in choices:
             a, b, c, d = box
             if any(boxes_overlap(box, previous, spacing) for previous in placed):
@@ -114,7 +118,6 @@ def place_labels(panel, anchors, bounds, *, size, clearance, spacing,
             line = (x, y), end
             if (
                 any(line_intersects_box(line, obstacle) for obstacle in blocked)
-                or any(line_intersects_box(line, previous) for previous in placed)
                 or any(lines_intersect(line, prior) or line_intersects_box(prior, box)
                        for prior in placed_lines)
             ):
@@ -390,11 +393,11 @@ def usb_review(out, board, bounds, fab):
         corners = [rotate(u, v, pad.angle) for u in (-w/2, w/2) for v in (-h/2, h/2)]
         xs, ys = zip(*corners)
         contacts.append((x+min(xs)-.09, y+min(ys)-.09, x+max(xs)+.09, y+max(ys)+.09))
-        if ref == "J2" and pad.number in {"A6", "A7"}:
-            # Start at the inside edge so the leaders can clear adjacent pins.
-            pin_x = x+min(xs)+pad.radius
+        if ref == "J2" and pad.number in {"B6", "B7"}:
+            # Label the outer contacts of the four-pin row.
+            pin_y = y + (min(ys) if pad.number == "B6" else max(ys))
             label = "D+" if pad.net.startswith("USB_DP") else "D−"
-            anchors.append((pin_x, y, label))
+            anchors.append((x, pin_y, label))
             pin_nets[label] = pad.net
     fabrication_boxes = [(a+x0, b+y0, c+x0, d+y0)
                          for a, b, c, d in artwork_boxes(backdrop)]

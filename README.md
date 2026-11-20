@@ -34,11 +34,11 @@ cd PhysiClaw-MC
 make build
 ```
 
-Each successful build replaces `dist/` with JLC order files and `build/`
-with review outputs. The BOMs are in `build/assembly/` and the FluidNC
-configuration is in `build/firmware/config.yaml`. The build also exports a
-bare-board STEP model and records source and output checksums in
-`build/manifest.json`.
+Each successful build replaces `dist/` (JLC order files) and `build/`
+(review files). The review files include BOMs in `build/assembly/`, the FluidNC
+configuration in `build/firmware/config.yaml`, the bare-board STEP model and
+`build/manifest.json` with source and output checksums. Use
+`make build VERBOSE=1` to show KiCad output.
 
 `uv` uses Python 3.12 and installs dependencies from `uv.lock`.
 

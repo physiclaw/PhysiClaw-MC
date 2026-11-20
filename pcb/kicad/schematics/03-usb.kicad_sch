@@ -2675,6 +2675,264 @@
     (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")
     (comment 1 "12 V / 3 A adapter | 2.5 A steady target | ENGINEERING DRAFT")
   )
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 154.94 95.25 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "dcd82082-b923-5d3e-a32e-a69ebf96cc67")
+    (property "Reference" "R41"
+      (at 158.75 93.98 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "49.9"
+      (at 158.75 96.52 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0402_1005Metric"
+      (at 175.26 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0402WGF499JTCE"
+      (at 175.26 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C25120"
+      (at 175.26 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 175.26 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "1be28aa3-da1a-50d8-8a71-15b9092e61ae")
+    )
+    (pin "2"
+      (uuid "ecb7b4c5-a874-5223-8fe5-cf5e092745ea")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/4dbb0b6b-fd34-54e4-8e58-173d69adc5f8"
+          (reference "R41")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 154.94 101.6 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "e4021365-11cc-5a8b-939e-49acb6ce6800")
+    (property "Reference" "#PWR1319"
+      (at 154.94 101.6 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 154.94 105.41 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "b23bf50c-9a39-548b-ab17-27d049ef9622")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/4dbb0b6b-fd34-54e4-8e58-173d69adc5f8"
+          (reference "#PWR1319")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts (xy 152.4 88.9) (xy 154.94 88.9))
+    (stroke (width 0) (type default))
+    (uuid "1bc54a4e-8637-59ba-b518-cb237d861c7b")
+  )
+  (wire
+    (pts (xy 154.94 88.9) (xy 154.94 91.44))
+    (stroke (width 0) (type default))
+    (uuid "59aaba99-5514-519c-a2d2-df8f98aaae25")
+  )
+  (wire
+    (pts (xy 154.94 99.06) (xy 154.94 101.6))
+    (stroke (width 0) (type default))
+    (uuid "35d52b6b-d59f-5a32-b6d2-105457c32935")
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 165.1 95.25 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "3c3086ed-c44d-5d12-83df-59249ccccc35")
+    (property "Reference" "R42"
+      (at 168.91 93.98 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "49.9"
+      (at 168.91 96.52 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0402_1005Metric"
+      (at 185.42 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0402WGF499JTCE"
+      (at 185.42 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C25120"
+      (at 185.42 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 185.42 91.44 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "17f587dc-284f-5b1b-8873-346b890e20d6")
+    )
+    (pin "2"
+      (uuid "9246ac48-3aff-57f0-8c88-d208ff2ce6ed")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/4dbb0b6b-fd34-54e4-8e58-173d69adc5f8"
+          (reference "R42")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 165.1 101.6 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "4e3cadb2-54f0-54c4-82c5-57c9215be43c")
+    (property "Reference" "#PWR1320"
+      (at 165.1 101.6 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 165.1 105.41 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "cb9731de-2365-5a3d-a92d-8fd23463acb7")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/4dbb0b6b-fd34-54e4-8e58-173d69adc5f8"
+          (reference "#PWR1320")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts (xy 152.4 86.36) (xy 165.1 86.36))
+    (stroke (width 0) (type default))
+    (uuid "97933040-cb71-5fc4-9f67-8c951fddfe22")
+  )
+  (wire
+    (pts (xy 165.1 86.36) (xy 165.1 91.44))
+    (stroke (width 0) (type default))
+    (uuid "56b19572-3b0b-5a00-b786-43abccb54a20")
+  )
+  (wire
+    (pts (xy 165.1 99.06) (xy 165.1 101.6))
+    (stroke (width 0) (type default))
+    (uuid "4a3036c8-1cb3-5b8f-aa0b-52c6d37ceb78")
+  )
   (text "SELF-POWERED USB-C PROGRAMMING INTERFACE"
     (at 20.32 20.32 0)
     (effects
@@ -5323,10 +5581,6 @@
     (uuid "31c5fc6d-2152-5807-90de-ea8ded53f3a6")
   )
   (no_connect
-    (at 152.4 88.9)
-    (uuid "c5d4b7b8-fb65-5912-b18f-574effe8374f")
-  )
-  (no_connect
     (at 203.2 83.82)
     (uuid "b5a870fd-f91d-5f7d-906c-98d75fdee937")
   )
@@ -5422,10 +5676,6 @@
     (color 0 0 0 0)
     (uuid "6d794459-30fc-5a73-abe9-8a1f9fd6714e")
   )
-  (no_connect
-    (at 152.4 86.36)
-    (uuid "fca1f583-c253-4d59-a59b-ccba8853ad02")
-  )
   (wire
     (pts
       (xy 132.08 83.82000000000001)
@@ -5467,7 +5717,7 @@
     )
     (uuid "1f168c37-11c1-5ade-8089-159cc603146a")
   )
-  (text "U7: S HIGH selects port 2; OE HIGH disconnects. Port 1 is unused."
+  (text "U7 selects port 2 with S high. R41 and R42 terminate port 1 to ground."
     (at 20.32 179.07 0)
     (effects
       (font

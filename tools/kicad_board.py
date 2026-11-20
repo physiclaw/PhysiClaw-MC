@@ -45,6 +45,14 @@ class Pad:
     def on_layer(self, name):
         return name in self.layers or "*." + name.split(".")[1] in self.layers
 
+    def edge_distance(self, point):
+        """Return distance to the pad edge, negative inside the copper land."""
+        x, y = rotate(point[0] - self.xy[0], point[1] - self.xy[1], -self.angle)
+        width, height = self.size
+        radius = self.radius
+        dx, dy = abs(x) - width / 2 + radius, abs(y) - height / 2 + radius
+        return math.hypot(max(dx, 0), max(dy, 0)) + min(max(dx, dy), 0) - radius
+
 
 @dataclass
 class Footprint:
@@ -132,10 +140,18 @@ class Board:
         if self.tree[0] != Symbol("kicad_pcb"):
             raise ValueError(f"Expected KiCad PCB in {path}")
         self.footprints = [Footprint.read(f) for f in children(self.tree, "footprint")]
-        self.vias = [
-            (*values(v, "at"), values(v, "drill")[0])
-            for v in children(self.tree, "via")
-        ]
+        self.vias = []
+        self.capped_vias = []
+        for via in children(self.tree, "via"):
+            x, y = values(via, "at")
+            drill, = values(via, "drill")
+            self.vias.append((x, y, drill))
+            filled = values(via, "filling", []) == [Symbol("yes")]
+            capped = values(via, "capping", []) == [Symbol("yes")]
+            if filled != capped:
+                raise ValueError(f"Specify both fill and cap for the via at {(x, y)}")
+            if capped:
+                self.capped_vias.append((x, y, drill, values(via, "net")[0]))
 
     def write_assembly_view(self, path: Path, board_name: str, version: str):
         # Move labels in the drawing copy to clear switches, slots and polarity marks.
