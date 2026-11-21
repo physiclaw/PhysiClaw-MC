@@ -4,16 +4,12 @@ PCW-MC-01 v1.0 is a 70 × 50 mm, four-layer ESP32 controller for two bipolar
 stepper motors and one 12 V / 0.8 A solenoid. Factory acceptance and bench
 qualification are pending.
 
-![Component side of the v1.0 engineering baseline](docs/v1.0/board-assembly.png)
-
-*V1.0 engineering baseline. [Generate board views for your checkout](#generate-the-manufacturing-files).*
-
 ## Repository layout
 
 | Directory | Start here |
 | --- | --- |
 | `pcb/kicad/` | [Editable KiCad project](pcb/kicad/PCW-MC-01.kicad_pro) with local libraries |
-| `docs/` | [Schematic PDF](docs/v1.0/schematic.pdf), [bill of materials](docs/v1.0/bom.csv), [board views](docs/v1.0/README.md), [design notes](docs/design.md) |
+| `docs/` | [Design notes](docs/design.md) |
 | `firmware/` | [FluidNC configuration and operation](firmware/README.md) |
 | `manufacturing/` | [Fabrication, assembly, and first-article guide](manufacturing/process.md) |
 | `tools/`, `tests/` | [Build](#generate-the-manufacturing-files) and [verification](#edit-and-verify-the-design) |
@@ -35,8 +31,9 @@ make build
 ```
 
 Each successful build replaces `dist/` (JLC order files) and `build/`
-(review files). The review files include BOMs in `build/assembly/`, the FluidNC
-configuration in `build/firmware/config.yaml`, the bare-board STEP model and
+(review files). The review files include `build/schematic.pdf`, the assembly
+BOM at `build/assembly/assembly.csv`, the FluidNC configuration in
+`build/firmware/config.yaml`, the bare-board STEP model and
 `build/manifest.json` with source and output checksums. Use
 `make build VERBOSE=1` to show KiCad output.
 

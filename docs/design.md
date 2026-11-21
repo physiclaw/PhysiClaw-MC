@@ -14,7 +14,9 @@
   inhibits the drivers and solenoid during reset and until the operator
   arms the board through FluidNC.
 
-[Read the schematic](v1.0/schematic.pdf)
+The KiCad project contains the editable schematic. `make build` exports it
+to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
+[Build instructions](../README.md#generate-the-manufacturing-files)
 
 ## IC implementation
 
