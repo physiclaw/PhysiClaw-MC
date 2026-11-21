@@ -10,6 +10,10 @@ Update the firmware configuration and wiring instructions when an interface
 changes. Keep the license and attribution for imported library items. Include
 test results and before-and-after board views for layout changes.
 
+For routing changes, refill the zones and check current return paths,
+including nearby ground stitching where a signal changes layers. Run the
+geometry tests and inspect the Gerbers and drill files.
+
 ## Release a hardware revision
 
 1. Update the [changelog](CHANGELOG.md). Run `make check` and `make build` from the

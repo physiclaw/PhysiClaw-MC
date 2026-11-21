@@ -41,21 +41,23 @@ The fitted part gives about 3.26 µF at 5.25 V.
 
 ## Layout and enclosure
 
-- L2 is continuous GND. Each of the 13 L3 ground regions has at least two
-  plated ties to L2, with five stitching vias near USB. L3 ground also
-  connects the thermal holes at U2, U5, U6 and U8.
-- L4 USB, VBUS, STEP/DIR, motor UART and interlock traces reference L3 GND
-  outside via clearances. Y_STEP references L2 from L1. SOL_CMD joins the
-  indicator branch below the 3.3 V feed and uses the U9 ground stitch at
-  (122.5, 79.2) mm. The largest centre-to-centre distances to a ground
-  tie in the same L3 region are 1.65 mm for motor UART, 1.57 mm for ESP_EN
-  and 1.90 mm for SOL_CMD.
-- Five L3 pours distribute 3.3 V. Parallel vias connect the regulator and
-  central feed. L4 links feed the west rail and R8 pour. All five pours
-  remain connected in the copper model with any one 3.3 V via barrel open.
-- The Y_A2 escape runs over V12 and clears the 3.3 V pour across its full
-  width. Winding current returns through the paired motor phase and
-  H-bridge. Local VS capacitors and shunt returns close the switching loops.
+- The input runs from J1 through F1 and Q1 on L1. F1 provides overcurrent
+  protection, Q1 blocks reverse polarity, and D1 clamps Q1's gate-to-source
+  voltage. D2 clamps transients on V12. Its cathode reaches C1 through the
+  L3 12 V plane, and two vias tie its anode to L2 ground.
+- L2 is a continuous ground plane. L3 has continuous 3.3 V and 12 V planes
+  and three ground regions tied to L2. The west ground region ties U2 to
+  U5, the east region reaches from J2 to U6, and the third serves U8.
+- L4 signals run over L3 ground outside via clearances. Each signal
+  transition to L4 has a ground tie to L2 within 2 mm in the same L3
+  region. DTR and RTS cross the U2 area on L1, leaving the L3 3.3 V
+  plane continuous. The motor UART crosses under Y_STEP near D2.
+- C23 connects directly to U6's VCC_IO pin through a 1.45 mm trace and
+  has a local ground via. R32 lands directly on Y_STEP. Y_A1 and Y_A2
+  each change to L4 beside U6 and run to J4. Local VS capacitors and
+  shunt returns close the driver switching loops.
+- Rear boot recovery pads TP1 (IO0) and TP2 (GND) are labelled and spaced
+  2.50 mm apart.
 
 [TI PCB return-path guidance](https://www.ti.com/lit/an/slla414a/slla414a.pdf) ·
 [ADI TMC2209 layout guidance][TMC2209 datasheet]

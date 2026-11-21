@@ -29,9 +29,8 @@ bare-board electrical testing.
   M3 rings.
   [Jack drawing] · [JLC China process limits]
 - **Via clearances.** Allow 0.25 mm from drill edge to other-net copper.
-  Each F1 terminal has three parallel vias. Minimum drill-to-mask gaps
-  at F1.1 and F1.2 are 0.267 and 0.255 mm. USB signal vias use 0.30 mm drills,
-  0.60 mm lands and 0.15 mm nominal rings. Drill-to-mask gaps are 0.220 mm at
+  USB signal vias use 0.30 mm drills, 0.60 mm lands and 0.15 mm nominal
+  rings. Drill-to-mask gaps are 0.220 mm at
   both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
   [JLC PCB capabilities]
 - **Filled and capped vias.** Specify epoxy fill, planarization and copper
@@ -179,6 +178,7 @@ Complete the unpowered checks in [First-article acceptance] before power-up.
 
 If automatic bootloader entry fails, bridge rear TP1 (IO0) to TP2 (GND),
 press and release RESET, and remove the bridge once the installer connects.
+Use `build/assembly/probe-points.csv` for fixture coordinates.
 
 ## First-article acceptance
 
