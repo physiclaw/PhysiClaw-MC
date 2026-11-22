@@ -460,6 +460,29 @@ class PlacementGeometryTests(unittest.TestCase):
                     self.assertTrue(all(in_ground_fill(p, regions) for p in launch),
                                     "Launch needs a plated L2 return in its L3 ground region")
 
+    def test_motor_outputs_keep_adjacent_ground_to_connectors(self):
+        for connector in ("J3", "J4"):
+            for pad in self.footprints[connector].pads:
+                with self.subTest(connector=connector, pin=pad.number, net=pad.net):
+                    vias = self.through_via_positions(pad.net)
+                    if pad.net == "X_B2":
+                        layer, reference = "F.Cu", "In1.Cu"
+                        self.assertFalse(vias)
+                        self.assertFalse(self.segments["B.Cu", pad.net])
+                    else:
+                        layer, reference = "B.Cu", "In2.Cu"
+                    tracks = self.segments[layer, pad.net]
+                    self.assertTrue(tracks)
+                    antipads = [
+                        (at, via_plane_clearance_radius(self.vias[at], reference) + 0.04)
+                        for at in vias
+                    ]
+                    for point in samples_outside_antipads(tracks, antipads):
+                        # The reference plane clears the plated connector land by 0.20 mm.
+                        if pad.edge_distance(point) > 0.20 + 0.04:
+                            self.assertTrue(in_ground_fill(point, self.ground_fills[reference]),
+                                            (pad.net, reference, point))
+
     def test_input_tvs_has_two_local_returns_to_input_ground(self):
         bulk = pad_center(self.footprints["C1"], "2")
         jack = pad_center(self.footprints["J1"], "2")

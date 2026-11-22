@@ -7,16 +7,31 @@
 - Consolidate the L3 power and ground pours. Improve the 12 V path to D2,
   simplify the 3.3 V feeds and add local ground returns at layer changes.
 - Straighten the buck switch trace and simplify DTR, RTS and motor routing.
-  Shorten the shared motor UART from 69.6 to 50.5 mm and route Y_A1 and Y_A2
+  Shorten the shared motor UART from 69.6 to 46.4 mm and route Y_A1 and Y_A2
   directly to J4 on L4.
 - Shorten the rear boot recovery trace and label the IO0 and GND pads.
 - Use 1.00 × 2.05 mm plated slots at J1, 0.15 mm component-outline
   silkscreen strokes and 0.50 mm copper-to-edge clearance.
 - Move 16 vias away from SMT lands and add thermal relief to four 0603
   ground pads.
-- Rotate U9 and R37, route SOL_SAFE on L1 and carry SOL_CMD over L3 ground.
-  Move TP9, TP12 and TP5 onto their traces. The seven interlock nets now use
-  11 vias and 184.6 mm of trace, down from 26 vias and 243.7 mm.
+- Group the solenoid indicator and reset supervisor parts below U2. Route
+  SOL_SAFE and DRV_DISABLE_CMD directly into U9 on L1 and cross them with
+  one straight motor UART trace on L4. Run X_STEP and X_DIR in parallel
+  to U5 and move the RTS pull-up next to Q3. Move TP9, TP12, TP5 and TP14
+  onto their traces. The seven interlock nets now use 6 vias and 182.1 mm of
+  trace, down from 26 vias and 243.7 mm.
+- Place C6 and C7 together at the ESP32 supply pin and group its reset circuit
+  on L1. Reduce the fault trace from nine bends to four and extend L3 ground
+  beneath the revised DTR and RTS routes on L4.
+- Route Y_STEP beside Y_DIR and group the idle and alarm traces on L4 over
+  L3 ground. Shorten the alarm trace from 22.8 to 14.1 mm and remove three
+  DTR vias by routing from the USB bridge to the boot transistor on L1.
+- Align U6's current shunts and their ground returns. Route all four Y motor
+  outputs into J4 in pin order on L4 over L3 ground, and route the driver
+  disable signal entirely on L1.
+- Rotate U5 to match U6. Route X_B2 directly to J3 pin 4 on L1 and run
+  the other three X windings over L3 ground. Shorten STEP and DIR and
+  give each current shunt two ground vias.
 - Tie the reversible USB-C contacts on L1 and extend L3 ground under VBUS.
   Move the U3 data vias off-pad. Resin-fill and copper-cap the four J2–U3
   data vias (0.60 mm lands, 0.30 mm drills) and 50 thermal holes.

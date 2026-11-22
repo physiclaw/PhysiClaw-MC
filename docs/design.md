@@ -54,10 +54,16 @@ The fitted part gives about 3.26 µF at 5.25 V.
   transition to L4 has a ground tie to L2 within 2 mm in the same L3
   region. DTR and RTS cross the U2 area on L1, leaving the L3 3.3 V
   plane continuous. The motor UART crosses under Y_STEP near D2.
+- U5 and U6 both use a 90° footprint rotation. At U5, X_B2 runs directly
+  to J3 pin 4 on L1 over L2 ground. X_B1 runs between shunts R17 and R18
+  before joining X_A1 and X_A2 on L4. Each L4 winding runs over L3 ground
+  with a plated return to L2 within 2 mm of its via and connector pin.
+  Both shunts have two ground vias.
 - C23 connects directly to U6's VCC_IO pin through a 1.45 mm trace and
-  has a local ground via. R32 lands directly on Y_STEP. Y_A1 and Y_A2
-  each change to L4 beside U6 and run to J4. Local VS capacitors and
-  shunt returns close the driver switching loops.
+  has a local ground via. R32 lands directly on Y_STEP. All four Y motor
+  outputs approach J4 in pin order on L4 over L3 ground. Y_B1 passes
+  between the two shunts on L1 before changing layers. Each shunt has
+  two ground vias, and the disable trace reaches U6 on L1.
 - Rear boot recovery pads TP1 (IO0) and TP2 (GND) are labelled and spaced
   2.50 mm apart.
 
@@ -69,6 +75,38 @@ mounting holes. Allow space above the board for motor plugs, on the left
 for solenoid wiring, and on the right for DC and USB-C plugs. Leave room for
 the antenna cable and probe access on both sides. Verify fit with the actual
 components and cables.
+
+## Power trace widths
+
+| Copper path | Routed width | Current used for review |
+| --- | --- | --- |
+| J1 through F1 to Q1 | 1.50 mm, with a 0.50 mm long, 1.00 mm wide connection at each F1 pad | 2.50 A steady input |
+| Q1 to L3 12 V | Three 0.80 mm feeds and three 0.30 mm drilled vias | 2.50 A shared |
+| U8 output to J5 | 0.40 mm for the first 1.10 mm, then 0.80 and 1.20 mm | 0.80 A solenoid |
+| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.40 A RMS per phase |
+| U5/U6 current-sense pins to shunts | 0.25–0.45 mm | Same phase current |
+| Buck and ESP32 | 0.60 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
+
+C16 bypasses U5's 3.3 V digital I/O supply. Its feed from the supply via
+through C16 to U5 pin 15 is 0.30 mm throughout. Its ground connection is
+also 0.30 mm. U5 takes motor power through its two 12 V supply pins.
+[TMC2209 datasheet, §§3 and 20.2][TMC2209 datasheet]
+
+For 35 µm outer copper, the IPC-2152 curve fit gives about 9 °C rise for
+a uniform 1.50 mm trace at 2.50 A and 4 °C for a 0.40 mm trace at 0.80 A.
+Each short 1.00 mm fuse connection dissipates about 1.8 mW at 2.50 A
+using the hot-copper resistance. The fuse body also heats its pads.
+[KiCad track-current equations](https://docs.kicad.org/doxygen/tracks__width__versus__current__formula_8h.html)
+
+A DC copper model used 35 µm outer copper, 15.2 µm inner copper, assumed
+18 µm barrel plating and copper resistivity at 70 °C. A 2.50 A load case
+allocated 0.75 A to each driver's 12 V supply, 0.80 A to U8 and 0.20 A to
+the buck input. The estimated drop from Q1's source pads to U8's supply
+pin was about 47 mV. With a 0.60 A load on 3.3 V, the estimated drop from
+the inductor output to the ESP32 was about 5 mV. These estimates cover PCB
+copper. Connector, fuse and semiconductor losses and temperature rise need
+first-article measurements at the intended load and enclosure temperature.
+[First-article acceptance](../manufacturing/process.md#first-article-acceptance)
 
 ## USB-C
 

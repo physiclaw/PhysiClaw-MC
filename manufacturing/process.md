@@ -95,7 +95,7 @@ preview with the lot.
 [JLC placement FAQ]
 
 - **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
-  are U4 0°, U5 90°, U6 0°, U7 0°, U8 90°, and U9 90°.
+  are U4 0°, U5 0°, U6 0°, U7 0°, U8 90°, and U9 90°.
 - **U7 termination resistors.** Confirm the 0.96 mm nominal body gap to
   R41/R42 with JLC. The QFN-to-0402 recommendation is 1.00 mm.
   [JLC SMT component spacing]
