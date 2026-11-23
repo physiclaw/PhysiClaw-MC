@@ -17,6 +17,11 @@ USB_C_CONTACTS = (
     ("USB_DM_CONN", "A7", "B7"),
 )
 
+INTERLOCK_SIGNALS = (
+    "ESP_EN", "RESET_SINK", "ACTUATOR_ARM", "ACT_OE_N",
+    "DRV_DISABLE_CMD", "DRIVERS_DISABLE", "SOL_CMD", "SOL_SAFE", "SOL_ENABLE",
+)
+
 # Follow supply and winding currents through the load and its bypass network.
 # Every other net routed on L4 takes L3 ground as its reference.
 L4_POWER_AND_WINDING_NETS = {
@@ -221,6 +226,13 @@ class PlacementGeometryTests(unittest.TestCase):
                     top_only=True,
                 ), limit)
 
+    def test_reverse_polarity_gate_clamp_reaches_both_mosfet_pins_on_top(self):
+        for net, diode_pin, mosfet_pin in (("V12", "1", "2"), ("REV_GATE", "2", "4")):
+            with self.subTest(net=net):
+                diode = ("F.Cu", pad_center(self.footprints["D1"], diode_pin))
+                mosfet = ("F.Cu", pad_center(self.footprints["Q1"], mosfet_pin))
+                self.assertLess(planar_trace_length(self.board, net, diode, mosfet, top_only=True), 3.0)
+
     def test_routed_vias_clear_smt_pads(self):
         # Same-net pad and via overlap can pass KiCad's copper clearance DRC.
         smt = [
@@ -285,6 +297,35 @@ class PlacementGeometryTests(unittest.TestCase):
                 start = ("F.Cu", pad_center(usb, first))
                 end = ("F.Cu", pad_center(usb, second))
                 self.assertLessEqual(planar_trace_length(self.board, net, start, end, top_only=True), 3.5)
+
+    def test_both_usb_vbus_contacts_reach_the_esd_clamp_on_top(self):
+        net = "USB_VBUS"
+        self.assertFalse(self.through_via_positions(net))
+        clamp = ("F.Cu", pad_center(self.footprints["U3"], "5"))
+        for pin in ("A4", "A9"):
+            start = ("F.Cu", pad_center(self.footprints["J2"], pin))
+            with self.subTest(pin=pin):
+                self.assertLess(planar_trace_length(
+                    self.board, net, start, clamp, top_only=True,
+                ), 8.0)
+
+    def test_x_driver_shunt_paths_match_at_each_track_width(self):
+        paths = []
+        for net, pin, resistor in (("X_SENSE_A", "23", "R17"), ("X_SENSE_B", "27", "R18")):
+            by_width = defaultdict(float)
+            for track in self.segments["F.Cu", net]:
+                width, = values(track, "width")
+                by_width[width] += math.dist(values(track, "start"), values(track, "end"))
+            length = planar_trace_length(
+                self.board, net, ("F.Cu", pad_center(self.footprints["U5"], pin)),
+                ("F.Cu", pad_center(self.footprints[resistor], "1")), top_only=True,
+            )
+            self.assertAlmostEqual(length, sum(by_width.values()))
+            paths.append(by_width)
+        first, second = paths
+        self.assertEqual(first.keys(), second.keys())
+        for width in first:
+            self.assertAlmostEqual(first[width], second[width], delta=0.01)
 
     def test_usb_dimensions_match_the_7628_design(self):
         setup, = children(self.board.tree, "setup")
@@ -370,6 +411,53 @@ class PlacementGeometryTests(unittest.TestCase):
                 for point in track_samples(track):
                     self.assertTrue(in_ground_fill(point, ground), (net, point))
 
+    def test_usb_bridge_reaches_reset_transistor_inputs_on_top(self):
+        for net, bridge_pin, endpoints in (
+            ("USB_DTR_N", "13", (("R5", "1", 10.0), ("Q4", "2", 13.5))),
+            ("USB_RTS_N", "14", (("Q3", "2", 10.0), ("R6", "1", 8.0))),
+        ):
+            self.assertFalse(self.through_via_positions(net), net)
+            start = ("F.Cu", pad_center(self.footprints["U4"], bridge_pin))
+            for ref, pin, limit in endpoints:
+                with self.subTest(net=net, ref=ref):
+                    end = ("F.Cu", pad_center(self.footprints[ref], pin))
+                    self.assertLess(planar_trace_length(
+                        self.board, net, start, end, top_only=True,
+                    ), limit)
+
+    def test_step_pulldowns_lie_on_the_route_to_each_driver(self):
+        for net, gpio, resistor, driver in (
+            ("X_STEP", "10", "R31", "U5"), ("Y_STEP", "33", "R32", "U6"),
+        ):
+            with self.subTest(net=net):
+                source = ("F.Cu", pad_center(self.footprints["U2"], gpio))
+                junction = ("F.Cu", pad_center(self.footprints[resistor], "1"))
+                end = ("F.Cu", pad_center(self.footprints[driver], "16"))
+                direct = planar_trace_length(self.board, net, source, end)
+                self.assertTrue(math.isfinite(direct))
+                to_junction = planar_trace_length(self.board, net, source, junction)
+                to_driver = planar_trace_length(self.board, net, junction, end, top_only=True)
+                self.assertAlmostEqual(direct, to_junction + to_driver)
+
+    def test_status_lights_use_one_direct_diagonal_each_on_the_bottom(self):
+        for net in ("STATUS_IDLE", "STATUS_ALARM"):
+            with self.subTest(net=net):
+                vias = self.through_via_positions(net)
+                self.assertEqual(len(vias), 2)
+                a, b = sorted(vias)
+                self.assertAlmostEqual(b[0] - a[0], a[1] - b[1])
+                length = sum(math.dist(values(track, "start"), values(track, "end"))
+                             for track in self.segments["B.Cu", net])
+                self.assertAlmostEqual(length, math.dist(a, b))
+
+    def test_interlock_signals_stay_on_top(self):
+        for net in INTERLOCK_SIGNALS:
+            with self.subTest(net=net):
+                layers = {layer for (layer, name), tracks in self.segments.items()
+                          if name == net and tracks}
+                self.assertEqual(layers, {"F.Cu"})
+                self.assertFalse(self.through_via_positions(net))
+
     def plated_ground_returns_to_l2(self):
         returns = self.through_via_positions("GND")
         returns.update(
@@ -388,7 +476,7 @@ class PlacementGeometryTests(unittest.TestCase):
             self.assertGreaterEqual(count, 2,
                                     f"L3 ground region near {region[0][1:]} needs two L2 returns")
 
-    def test_driver_thermal_pads_share_their_l3_ground_regions(self):
+    def test_l3_ground_regions_cover_their_local_devices(self):
         def thermal_holes(ref):
             holes = [p.xy for p in self.footprints[ref].pads
                      if p.kind == "thru_hole" and p.net == "GND"]
@@ -397,24 +485,107 @@ class PlacementGeometryTests(unittest.TestCase):
 
         usb_contacts = [pad_center(self.footprints["J2"], pin)
                         for pin in ("A6", "A7", "B6", "B7")]
-        for name, points in (("USB and U6", usb_contacts + thermal_holes("U6")),
-                             ("U2 and U5", thermal_holes("U2") + thermal_holes("U5"))):
+        regions = self.ground_fills["In2.Cu"]
+        assigned = set()
+        for name, points in (("J2 and U3", usb_contacts + [pad_center(self.footprints["U3"], "2")]),
+                             ("U2 and U5", thermal_holes("U2") + thermal_holes("U5")),
+                             ("U6", thermal_holes("U6")), ("U8", thermal_holes("U8"))):
             with self.subTest(region=name):
-                self.assertTrue(any(all(in_ground_fill(at, [region]) for at in points)
-                                    for region in self.ground_fills["In2.Cu"]))
+                matches = [i for i, region in enumerate(regions)
+                           if all(in_ground_fill(at, [region]) for at in points)]
+                self.assertEqual(len(matches), 1)
+                self.assertNotIn(matches[0], assigned)
+                assigned.add(matches[0])
 
     def test_l3_3v3_plane_connects_regulator_and_driver_feeds(self):
         regions = plane_fills(self.board, "V3V3")["In2.Cu"]
         self.assertEqual(len(regions), 1, "3.3 V must be continuous on L3")
         power_vias = self.through_via_positions("V3V3")
-        for at in ((117.55, 52.4), (118.4, 51.3), (143.8, 78.4), (144.6, 78.4)):
+        # The U6 feeds land beside C23 / VCC_IO and the MS2 address pin.
+        for at in ((117.55, 52.4), (118.4, 51.3), (151.725, 80.09), (153.3, 84.5)):
             with self.subTest(at=at):
                 self.assertIn(at, power_vias)
                 self.assertTrue(in_ground_fill(at, regions))
 
+    def test_l3_3v3_feed_across_the_north_edge_keeps_its_width(self):
+        supply = plane_fills(self.board, "V3V3")["In2.Cu"]
+        # Probe the filled copper from the ESP32 across to the USB side.
+        # Connectivity alone also accepts the former 0.49 mm neck.
+        for start_x, end_x, width in ((125, 149, 3.3), (149, 162, 4.0)):
+            rows = math.ceil(width / 0.25)
+            for column in range(4 * (end_x - start_x) + 1):
+                x = start_x + column / 4
+                for row in range(rows + 1):
+                    at = (x, 50.51 + width * row / rows)
+                    self.assertTrue(in_ground_fill(at, supply), at)
+
+    def test_buck_feedback_senses_c4_through_a_dedicated_bottom_trace(self):
+        net = "V3V3"
+        sense, = self.segments["B.Cu", net]
+        ends = [tuple(values(sense, key)) for key in ("start", "end")]
+        c4 = pad_center(self.footprints["C4"], "1")
+        fb = pad_center(self.footprints["U1"], "1")
+        supply = plane_fills(self.board, net)["In2.Cu"]
+        for pad, via in zip((c4, fb), sorted(ends, key=lambda at: math.dist(at, c4)), strict=True):
+            self.assertIn(via, self.through_via_positions(net))
+            self.assertLess(planar_trace_length(self.board, net, ("F.Cu", pad),
+                                                ("F.Cu", via), top_only=True), 1.5)
+            # A same-net connection to the L3 pour would bypass the C4 pickup.
+            barrel = self.vias[via]
+            self.assertEqual(str(values(barrel, "start_end_only")[0]), "yes")
+            self.assertNotIn("In2.Cu", values(barrel, "zone_layer_connections", []))
+            radius = via_plane_clearance_radius(barrel, "In2.Cu") - 0.01
+            for degree in range(360):
+                angle = math.radians(degree)
+                at = (via[0] + radius * math.cos(angle), via[1] + radius * math.sin(angle))
+                self.assertFalse(in_ground_fill(at, supply), at)
+
+    def test_usb_bridge_and_x_driver_take_power_between_pin_and_bypass_capacitor(self):
+        net = "V3V3"
+        regions = plane_fills(self.board, net)["In2.Cu"]
+        feeds = [at for at in self.through_via_positions(net) if in_ground_fill(at, regions)]
+        for chip, pin, cap in (("U4", "4", "C11"), ("U5", "15", "C16")):
+            with self.subTest(chip=chip, pin=pin, capacitor=cap):
+                start = ("F.Cu", pad_center(self.footprints[chip], pin))
+                end = ("F.Cu", pad_center(self.footprints[cap], "1"))
+                # A shortest 45-degree route covers the smaller offset diagonally.
+                diagonal, major = sorted(abs(a - b) for a, b in zip(start[1], end[1]))
+                direct = major - diagonal + math.sqrt(2) * diagonal
+                self.assertAlmostEqual(planar_trace_length(self.board, net, start, end, top_only=True), direct)
+                via_paths = []
+                for at in feeds:
+                    if math.dist(start[1], at) < direct:
+                        via = ("F.Cu", at)
+                        to_via = planar_trace_length(self.board, net, start, via, top_only=True)
+                        to_cap = planar_trace_length(self.board, net, via, end, top_only=True)
+                        via_paths.append(to_via + to_cap)
+                self.assertAlmostEqual(min(via_paths, default=math.inf), direct)
+
+    def test_motor_uart_crossing_continues_straight_into_the_x_driver(self):
+        vias = sorted(self.through_via_positions("TMC_BUS"))
+        self.assertEqual(len(vias), 2)
+        pin = pad_center(self.footprints["U5"], "14")
+        for at in vias:
+            self.assertAlmostEqual(at[1], pin[1])
+        length = planar_trace_length(self.board, "TMC_BUS", ("B.Cu", vias[1]), ("F.Cu", pin))
+        self.assertAlmostEqual(length, math.dist(vias[1], pin))
+
+    def test_power_led_has_a_direct_feed_from_the_3v3_plane(self):
+        # The buck feedback and LED share a net. DRC also accepts feeding the
+        # LED through the dedicated feedback trace.
+        regions = plane_fills(self.board, "V3V3")["In2.Cu"]
+        led_feed = ("F.Cu", pad_center(self.footprints["R2"], "1"))
+        self.assertTrue(any(
+            in_ground_fill(at, regions) and math.isfinite(planar_trace_length(
+                self.board, "V3V3", led_feed, ("F.Cu", at), top_only=True,
+            ))
+            for at in self.through_via_positions("V3V3")
+        ))
+
     def test_12v_feed_vias_share_the_input_bulk_capacitor_plane(self):
         bulk = pad_center(self.footprints["C1"], "1")
         regions = plane_fills(self.board, "V12")["In2.Cu"]
+        self.assertEqual(len(regions), 1, "12 V must be continuous on L3")
         supply = [region for region in regions if in_ground_fill(bulk, [region])]
         self.assertEqual(len(supply), 1, "C1.1 must land on the L3 12 V plane")
         for at in self.through_via_positions("V12"):
@@ -422,7 +593,12 @@ class PlacementGeometryTests(unittest.TestCase):
 
     def test_control_tracks_keep_adjacent_ground(self):
         for layer, reference, nets in (
-            ("F.Cu", "In1.Cu", ("Y_STEP", "TMC_BUS", "USB_DTR_N", "USB_RTS_N")),
+            ("F.Cu", "In1.Cu", ("X_STEP", "X_DIR", "Y_STEP", "Y_DIR", "TMC_BUS",
+                                "BOOT_N", "BOOT_BASE", "USB_DTR_N", "USB_RTS_N",
+                                "SOL_FAULT_N", "USB_CC1", "USB_CC2", "USB_VBUS", "USB_OE_N",
+                                "USB_DETECT_BASE", "X_SENSE_A", "X_SENSE_B",
+                                "STATUS_IDLE", "STATUS_ALARM",
+                                *INTERLOCK_SIGNALS)),
             ("B.Cu", "In2.Cu", self.l4_ground_referenced_nets()),
         ):
             for net in nets:
@@ -452,7 +628,6 @@ class PlacementGeometryTests(unittest.TestCase):
                     regions = [r for r in self.ground_fills["In2.Cu"]
                                if any(in_ground_fill(p, [r]) for p in nearby)]
                     # Probe the outgoing copper just beyond the via clearance.
-                    # At R8 the short tap joins the DTR trunk inside this radius.
                     radius = via_plane_clearance_radius(self.vias[at], "In2.Cu")
                     launch = [p for p in samples
                               if radius + 0.06 <= math.dist(p, at) <= radius + 0.25]
@@ -465,23 +640,17 @@ class PlacementGeometryTests(unittest.TestCase):
             for pad in self.footprints[connector].pads:
                 with self.subTest(connector=connector, pin=pad.number, net=pad.net):
                     vias = self.through_via_positions(pad.net)
-                    if pad.net == "X_B2":
-                        layer, reference = "F.Cu", "In1.Cu"
-                        self.assertFalse(vias)
-                        self.assertFalse(self.segments["B.Cu", pad.net])
-                    else:
-                        layer, reference = "B.Cu", "In2.Cu"
-                    tracks = self.segments[layer, pad.net]
-                    self.assertTrue(tracks)
-                    antipads = [
-                        (at, via_plane_clearance_radius(self.vias[at], reference) + 0.04)
-                        for at in vias
-                    ]
-                    for point in samples_outside_antipads(tracks, antipads):
-                        # The reference plane clears the plated connector land by 0.20 mm.
-                        if pad.edge_distance(point) > 0.20 + 0.04:
-                            self.assertTrue(in_ground_fill(point, self.ground_fills[reference]),
-                                            (pad.net, reference, point))
+                    self.assertEqual(bool(vias), pad.net != "X_B2")
+                    for layer, reference in (("F.Cu", "In1.Cu"), ("B.Cu", "In2.Cu")):
+                        tracks = self.segments[layer, pad.net]
+                        self.assertEqual(bool(tracks), layer == "F.Cu" or pad.net != "X_B2")
+                        antipads = [(at, via_plane_clearance_radius(self.vias[at], reference) + 0.04)
+                                    for at in vias]
+                        for point in samples_outside_antipads(tracks, antipads):
+                            # The reference plane clears the plated connector land by 0.20 mm.
+                            if pad.edge_distance(point) > 0.20 + 0.04:
+                                self.assertTrue(in_ground_fill(point, self.ground_fills[reference]),
+                                                (pad.net, reference, point))
 
     def test_input_tvs_has_two_local_returns_to_input_ground(self):
         bulk = pad_center(self.footprints["C1"], "2")
@@ -500,13 +669,16 @@ class PlacementGeometryTests(unittest.TestCase):
 
     def test_usb_c_breakout_vias_and_ground_returns(self):
         fills = self.ground_fills
-        for stitch in ((160.25, 61.88), (163.68, 62.22), (165.04, 62.12),
+        u3_ground = pad_center(self.footprints["U3"], "2")
+        usb_region, = [region for region in fills["In2.Cu"] if in_ground_fill(u3_ground, [region])]
+        for stitch in ((157.50, 59.56), (160.25, 61.88), (163.68, 62.22), (165.04, 62.12),
                        (165.04, 63.93), (158.77, 63.60)):
             with self.subTest(stitch=stitch):
                 via = self.vias[stitch]
                 self.assertEqual(values(via, "net"), ["GND"])
                 self.assertEqual(values(via, "layers"), ["F.Cu", "B.Cu"])
-                for layer in ("In1.Cu", "In2.Cu", "B.Cu"):
+                self.assertTrue(in_ground_fill(stitch, [usb_region]))
+                for layer in ("In1.Cu", "B.Cu"):
                     self.assertTrue(in_ground_fill(stitch, fills[layer]), layer)
 
         for net, _, _ in USB_C_CONTACTS:

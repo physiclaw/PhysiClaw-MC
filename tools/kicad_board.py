@@ -197,11 +197,12 @@ class Board:
         # Omit board zones in this temporary copy to make individual traces visible.
         write_pcb(path, (item for item in self.tree[1:] if item[0] != Symbol("zone")))
 
-    def write_zone_view(self, path: Path, layer: str, net: str):
-        zone = Symbol("zone")
+    def write_layer_net_view(self, path: Path, layer: str, net: str | None):
+        # All plots share lands and drills. A net adds its pours and routed copper.
+        copper = {Symbol("zone"), Symbol("segment"), Symbol("arc")}
         write_pcb(path, (
             item for item in self.tree[1:]
-            if item[0] != zone or (
+            if item[0] not in copper or (
                 layer in values(item, "layers", values(item, "layer", []))
                 and values(item, "net", []) == [net]
             )

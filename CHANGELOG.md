@@ -2,6 +2,43 @@
 
 ## Unreleased
 
+- Give J2 and U3 a dedicated L3 ground pour tied to L2 through six
+  local ground vias. The 3.3 V plane fills the former ground bridge
+  between USB and the eastern controls.
+- Widen the L3 3.3 V connection above the indicators from 0.49 to
+  4.04 mm. Bring IDLE and ALARM up to L1 beside R27 and move the LED
+  ground stitch beside D8.
+- Bring 3.3 V directly to U6 on a rounded L3 plane branch and straighten
+  the dedicated C4-to-U1 feedback trace on L4. Remove 13.96 mm of L4
+  trace and two supply vias. Reshape the L3 ground and supply boundaries
+  around the remaining USB, control and motor routes.
+- Align the motor UART crossing with U5 pin 14 and bring the 3.3 V plane
+  feed directly between C16 and U5 pin 15. Shorten the X A2 and Y B2
+  winding routes while keeping the connector pin order.
+- Bring Y STEP through R32 on its approach to U6.
+- Turn the reverse-polarity clamp D1 so both ends connect directly to Q1
+  on L1. Shorten the motor UART branch from R11 to U6 from 20.6 to
+  17.6 mm and bring the 3.3 V feed onto the C23 bypass trace.
+- Route the DTR and RTS branches to both auto-reset transistors on L1.
+  Place R6 between the bridge and Q4 and feed C11 beside U4 pin 4.
+- Route X STEP and DIR out of the ESP32 toward U5. Put R31 on the
+  straight STEP trace to the driver and move its ground return alongside.
+- Route both USB-C VBUS contact groups to U3 on L1, remove two VBUS vias
+  and shorten CC2 from 8.0 mm to 2.1 mm.
+- Match the X motor shunt traces at each width and give the power LED
+  its own 3.3 V plane feed beside the buck feedback circuit.
+
+- Move U10 below the ESP32 and U11 beside the reset circuit. Route
+  ACTUATOR_ARM, ESP_EN and SOL_CMD entirely on L1, removing six signal
+  vias and 35.3 mm of L4 trace. Bring the motor-disable pull-up and TP5
+  onto one horizontal trace between U5 and U6.
+- Move the ESP32 reset transistor Q3 beside the USB bridge. With Q4
+  and R6 also repositioned, DTR and RTS together use 35.9 mm of trace
+  and zero vias, down from 98.0 mm and ten vias. With U10 and U11
+  relocated, ESP_EN uses 15.7 mm more trace than before the Q3 move.
+- Route the X motor outputs into J3 on three parallel L4 diagonals and remove
+  a bend at J4 pin 1. Simplify the indicator, USB CC1 and solenoid fault
+  routes and move TP7 onto the fault trace.
 - Route J1 through F1 to Q1 entirely on L1 and remove nine power vias.
   Straighten the nearby gate, Y_STEP and U6 bypass routes.
 - Consolidate the L3 power and ground pours. Improve the 12 V path to D2,

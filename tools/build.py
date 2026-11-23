@@ -236,9 +236,12 @@ def style_copper_plot(path, label, colour, show_pours, *, bottom=None, zone_colo
     if bottom is None:
         zones = zone_colours or {}
         for element in svg.iter():
+            ink = zones.get(element.get("d"), colour)
             if style := element.get("style"):
-                ink = zones.get(element.get("d"), colour)
                 element.set("style", style.replace("#000000", ink).replace("#FFFFFF", PAPER))
+            elif element.get("d") in zones:
+                # KiCad's trace paths inherit their stroke from a group.
+                element.set("stroke", ink)
 
     svg.find(SVG+"title").text = f"{BOARD} · {label}"
     svg.insert(0, ET.Element(SVG+"rect", {
@@ -287,25 +290,26 @@ def plot_board_svg(source, layer, plot, run, *, drills="2"):
     )
 
 
-def l3_zone_colours(board, routing, work, complete, run):
+def l3_copper_colours(board, work, complete, run):
     def paths(file):
         return {p.attrib["d"] for p in ET.parse(file).iter(SVG+"path")}
 
     layer = "In2.Cu"
-    baseline = work / "l3-no-pours.svg"
-    plot_board_svg(routing, layer, baseline, run)
+    baseline = work / "l3-lands.svg"
+    region = work / "l3-region.kicad_pcb"
+    board.write_layer_net_view(region, layer, None)
+    plot_board_svg(region, layer, baseline, run)
     common = paths(baseline)
     zones = {}
-    region = work / "l3-region.kicad_pcb"
     plotted = work / "l3-region.svg"
     for net, (_, colour) in L3_REGIONS.items():
-        board.write_zone_view(region, layer, net)
+        board.write_layer_net_view(region, layer, net)
         plot_board_svg(region, layer, plotted, run)
         for path in paths(plotted) - common:
             require(path not in zones, f"Ambiguous L3 copper on {net}")
             zones[path] = colour
     require(zones.keys() == paths(complete) - common,
-            "L3 region colours do not cover the plotted copper pours")
+            "L3 net colours do not cover the plotted pours and traces")
     return zones
 
 
@@ -339,7 +343,7 @@ def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
     for source, layer, filename, label in plots:
         plot = out / filename
         if layer == "In2.Cu":
-            zones = l3_zone_colours(board, routing, work, plot, run)
+            zones = l3_copper_colours(board, work, plot, run)
             style_copper_plot(plot, label, "#526071", True, zone_colours=zones)
         else:
             style_copper_plot(
