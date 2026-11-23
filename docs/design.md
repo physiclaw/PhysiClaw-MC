@@ -41,24 +41,66 @@ The fitted part gives about 3.26 µF at 5.25 V.
 [Original capacitor](https://product.samsungsem.com/mlcc/CL10A225KO8NNN.do) ·
 [Fitted capacitor](https://product.samsungsem.com/mlcc/CL21B475KAFNNN.do)
 
+### Component review, 23 November 2026
+
+For v1.0 at `c7292ef`, all 101 fitted references (45 distinct MPNs) agreed
+across the schematic, PCB, assembly BOM and supplier table on MPN, order
+code and assigned footprint. KiCad 10.0.8 ERC and DRC with zone refill and
+schematic parity reported zero violations, unconnected items or parity
+issues. All 21 repository tests passed. The IC pin assignments in the
+exported netlist agree with the manufacturer pinouts cited above.
+
+| Circuit | Fit and operating margin |
+| --- | --- |
+| 12 V input and buck | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. At 12 V in, 3.3 V out and 0.60 A load, U1's nominal 1.1 MHz and 3.9 µH give about 0.56 A peak-to-peak ripple and 0.88 A peak in L1. L1 is rated 2.1 A thermal and 3 A saturation. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [Q1 datasheet](https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf) · [U1 datasheet, §§9–10](https://www.diodes.com/datasheet/download/AP63200-AP63201-AP63203-AP63205.pdf) · [L1 ratings](https://jlcpcb.com/partdetail/Sunlord-SWPA4030S3R9MT/C96899) · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
+| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Pin-to-shunt lengths are 3.04/2.09 mm on X and 2.37/2.41 mm on Y. At 35 µm copper and 20 °C the different widths give about 4.07/4.12 mΩ and 3.56/3.61 mΩ respectively, excluding pads and ground returns. At 0.400 A RMS with 0.100 Ω shunts and the 180 mV sense range, the nominal equation gives an IRUN register value near 11. This fits the StealthChop range of 8–31 and is below ADI's preferred 16–31 for best microstep precision. Verify the programmed range and measure phase current and low-speed motion with the intended motors. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] |
+| Solenoid | U9 drives U8 IN through 10 kΩ with 47 kΩ to ground. At a 3.3 V drive and TI's 150 kΩ minimum internal pulldown the input is about 2.58 V, above its 1.8 V high threshold. R33 gives a nominal 1.21 A limit, about 1.02–1.41 A including its 1% tolerance and TI's ±15% under the specified limit-test conditions. Compare the minimum to cold-coil current at the highest adapter voltage. At 200 Hz a 1% command lasts 50 µs. TI gives 20–90 µs turn-on delay at 13.5 V and 0.1 A, before the output rise. Determine usable duty range and release time on the actual coil. [TI datasheet, §§5.5–5.6](https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf) |
+
+### IC availability
+
+JLCPCB's public international parts catalog reported the quantities below on
+23 November 2026. They describe that catalog before assembly losses. JLC
+China order allocation and replenishment dates require a lot-specific quote.
+
+| Ref | Manufacturer part number | JLCPCB reported pieces |
+| --- | --- | ---: |
+| U1 | AP63203WU-7 | [7](https://jlcpcb.com/partdetail/C780769) |
+| U2 | ESP32-WROOM-32UE-N4 | [9,712](https://jlcpcb.com/partdetail/C701344) |
+| U3 | USBLC6-2SC6 | [38,798](https://jlcpcb.com/partdetail/C7519) |
+| U4 | CH340C, SOP-16 | [16](https://jlcpcb.com/partdetail/C7464026) |
+| U5/U6 | TMC2209-LA-T, two per board | [21,405](https://jlcpcb.com/partdetail/C2150710) |
+| U7 | TS3USB221ARSER | [95,696](https://jlcpcb.com/partdetail/C128396) |
+| U8 | TPS1H200AQDGNRQ1 | [0](https://jlcpcb.com/partdetail/C2653785) |
+| U9 | SN74LVC2G125DCTR | [1,929](https://jlcpcb.com/partdetail/C206035) |
+| U10 | SN74LVC1G132DBVR | [25,652](https://jlcpcb.com/partdetail/C403723) |
+| U11 | TLV803EA30DBZR | [6,912](https://jlcpcb.com/partdetail/C5218924) |
+
+For U8, TI lists the exact switch as active and AEC-Q100 qualified, and
+DigiKey lists the DGN part in cut tape. Request JLC sourcing of that MPN
+before scheduling assembly. For U1, Farnell lists the fixed 3.3 V order
+code. For U4, JLC's second listing for the same WCH CH340C in SOP-16
+reported 71,042 pieces under C84681. Confirm pin 1 and catalog rotation in
+the placement preview if adopting that code. [TI U8 status](https://www.ti.com/product/TPS1H200A-Q1/part-details/TPS1H200AQDGNRQ1) · [DigiKey U8](https://www.digikey.com/en/products/detail/texas-instruments/TPS1H200AQDGNRQ1/9593381) · [Farnell U1](https://jp.farnell.com/en-JP/diodes-inc/ap63203wu-7/dc-dc-conv-sync-buck-1-1mhz-85deg/dp/3518307) · [JLC alternate U4 listing](https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH340C/C84681)
+
 ## Layout and enclosure
 
 - The input runs from J1 through F1 and Q1 on L1. F1 provides overcurrent
   protection, Q1 blocks reverse polarity, and D1 clamps Q1's gate-to-source
   voltage. D2 clamps transients on V12. Its cathode reaches C1 through the
   L3 12 V plane, and two vias tie its anode to L2 ground.
-- L2 is a continuous ground plane. L3 has continuous 3.3 V and 12 V planes
-  and three ground regions tied to L2. The west ground region ties U2 to
-  U5, the east region reaches from J2 to U6, and the third serves U8.
-- L4 signals run over L3 ground outside via clearances. Each signal
-  transition to L4 has a ground tie to L2 within 2 mm in the same L3
-  region. DTR and RTS cross the U2 area on L1, leaving the L3 3.3 V
-  plane continuous. The motor UART crosses under Y_STEP near D2.
+- L2 is a continuous ground plane. On L3, the 12 V zone fills the area
+  outside the 3.3 V and ground zones. Each supply forms one continuous
+  region. Three ground regions connect to L2 and serve U2 and U5 in the
+  west, J2 and U6 in the east, and U8 locally.
+- L3 ground covers the full width of all 69 L4 signal and winding segments
+  outside their via and connector-pad clearances. Each via or winding
+  connector pin on these routes is within 1.93 mm of a plated
+  connection from the same L3 ground region to L2, measured centre to centre.
+- DTR and RTS cross the U2 area on L1. The motor UART runs from R10 and R11
+  between D2's pads on L1, above Y_DIR and Y_STEP, then turns toward U6.
 - U5 and U6 both use a 90° footprint rotation. At U5, X_B2 runs directly
   to J3 pin 4 on L1 over L2 ground. X_B1 runs between shunts R17 and R18
-  before joining X_A1 and X_A2 on L4. Each L4 winding runs over L3 ground
-  with a plated return to L2 within 2 mm of its via and connector pin.
-  Both shunts have two ground vias.
+  before joining X_A1 and X_A2 on L4. Both shunts have two ground vias.
 - C23 connects directly to U6's VCC_IO pin through a 1.45 mm trace and
   has a local ground via. R32 lands directly on Y_STEP. All four Y motor
   outputs approach J4 in pin order on L4 over L3 ground. Y_B1 passes
@@ -98,14 +140,20 @@ Each short 1.00 mm fuse connection dissipates about 1.8 mW at 2.50 A
 using the hot-copper resistance. The fuse body also heats its pads.
 [KiCad track-current equations](https://docs.kicad.org/doxygen/tracks__width__versus__current__formula_8h.html)
 
-A DC copper model used 35 µm outer copper, 15.2 µm inner copper, assumed
-18 µm barrel plating and copper resistivity at 70 °C. A 2.50 A load case
-allocated 0.75 A to each driver's 12 V supply, 0.80 A to U8 and 0.20 A to
-the buck input. The estimated drop from Q1's source pads to U8's supply
-pin was about 47 mV. With a 0.60 A load on 3.3 V, the estimated drop from
-the inductor output to the ESP32 was about 5 mV. These estimates cover PCB
-copper. Connector, fuse and semiconductor losses and temperature rise need
-first-article measurements at the intended load and enclosure temperature.
+The DC model assumes 35 µm outer copper, 15.2 µm inner copper, 18 µm
+via-wall plating and copper resistivity at 70 °C.
+
+- **12 V rail, 2.50 A total.** The model assigns 0.75 A to each motor
+  driver, 0.80 A to U8 and 0.20 A to the buck input. The largest copper
+  drop is about 45 mV, from Q1's source pads to U8's supply pin.
+- **3.3 V rail, 0.60 A total.** From the inductor output, the copper drop
+  is about 4.6 mV at the ESP32 and 4.9 mV at the CH340.
+- **Q1 vias, 2.00 A total.** With the 12 V loads scaled proportionally,
+  the vias beside Q1 pins 1, 2 and 3 carry about 0.67, 0.59 and 0.74 A,
+  respectively. The three via barrels dissipate about 2.1 mW in total.
+
+Measure temperature rise above ambient on the assembled board at steady
+load in the intended enclosure.
 [First-article acceptance](../manufacturing/process.md#first-article-acceptance)
 
 ## USB-C
