@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Straighten the Q7 base and collector routes on the top layer. TP14
+  sits at the base branch between R21 and R22. R45 and R33 share a
+  straight gate trace to Q6.
 - Use UMW AO4407A (C2841482) as the primary part at Q1 and Q6, with
   AOS AO4407A (C16072) as the pin-compatible alternate.
 - Drive the 12 V solenoid with an AO4407A and MMBT3904. Retain hardware

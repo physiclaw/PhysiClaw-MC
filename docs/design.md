@@ -168,9 +168,11 @@ on the left. Use `component-reference.svg` to locate components by designator.
   of R37 on its way to U9 pin 2. R37 takes 3.3 V from C32.
 - **Solenoid.** On L1, SOL_CMD leaves U2 pin 8, passes between the pads
   of R21, then meets R38 and R23 on its way to U9 pin 5. The buffered
-  output, SOL_SAFE, runs straight from U9 pin 3 to R21 and continues as
-  SOL_ENABLE to the base of Q7. R45 and R33 control the Q6 gate beside
-  the source pads. The four drain pads join a wide top-layer bus to D4
+  output, SOL_SAFE, runs straight from U9 pin 3 to R21. From R21 pad 2,
+  SOL_ENABLE runs left through TP14 to R22. A straight branch from TP14
+  reaches the base of Q7. Its collector runs straight up to R45, whose
+  other pad lines up with R33 pad 2 and Q6's gate. The four drain pads
+  join a wide top-layer bus to D4
   and J5 pin 1. A separate via beside the Q6 source bank connects directly
   to the continuous L3 12 V plane. C28 and C34 share a second local feed.
 - **Motor control.** The motor UART receive line leaves U2 pin 27 on a

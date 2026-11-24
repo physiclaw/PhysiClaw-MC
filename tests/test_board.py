@@ -478,6 +478,22 @@ class PlacementGeometryTests(unittest.TestCase):
                 actual = {pad.number: pad.net for pad in self.footprints[ref].pads if pad.number}
                 self.assertEqual(actual, pin_nets)
 
+    def test_solenoid_base_and_gate_traces_run_directly_on_top(self):
+        for net, start_ref, start_pin, end_ref, end_pin in (
+            ("SOL_ENABLE", "R21", "2", "R22", "1"),
+            ("SOL_ENABLE", "TP14", "1", "Q7", "1"),
+            ("SOL_GATE_SINK", "Q7", "3", "R45", "1"),
+            ("SOL_GATE", "R45", "2", "Q6", "4"),
+        ):
+            with self.subTest(net=net, start=start_ref, end=end_ref):
+                start = pad_center(self.footprints[start_ref], start_pin)
+                end = pad_center(self.footprints[end_ref], end_pin)
+                length = planar_trace_length(
+                    self.board, net, ("F.Cu", start), ("F.Cu", end), top_only=True
+                )
+                self.assertAlmostEqual(length, math.dist(start, end))
+                self.assertFalse(self.through_via_positions(net))
+
     def test_interlock_signals_stay_on_top(self):
         for net in INTERLOCK_SIGNALS:
             with self.subTest(net=net):
