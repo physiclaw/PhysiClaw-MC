@@ -256,7 +256,7 @@ def geometry(board, cam, fill_and_cap, out):
         "PTH": [(x, y, drill, drill, 0) for x, y, drill in board.vias],
         "NPTH": [],
     }
-    thermal_counts = {"U2": 12, "U5": 16, "U6": 16, "U8": 6}
+    thermal_counts = {"U2": 12, "U5": 16, "U6": 16}
     require(not board.capped_vias, "Only the footprint thermal holes may be filled and capped")
     thermals, probes = [], []
     for f in board.footprints:

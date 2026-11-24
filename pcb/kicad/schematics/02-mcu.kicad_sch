@@ -4768,28 +4768,11 @@
     )
     (uuid "909f2e88-0814-5b96-af56-3f49aa8d5cbf")
   )
-  (wire
-    (pts
-      (xy 88.89999999999999 116.84)
-      (xy 101.6 116.84)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "3f32ade4-e479-5ef7-b62d-5bbb10337552")
+  (no_connect
+    (at 88.9 116.84)
+    (uuid "cd370174-c4e6-5b3c-88e9-23517ba82b98")
   )
-  (global_label "SOL_FAULT_N"
-    (shape bidirectional)
-    (at 101.6 116.84 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left)
-    )
-    (uuid "8546bb02-a6e7-5c79-ae33-656e880c9235")
-  )
+
   (text "U2: external antenna module. GPIO assignments match the FluidNC configuration."
     (at 20.32 170.18 0)
     (effects

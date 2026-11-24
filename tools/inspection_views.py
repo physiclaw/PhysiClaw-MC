@@ -385,7 +385,7 @@ def component_reference(out, board, bounds, fab, board_name, version):
 
 
 def mask_and_paste(out, pcb, work, board, bounds, plot):
-    detail_rows = (("U7", 77), ("U8", 110))
+    detail_rows = (("U7", 77), ("U5", 110))
     paste_colour = "#74479b"
     top_colour = COPPER_COLOURS["F.Cu"]
     detail_columns = (("F.Paste", 80, "Paste", paste_colour),

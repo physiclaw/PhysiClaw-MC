@@ -459,6 +459,23 @@ class PlacementGeometryTests(unittest.TestCase):
                              for track in self.segments["B.Cu", net])
                 self.assertAlmostEqual(length, math.dist(a, b))
 
+    def test_solenoid_switch_polarity_and_default_off_paths(self):
+        expected = {
+            "Q6": {"1": "V12", "2": "V12", "3": "V12", "4": "SOL_GATE",
+                   "5": "SOL_POS", "6": "SOL_POS", "7": "SOL_POS", "8": "SOL_POS"},
+            "Q7": {"1": "SOL_ENABLE", "2": "GND", "3": "SOL_GATE_SINK"},
+            "R21": {"1": "SOL_SAFE", "2": "SOL_ENABLE"},
+            "R22": {"1": "SOL_ENABLE", "2": "GND"},
+            "R33": {"1": "V12", "2": "SOL_GATE"},
+            "R45": {"1": "SOL_GATE_SINK", "2": "SOL_GATE"},
+            "D4": {"1": "SOL_POS", "2": "GND"},
+            "J5": {"1": "SOL_POS", "2": "GND"},
+        }
+        for ref, pin_nets in expected.items():
+            with self.subTest(ref=ref):
+                actual = {pad.number: pad.net for pad in self.footprints[ref].pads if pad.number}
+                self.assertEqual(actual, pin_nets)
+
     def test_interlock_signals_stay_on_top(self):
         for net in INTERLOCK_SIGNALS:
             with self.subTest(net=net):
@@ -498,7 +515,7 @@ class PlacementGeometryTests(unittest.TestCase):
         assigned = set()
         for name, points in (("J2 and U3", usb_contacts + [pad_center(self.footprints["U3"], "2")]),
                              ("U2 and U5", thermal_holes("U2") + thermal_holes("U5")),
-                             ("U6", thermal_holes("U6")), ("U8", thermal_holes("U8"))):
+                             ("U6", thermal_holes("U6"))):
             with self.subTest(region=name):
                 matches = [i for i, region in enumerate(regions)
                            if all(in_ground_fill(at, [region]) for at in points)]
@@ -623,7 +640,7 @@ class PlacementGeometryTests(unittest.TestCase):
         for layer, reference, nets in (
             ("F.Cu", "In1.Cu", ("X_STEP", "X_DIR", "Y_STEP", "Y_DIR", "TMC_BUS",
                                 "ESP_RX", "ESP_TX", "TMC_RX", "TMC_TX", "BOOT_N", "BOOT_BASE", "USB_DTR_N", "USB_RTS_N",
-                                "SOL_FAULT_N", "USB_CC1", "USB_CC2", "USB_VBUS", "USB_OE_N",
+                                "SOL_GATE", "SOL_GATE_SINK", "USB_CC1", "USB_CC2", "USB_VBUS", "USB_OE_N",
                                 "USB_DETECT_BASE", "X_SENSE_A", "X_SENSE_B",
                                 "STATUS_IDLE", "STATUS_ALARM",
                                 *INTERLOCK_SIGNALS)),

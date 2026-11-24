@@ -26,9 +26,6 @@ macros:
   macro0: "M5&$MD&M64 P0"
   macro1: "M5&$MD&M65 P0"
 
-control:
-  fault_pin: gpio.34:low
-
 # Discrete state indicators, active high. Neither is a heartbeat/watchdog.
 status_outputs:
   report_interval_ms: 250
@@ -103,4 +100,4 @@ PWM:
   disable_with_s0: true
   off_on_alarm: true
 
-# No endstop, probe, SD or display is fitted. GPIO34 is the protected switch fault input.
+# No endstop, probe, SD or display is fitted. GPIO34 is unused.

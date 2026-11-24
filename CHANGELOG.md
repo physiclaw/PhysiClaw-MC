@@ -2,8 +2,12 @@
 
 ## Unreleased
 
-- Reserve the 0.32 mm drill for the 50 filled and capped thermal holes at
-  U2, U5, U6 and U8. Use 0.62 mm lands for a 0.15 mm annular ring.
+- Drive the 12 V solenoid with an AO4407A and MMBT3904. Retain hardware
+  inhibit, PWM and flyback at J5. The discrete output has no branch current
+  limit or fault feedback. Use its matching FluidNC configuration.
+
+- Reserve the 0.32 mm drill for the 44 filled and capped thermal holes at
+  U2, U5 and U6. Use 0.62 mm lands for a 0.15 mm annular ring.
   Tent both faces of the four 0.30 mm USB data vias beside J2 and U3.
 - Increase inner-layer hole clearance to 0.30 mm and open the same-net
   gaps at the VBUS-detect and interlock-enable branches.

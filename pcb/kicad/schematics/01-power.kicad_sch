@@ -3864,7 +3864,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "SRP5050FA-6R8M"
+    (property "MPN" "FEXL0550A-6R8M"
       (at 149.86 119.38 0)
       (effects
         (font
@@ -3873,7 +3873,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C3223092"
+    (property "LCSC" "C5378515"
       (at 149.86 119.38 0)
       (effects
         (font
@@ -3882,7 +3882,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf"
+    (property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf"
       (at 149.86 119.38 0)
       (effects
         (font
@@ -3941,7 +3941,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "GRM21BR61A476ME15K"
+    (property "MPN" "GRM21BR61A476ME15L"
       (at 180.34 116.84 0)
       (effects
         (font
@@ -3950,7 +3950,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C2292827"
+    (property "LCSC" "C124129"
       (at 180.34 116.84 0)
       (effects
         (font
@@ -4018,7 +4018,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "GRM21BR61A476ME15K"
+    (property "MPN" "GRM21BR61A476ME15L"
       (at 203.2 116.84 0)
       (effects
         (font
@@ -4027,7 +4027,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C2292827"
+    (property "LCSC" "C124129"
       (at 203.2 116.84 0)
       (effects
         (font
@@ -5249,7 +5249,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "TNPW060322K1BECN"
+    (property "MPN" "RT0603BRD0722K1L"
       (at 147.32 160.02 0)
       (effects
         (font
@@ -5258,7 +5258,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C1729755"
+    (property "LCSC" "C723484"
       (at 147.32 160.02 0)
       (effects
         (font
@@ -5267,7 +5267,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
+    (property "Datasheet" "https://yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722K1L"
       (at 147.32 160.02 0)
       (effects
         (font

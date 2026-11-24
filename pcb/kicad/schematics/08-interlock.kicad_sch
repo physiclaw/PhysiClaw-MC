@@ -1656,160 +1656,8 @@
       )
     )
   )
-  (symbol
-    (lib_id "Physiclaw:Device_R")
-    (at 238.76 101.6 0)
-    (unit 1)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid "8f96b1cf-5b8b-580e-a1a5-a80b12f93364")
-    (property "Reference" "R39"
-      (at 242.57 100.33 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "10k"
-      (at 242.57 102.86999999999999 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "MPN" "0603WAF1002T5E"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "LCSC" "C25804"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid "cad8be67-2586-50c8-892a-225ad4bd2b0a")
-    )
-    (pin "2"
-      (uuid "23a90ab5-ed0f-5f03-a9fa-8f8d8b4b053e")
-    )
-    (instances
-      (project "PCW-MC-01"
-        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/aeb7cffe-7f0f-5ed9-9e07-d55edbed23a7"
-          (reference "R39")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Physiclaw:Device_R")
-    (at 238.76 127 0)
-    (unit 1)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid "1c0202d3-3a29-59ff-81dd-d5a86071a9c5")
-    (property "Reference" "R34"
-      (at 242.57 125.73 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "10k"
-      (at 242.57 128.27 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "MPN" "0603WAF1002T5E"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "LCSC" "C25804"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
-      (at 0 0 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid "7b86f0b6-48b1-5dc0-bb88-f6c0f7d4f341")
-    )
-    (pin "2"
-      (uuid "6b367921-2a50-58a6-91a7-dafe25f53d51")
-    )
-    (instances
-      (project "PCW-MC-01"
-        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/aeb7cffe-7f0f-5ed9-9e07-d55edbed23a7"
-          (reference "R34")
-          (unit 1)
-        )
-      )
-    )
-  )
+
+
   (symbol
     (lib_id "Physiclaw:Device_R")
     (at 25.4 137.16 0)
@@ -2958,75 +2806,10 @@
       )
     )
   )
-  (wire
-    (pts
-      (xy 238.76 97.79)
-      (xy 238.76 90.17)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "6a16f34d-2de8-5491-ac43-a6178ca4bde9")
-  )
-  (symbol
-    (lib_id "Physiclaw:DrawingPower_V3V3")
-    (at 238.76 90.17 0)
-    (unit 1)
-    (in_bom no)
-    (on_board no)
-    (dnp no)
-    (uuid "0b282608-30c1-5eba-bbc0-471b1720cec8")
-    (property "Reference" "#PWR1811"
-      (at 238.76 90.17 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Value" "V3V3"
-      (at 238.76 86.36 0)
-      (effects
-        (font
-          (size 1.15 1.15)
-        )
-      )
-    )
-    (pin "1"
-      (uuid "5e5898dd-9e63-5ef5-9abc-aca746bcef02")
-    )
-    (instances
-      (project "PCW-MC-01"
-        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/aeb7cffe-7f0f-5ed9-9e07-d55edbed23a7"
-          (reference "#PWR1811")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (wire
-    (pts
-      (xy 238.76 130.81)
-      (xy 238.76 138.43)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "7df9de43-de99-5580-bc17-8597cfc3834c")
-  )
-  (global_label "SOL_FAULT_N"
-    (at 238.76 138.43 180)
-    (uuid "f7dcdf43-2bf7-5568-9387-e216113f0a66")
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify right)
-    )
-  )
+
+
+
+
   (wire
     (pts
       (xy 25.4 133.35)
@@ -3453,27 +3236,8 @@
       )
     )
   )
-  (wire
-    (pts
-      (xy 238.76 105.41)
-      (xy 238.76 123.19)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "b11eff4d-5504-5407-8ed4-7e1de46ac806")
-  )
-  (global_label "SOL_FAULT_RAW"
-    (at 238.76 114.3 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-      )
-      (justify left)
-    )
-    (uuid "177df1ce-3e67-5bbb-9e80-95f7fd7e2d17")
-  )
+
+
   (symbol
     (lib_id "Physiclaw:Device_R")
     (at 100.33 119.38 90)
@@ -3619,7 +3383,7 @@
     )
     (uuid "4c8362a2-47ee-5f5a-8cd1-60de5b8c721a")
   )
-  (text "Otherwise U9 is high impedance: R9 disables the motors; R22 holds U8 OFF."
+  (text "Otherwise U9 is high impedance: R9 disables the motors; R22 holds Q7 off."
     (at 20.32 174.625 0)
     (effects
       (font
@@ -3639,7 +3403,7 @@
     )
     (uuid "8ffde1fc-7b62-5ccc-8284-3dea1aa377fe")
   )
-  (text "Arm deliberately after driver setup. FAULT monitoring is firmware, not a timer."
+  (text "Arm deliberately after driver setup."
     (at 20.32 183.51500000000001 0)
     (effects
       (font
@@ -3682,17 +3446,7 @@
     )
     (uuid "9dd22a17-3236-5a2f-a424-342ce75e8ee5")
   )
-  (text "FAULT TO MCU"
-    (at 220.98 78.74 0)
-    (effects
-      (font
-        (size 1.524 1.524)
-        (bold yes)
-      )
-      (justify left)
-    )
-    (uuid "08521b02-8920-5938-8e50-74296bd13d9e")
-  )
+
   (text "LOCAL BYPASS / U9, U10, U11"
     (at 170.18 121.92 0)
     (effects

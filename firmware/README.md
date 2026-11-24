@@ -6,6 +6,10 @@ the [board configuration](config.yaml). Follow the
 [FluidNC downloads](https://github.com/bdring/FluidNC/releases/tag/v4.1.1) ·
 [FluidNC source and build configuration](https://github.com/bdring/FluidNC/tree/v4.1.1)
 
+This configuration matches boards with Q6 and Q7 fitted. For earlier boards
+with U8, use the configuration shipped with that revision to monitor the
+solenoid fault signal on GPIO34.
+
 Before running a job, set each axis's steps per millimetre, direction, maximum
 speed, acceleration, travel, and current for the machine. The supplied
 configuration disables homing and soft limits. The virtual Z axis has no

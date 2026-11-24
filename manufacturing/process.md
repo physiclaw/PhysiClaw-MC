@@ -35,12 +35,11 @@ bare-board electrical testing.
   0.220 mm at both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
   [JLC PCB capabilities]
 - **Filled and capped vias.** Specify epoxy fill, planarization and copper
-  caps on both faces (IPC-4761 Type VII) for the **50 thermal holes** marked
+  caps on both faces (IPC-4761 Type VII) for the **44 thermal holes** marked
   in `sk.gbr` and `PHYSICLAW-JLC-fill-and-cap.csv`. Each uses a 0.32 mm drill
-  and a 0.62 mm land. There are 12 at U2, 16 each at U5 and U6, and 6 at U8
-  including four mask-covered corners.
+  and a 0.62 mm land. There are 12 at U2, 16 each at U5 and U6.
   Confirm all locations, flush thermal-pad caps and the supplied mask in CAM.
-  下单时请仅对 `sk.gbr` 标出的 50 个 Ø0.32 mm 散热孔做环氧树脂塞孔、磨平及双面电镀铜盖帽。
+  下单时请仅对 `sk.gbr` 标出的 44 个 Ø0.32 mm 散热孔做环氧树脂塞孔、磨平及双面电镀铜盖帽。
   J2 和 U3 旁的 4 个 Ø0.30 mm USB 信号过孔仅做双面盖油。阻焊按原稿。
   [JLC Gerber preparation] · [JLC via treatment]
 - **Finish and mask.** Confirm a flat finish, mask registration and
@@ -89,10 +88,7 @@ Inspect both F1 terminations and the J2 contact row after reflow. Inspect R12,
 R13, R26 and R27 for skew or tombstoning. Their ground lands use 0.20 mm
 thermal spokes across a 0.25 mm copper gap. [JLC SMT thermal-relief guidance]
 
-Check U8's 1.76 × 2.11 mm exposed-pad aperture. On the first article,
-inspect the hidden joints, record voiding at U5 and U6, and verify at
-least 85% exposed-pad solder coverage at U8.
-[TI layout and stencil guidance]
+Inspect the hidden joints and record exposed-pad voiding at U5 and U6 on the first article.
 
 ### Placement approval
 
@@ -111,8 +107,11 @@ preview with the lot.
 - **L1 and C2.** The CPL places L1 at 90° and C2 at 270°. From above,
   L1’s two wide terminations run left-to-right and C2’s long body axis
   runs top-to-bottom. Allow 5.0 mm height above the PCB for L1.
-- **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
-  are U4 0°, U5 0°, U6 0°, U7 0°, U8 90°, and U9 90°.
+- **ICs.** Check pin 1 at U4, U5, U6, U7, and U9. The expected CPL angles
+  are U4 0°, U5 0°, U6 0°, U7 0°, and U9 90°.
+- **Solenoid transistors.** Q6 uses 90° and Q7 uses 270° in the CPL. Verify
+  Q6 pin 1 (source) and Q7 pin 1 (base) against the assembly drawing.
+  Q6 pins 5–8 connect to J5 pin 1.
 - **U7 lands.** Confirm the four 0.20 × 0.55 mm copper lands on pins 2, 3,
   7 and 8 with JLC CAM and assembly. TI specifies this land pattern, and the
   smaller dimension is below JLC’s generic SMD-pad guideline.
@@ -234,12 +233,13 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   during simultaneous stepping, Wi-Fi, acceleration and braking. The steady
   input target is 2.5 A. With the SMBJ15A at D2 on V12, measure hot-plug and
   braking peaks and verify adapter overload recovery.
-- **Solenoid and faults.** Use a 12 V / 0.8 A coil. After deliberate arming
-  with `$RM=0`, `M3 S1000` at 100% override requests full
-  duty. Use `M5` to switch off and `$RM=1` to disarm. With a limited-energy
-  fault fixture, monitor SOL_FAULT_N at TP7 and check current limit, shutoff
-  latency, coil decay at 200 Hz and re-arm behaviour. A later PWM edge can
-  restart U8 after per-pulse latch-off.
+- **Solenoid.** Use the rated 12 V / 0.8 A coil and a current-limited supply.
+  Check J5 stays off at power-up and during reset. Arm with `$RM=0` and
+  measure Q6 gate-to-source voltage, J5 voltage and coil current at 200 Hz
+  with `M3 S10`, `M3 S500` and `M3 S1000` at 100% override. At full
+  duty expect roughly −8 V gate-to-source. Verify flyback decay and release
+  after `M5` and `$RM=1`. Check Q6, Q7 and D4 temperature under load.
+  J5 has no branch short-circuit trip or GPIO fault indication.
 - **USB.** With USB alone, verify that the 3.3 V rail stays off and the host
   detects no USB device. Apply 12 V and verify enumeration, flashing, and
   streaming in both plug orientations with A-to-C and C-to-C data cables.
@@ -250,7 +250,7 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   ESD test.
 - **Thermal and communications.** Record steady-state temperatures at 40 °C
   in still air and at 50 °C enclosure air temperature while pulsing the
-  coil. Check J1, F1, Q1, U1/L1, both drivers, and U8/D4. Verify
+  coil. Check J1, F1, Q1, U1/L1, both drivers, and Q6/D4. Verify
   external antenna performance and cable fit.
 
 Before batch release, file the approved stackup, placement preview, thermal
@@ -280,8 +280,6 @@ and functional test result with the [board and source identifiers](../CONTRIBUTI
   https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html
 [Littelfuse 467 datasheet]:
   https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d
-[TI layout and stencil guidance]:
-  https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf
 [JLC placement FAQ]: https://jlcpcb.com/help/article/pcb-assembly-faqs-part-2
 [JLC coordinate fields]:
   https://jlcpcb.com/help/article/pick-place-file-for-pcb-assembly
