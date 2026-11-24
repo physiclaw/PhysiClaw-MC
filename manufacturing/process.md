@@ -28,7 +28,8 @@ bare-board electrical testing.
   dimensions with CAM and connector samples. Preserve the isolated plated
   M3 rings.
   [Jack drawing] · [JLC China process limits]
-- **Via clearances.** Allow 0.25 mm from drill edge to other-net copper.
+- **Via clearances.** Allow 0.25 mm from drill edge to other-net copper on the
+  outer layers and 0.30 mm on the inner layers.
   USB signal vias use 0.30 mm drills, 0.60 mm lands and 0.15 mm nominal
   rings. Drill-to-mask gaps are 0.220 mm at
   both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
@@ -96,6 +97,10 @@ preview with the lot.
 
 - **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
   are U4 0°, U5 0°, U6 0°, U7 0°, U8 90°, and U9 90°.
+- **U7 lands.** Confirm the four 0.20 × 0.55 mm copper lands on pins 2, 3,
+  7 and 8 with JLC CAM and assembly. TI specifies this land pattern, and the
+  smaller dimension is below JLC’s generic SMD-pad guideline.
+  [TI RSE0010A land pattern](https://www.ti.com/lit/ds/symlink/ts3usb221a.pdf) · [JLC PCB capabilities]
 - **U7 termination resistors.** Confirm the 0.96 mm nominal body gap to
   R41/R42 with JLC. The QFN-to-0402 recommendation is 1.00 mm.
   [JLC SMT component spacing]

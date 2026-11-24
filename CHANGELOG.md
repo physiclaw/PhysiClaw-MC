@@ -2,15 +2,26 @@
 
 ## Unreleased
 
+- Increase inner-layer hole clearance to 0.30 mm and open the same-net
+  gaps at the VBUS-detect and interlock-enable branches.
+
+- Route the two VBUS branches from U3 pin 5 as a symmetric 0.30 mm
+  pair of traces before they turn toward J2.
+- Place the CC1 pull-down beside J2 and shorten its route from 8.79 to
+  3.34 mm. Align the driver-disable pull-up with the command trace and
+  feed it from C32, removing one 3.3 V via.
+- Straighten the ESP32 and motor UART receive traces, the L4 Y STEP
+  route and the 12 V feed between the solenoid bypass capacitors.
+- Move C4 to the feedback-pin side of the inductor and route its sense
+  connection to U1 entirely on L1, removing both feedback vias.
 - Give J2 and U3 a dedicated L3 ground pour tied to L2 through six
   local ground vias. The 3.3 V plane fills the former ground bridge
   between USB and the eastern controls.
 - Widen the L3 3.3 V connection above the indicators from 0.49 to
   4.04 mm. Bring IDLE and ALARM up to L1 beside R27 and move the LED
   ground stitch beside D8.
-- Bring 3.3 V directly to U6 on a rounded L3 plane branch and straighten
-  the dedicated C4-to-U1 feedback trace on L4. Remove 13.96 mm of L4
-  trace and two supply vias. Reshape the L3 ground and supply boundaries
+- Bring 3.3 V directly to U6 on a rounded L3 plane branch and remove
+  13.96 mm of L4 trace and two supply vias. Reshape the L3 ground and supply boundaries
   around the remaining USB, control and motor routes.
 - Align the motor UART crossing with U5 pin 14 and bring the 3.3 V plane
   feed directly between C16 and U5 pin 15. Shorten the X A2 and Y B2

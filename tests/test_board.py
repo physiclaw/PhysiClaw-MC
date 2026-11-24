@@ -141,7 +141,7 @@ def samples_outside_antipads(tracks, antipads):
 
 
 def via_plane_clearance_radius(via, reference):
-    hole_clearance = values(via, "drill")[0] / 2 + 0.25
+    hole_clearance = values(via, "drill")[0] / 2 + 0.30
     outer_lands_only = str(values(via, "start_end_only", ["no"])[0]) == "yes"
     if outer_lands_only and reference not in values(via, "zone_layer_connections", []):
         return hole_clearance
@@ -297,6 +297,15 @@ class PlacementGeometryTests(unittest.TestCase):
                 start = ("F.Cu", pad_center(usb, first))
                 end = ("F.Cu", pad_center(usb, second))
                 self.assertLessEqual(planar_trace_length(self.board, net, start, end, top_only=True), 3.5)
+
+    def test_usb_cc_contacts_reach_their_pulldowns_with_one_bend(self):
+        for net, contact, resistor in (("USB_CC1", "A5", "R12"), ("USB_CC2", "B5", "R13")):
+            with self.subTest(net=net):
+                start = ("F.Cu", pad_center(self.footprints["J2"], contact))
+                end = ("F.Cu", pad_center(self.footprints[resistor], "1"))
+                self.assertFalse(self.through_via_positions(net))
+                self.assertEqual(len(self.segments["F.Cu", net]), 2)
+                self.assertLess(planar_trace_length(self.board, net, start, end, top_only=True), 3.5)
 
     def test_both_usb_vbus_contacts_reach_the_esd_clamp_on_top(self):
         net = "USB_VBUS"
@@ -502,7 +511,7 @@ class PlacementGeometryTests(unittest.TestCase):
         self.assertEqual(len(regions), 1, "3.3 V must be continuous on L3")
         power_vias = self.through_via_positions("V3V3")
         # The U6 feeds land beside C23 / VCC_IO and the MS2 address pin.
-        for at in ((117.55, 52.4), (118.4, 51.3), (151.725, 80.09), (153.3, 84.5)):
+        for at in ((117.85, 51.3), (120.15, 51.3), (151.725, 80.09), (153.3, 84.5)):
             with self.subTest(at=at):
                 self.assertIn(at, power_vias)
                 self.assertTrue(in_ground_fill(at, regions))
@@ -519,26 +528,25 @@ class PlacementGeometryTests(unittest.TestCase):
                     at = (x, 50.51 + width * row / rows)
                     self.assertTrue(in_ground_fill(at, supply), at)
 
-    def test_buck_feedback_senses_c4_through_a_dedicated_bottom_trace(self):
-        net = "V3V3"
-        sense, = self.segments["B.Cu", net]
-        ends = [tuple(values(sense, key)) for key in ("start", "end")]
+    def test_buck_feedback_has_a_dedicated_top_trace_from_c4(self):
         c4 = pad_center(self.footprints["C4"], "1")
         fb = pad_center(self.footprints["U1"], "1")
-        supply = plane_fills(self.board, net)["In2.Cu"]
-        for pad, via in zip((c4, fb), sorted(ends, key=lambda at: math.dist(at, c4)), strict=True):
-            self.assertIn(via, self.through_via_positions(net))
-            self.assertLess(planar_trace_length(self.board, net, ("F.Cu", pad),
-                                                ("F.Cu", via), top_only=True), 1.5)
-            # A same-net connection to the L3 pour would bypass the C4 pickup.
-            barrel = self.vias[via]
-            self.assertEqual(str(values(barrel, "start_end_only")[0]), "yes")
-            self.assertNotIn("In2.Cu", values(barrel, "zone_layer_connections", []))
-            radius = via_plane_clearance_radius(barrel, "In2.Cu") - 0.01
-            for degree in range(360):
-                angle = math.radians(degree)
-                at = (via[0] + radius * math.cos(angle), via[1] + radius * math.sin(angle))
-                self.assertFalse(in_ground_fill(at, supply), at)
+        # Both pads share the supply net. An ordinary connectivity check
+        # would also accept a feedback pickup from the load side of the plane.
+        adjacent = defaultdict(list)
+        for track in self.segments["F.Cu", "V3V3"]:
+            a, b = (tuple(values(track, key)) for key in ("start", "end"))
+            adjacent[a].append((b, track))
+            adjacent[b].append((a, track))
+
+        self.assertEqual(len(adjacent[fb]), 1)
+        bend, first = adjacent[fb][0]
+        self.assertCountEqual([end for end, _ in adjacent[bend]], [fb, c4])
+        second = next(track for end, track in adjacent[bend] if end == c4)
+        self.assertTrue({fb, bend, c4}.isdisjoint(self.vias))
+        for track in (first, second):
+            for point in track_samples(track):
+                self.assertTrue(in_ground_fill(point, self.ground_fills["In1.Cu"]), point)
 
     def test_usb_bridge_and_x_driver_take_power_between_pin_and_bypass_capacitor(self):
         net = "V3V3"
@@ -594,7 +602,7 @@ class PlacementGeometryTests(unittest.TestCase):
     def test_control_tracks_keep_adjacent_ground(self):
         for layer, reference, nets in (
             ("F.Cu", "In1.Cu", ("X_STEP", "X_DIR", "Y_STEP", "Y_DIR", "TMC_BUS",
-                                "BOOT_N", "BOOT_BASE", "USB_DTR_N", "USB_RTS_N",
+                                "ESP_RX", "ESP_TX", "TMC_RX", "TMC_TX", "BOOT_N", "BOOT_BASE", "USB_DTR_N", "USB_RTS_N",
                                 "SOL_FAULT_N", "USB_CC1", "USB_CC2", "USB_VBUS", "USB_OE_N",
                                 "USB_DETECT_BASE", "X_SENSE_A", "X_SENSE_B",
                                 "STATUS_IDLE", "STATUS_ALARM",
@@ -603,7 +611,7 @@ class PlacementGeometryTests(unittest.TestCase):
         ):
             for net in nets:
                 # The ground zone clears the via land by 0.20 mm or the drill
-                # by 0.25 mm. Allow 0.04 mm for rounding at the fill boundary.
+                # by 0.30 mm. Allow 0.04 mm for rounding at the fill boundary.
                 antipads = [
                     (at, via_plane_clearance_radius(v, reference) + 0.04)
                     for at, v in self.vias.items() if values(v, "net") == [net]
@@ -689,9 +697,9 @@ class PlacementGeometryTests(unittest.TestCase):
                 self.assertEqual(values(via, "size"), [0.60])
                 self.assertEqual(values(via, "drill"), [0.30])
                 self.assertEqual(values(via, "layers"), ["F.Cu", "B.Cu"])
-            # Start/end-only lands leave the drill plus 0.25 mm clearance on
+            # Start/end-only lands leave the drill plus 0.30 mm clearance on
             # each inner plane. Allow 0.01 mm for KiCad's polygon approximation.
-            antipad_radius = 0.30 / 2 + 0.25 + 0.01
+            antipad_radius = 0.30 / 2 + 0.30 + 0.01
             antipads = [(at, antipad_radius) for at in vias]
             for signal, reference in (("F.Cu", "In1.Cu"), ("B.Cu", "In2.Cu")):
                 samples = list(samples_outside_antipads(self.segments[signal, net], antipads))

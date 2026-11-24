@@ -97,9 +97,10 @@ on the left. Use `component-reference.svg` to locate components by designator.
   Its cathode reaches C1 through the
   L3 12 V plane, and two vias tie its anode to L2 ground. At U1 in the
   upper left, one L1 trace connects the SW pin, C3's switch-side pad and
-  the inductor. A straight 5.86 mm trace on L4 connects the C4 output
-  pickup to the feedback input on U1. Its two vias have lands on L1
-  and L4 only, so the regulator senses the voltage at C4.
+  the inductor. C4 sits on the feedback-pin side of the inductor. A
+  dedicated 6.36 mm top-layer trace runs from its positive pad down the
+  west side of C3, then turns 45° into U1 pin 1. C5 feeds the 3.3 V
+  plane through two vias beside its positive pad.
   R2 and the power LED draw from their own via to the 3.3 V plane.
 - **Planes and returns.** L2 is a continuous ground plane. On L3, the
   12 V zone fills the area outside the 3.3 V and ground zones. Each
@@ -115,14 +116,17 @@ on the left. Use `component-reference.svg` to locate components by designator.
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  L3 ground covers the full width of all 43 L4 digital and motor winding segments
+  L3 ground covers the full width of all 42 L4 digital and motor winding segments
   outside their via and connector-pad clearances. Each via or winding
   connector pin on these routes is within 1.89 mm of a plated
   connection from the same L3 ground region to L2, measured centre to centre.
 - **USB and reset.** Follow the USB data pair from J2 through U3 and U7 to
-  the CH340C (U4). Both VBUS contact groups reach U3 pin 5 on L1.
-  Follow the upper group through the C12 junction and the lower group
-  around the south end of U3. CC2 goes directly to R13 beside J2.
+  the CH340C (U4). On L1, two 0.30 mm VBUS branches leave U3 pin 5
+  at matching 45° angles, run 2.15 mm north and south, then turn toward
+  J2. The upper branch passes through C12 and between the pads of R13.
+  The lower branch passes between the pads of R12. CC1 runs from
+  J2 to R12 in 3.34 mm with one bend. CC2 reaches R13 in 2.15 mm.
+  The ESP32 receive line runs diagonally beside TX into U4 pin 2 on L1.
   Both reset controls stay on L1. From U4 pins 13 and 14, follow DTR
   and RTS north to R5 and Q3. To find their southern branches, look at
   the opposite row of U4 pins. RTS passes between pins 3 and 4 to R6.
@@ -141,13 +145,17 @@ on the left. Use `component-reference.svg` to locate components by designator.
 - **Interlock.** On L1, follow ACTUATOR_ARM from U2 pin 12 through the
   R35 pull-down junction to U10 pin 1. ESP_EN runs beside it into pin 2.
   From U10 pin 4, follow the diagonal through TP12 to both U9 enable pins.
+  The driver-disable command from U2 pin 16 passes through the signal pad
+  of R37 on its way to U9 pin 2. R37 takes 3.3 V from C32.
 - **Solenoid.** On L1, SOL_CMD leaves U2 pin 8, passes between the pads
   of R21, then meets R38 and R23 on its way to U9 pin 5. The buffered
   output, SOL_SAFE, runs straight from U9 pin 3 to R21 and continues as
   SOL_ENABLE to U8. The wide output runs from U8 through the D4 cathode
   to J5 pin 1. The fault signal returns from R34 to U2 pin 6, with TP7
-  on the L1 diagonal.
-- **Motor control.** The motor UART runs from R10 and R11 between D2's
+  on the L1 diagonal. A straight 2.20 mm 12 V trace connects C28 and C34
+  beside U8, with a plane via between their positive pads.
+- **Motor control.** The motor UART receive line leaves U2 pin 27 on a
+  45° diagonal and turns once into R11. The shared bus runs from R10 and R11 between D2's
   pads on L1, then turns diagonally toward U6. Its final straight run
   passes between the pads of C23 and ends at U6 pin 14.
   For U5, follow the L1 diagonal from R10 to its via. The branch then
@@ -167,7 +175,8 @@ on the left. Use `component-reference.svg` to locate components by designator.
   at J3 pins 1 (A1), 2 (A2) and 3 (B1). R17 and R18 face each other.
   Follow the matching sense traces from U5 pins 23 and 27 to their inner
   pads. Each outer pad has two ground vias.
-- **Y motor.** The Y STEP diagonal continues across its via onto L1,
+- **Y motor.** Y STEP runs south from its ESP32 via on L4 and makes one
+  45° turn toward U6. The diagonal continues across its via onto L1,
   passes through R32's pull-down pad and enters U6 pin 16. The L3
   3.3 V branch feeds the 1.72 mm L1 trace between C23 and VCC_IO
   (pin 15), then continues to the via beside MS2 (pin 9).
@@ -219,7 +228,7 @@ via-wall plating and copper resistivity at 70 °C.
   driver, 0.80 A to U8 and 0.20 A to the buck input. The largest copper
   drop is about 45 mV, from Q1's source pads to U8's supply pin.
 - **3.3 V rail, 0.60 A total.** From the inductor output, the copper drop
-  is about 4.2 mV at the ESP32 and 3.8 mV at the CH340.
+  is about 3.7 mV at the ESP32 and 3.3 mV at the CH340.
 - **Q1 vias, 2.00 A total.** With the 12 V loads scaled proportionally,
   the vias beside Q1 pins 1, 2 and 3 carry about 0.69, 0.59 and 0.72 A,
   respectively. The three via barrels dissipate about 2.1 mW in total.
