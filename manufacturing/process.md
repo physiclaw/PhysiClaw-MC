@@ -55,9 +55,14 @@ files. Coordinates are in millimetres with X to the right and Y up.
 
 Select **Standard SMT assembly (标准型)** at JLC China. Gerbers and CPL use
 single-board coordinates. Supply `dist/PHYSICLAW-JLC-panel.jpg` to CAM as the
-one-board assembly layout. Confirm tooling rails, fiducials, separation,
-connector overhangs and tool clearance on the panel drawing. The board has
-a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
+proposed 70 × 70 mm assembly panel. Ask CAM to add the two 10 mm rails,
+four top-side MARK points and four 2 mm non-plated tooling holes shown in the
+drawing. Dimensions are in millimetres. Each MARK has a 1 mm copper diameter
+and a 2 mm mask opening. Its centre is 3.85 mm from the outer rail edge, leaving
+3.35 mm to the edge of the copper. One MARK and one hole are staggered by 5 mm.
+The dashed lines show the proposed V-scores. Before payment, confirm the CAM
+panel preview, including V-scores, connector overhangs and tool clearance. The
+board has a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]
 
 Upload `dist/PHYSICLAW-JLC-BOM.csv` and

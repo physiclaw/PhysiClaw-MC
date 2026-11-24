@@ -272,20 +272,23 @@ def mounting_pads(board):
 
 
 def panel_drawing(path, board, bounds):
-    """Draw one board with 10 mm top and bottom assembly rails."""
+    """Draw the proposed one-board SMT panel for JLC CAM."""
     x0, y0, width, height = bounds
     scale, rail = 16, 10
-    left, top = 65, 100
+    left, top = 128, 120
+    panel_height = height + 2 * rail
     right = left + round(width * scale)
-    bottom = top + round((height + 2 * rail) * scale)
-    image = Image.new("RGB", (right + 200, bottom + 85), "white")
+    bottom = top + round(panel_height * scale)
+    image = Image.new("RGB", (right + 135, bottom + 96), "white")
     pen = ImageDraw.Draw(image)
     font = ImageFont.load_default(size=26)
     ink = "#263840"
-    pen.rectangle((left, top, right, bottom), fill="#dce4e9", outline=ink, width=3)
+    score = "#4b6979"
+    copper = "#9b571b"
     board_top = top + rail * scale
     board_bottom = bottom - rail * scale
-    pen.rectangle((left, board_top, right, board_bottom), fill="#f4f8f7", outline=ink, width=3)
+    pen.rectangle((left, top, right, bottom), fill="#dce4e9")
+    pen.rectangle((left, board_top, right, board_bottom), fill="#f4f8f7")
     for footprint in board.footprints:
         for pad in footprint.pads:
             if not pad.on_layer("F.Cu"):
@@ -298,17 +301,67 @@ def panel_drawing(path, board, bounds):
                 pen.ellipse((x-w, y-h, x+w, y+h), fill="#91a49d")
             else:
                 pen.polygon([(x+u, y+v) for u,v in corners], fill="#91a49d")
-    pen.text((left, 32), "1x1", fill=ink, font=ImageFont.load_default(size=38))
-    pen.text((right, 32), f"{width:g}x{height + 2 * rail:g} mm",
-             anchor="ra", fill=ink, font=ImageFont.load_default(size=38))
-    pen.text(((left+right)/2, bottom+35), f"{width:g} mm", anchor="mm", fill=ink, font=font)
-    for start, end, dimension in ((top, board_top, rail), (board_top, board_bottom, height),
-                                  (board_bottom, bottom, rail)):
-        x = right + 25
-        pen.line((x, start, x, end), fill=ink, width=2)
-        for y in (start, end):
-            pen.line((x-7, y, x+7, y), fill=ink, width=2)
-        pen.text((x+17, (start+end)/2), f"{dimension:g} mm", anchor="lm", fill=ink, font=font)
+
+    for y in (board_top, board_bottom):
+        for x in range(left, right, 22):
+            pen.line((x, y, min(x + 13, right), y), fill=score, width=3)
+    pen.rectangle((left, top, right, bottom), outline=ink, width=3)
+
+    def panel_point(x, y):
+        return left + x * scale, top + y * scale
+
+    def rail_circle(centre, diameter, **style):
+        cx, cy = centre
+        radius = diameter * scale / 2
+        pen.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), **style)
+
+    mark_diameter = 1
+    mask_diameter = 2
+    mark_inset = 3.85
+    stagger = 5
+    mark_x = 13
+    marks = ((mark_x, mark_inset), (width - mark_x, mark_inset),
+             (mark_x + stagger, panel_height - mark_inset),
+             (width - mark_x, panel_height - mark_inset))
+    for x, y in marks:
+        centre = panel_point(x, y)
+        rail_circle(centre, mask_diameter, fill="#fff7df", outline=copper, width=2)
+        rail_circle(centre, mark_diameter, fill=copper)
+
+    hole_diameter = 2
+    hole_x = 4
+    holes = ((hole_x, rail / 2), (width - hole_x, rail / 2),
+             (hole_x, panel_height - rail / 2),
+             (width - hole_x - stagger, panel_height - rail / 2))
+    for x, y in holes:
+        rail_circle(panel_point(x, y), hole_diameter, fill="white", outline=ink, width=2)
+
+    def tick(x, y):
+        pen.line((x-5, y+5, x+5, y-5), fill=score, width=2)
+
+    width_y = bottom + 56
+    pen.line((left, width_y, right, width_y), fill=score, width=2)
+    for x in (left, right):
+        pen.line((x, bottom+8, x, width_y+8), fill=score, width=2)
+        tick(x, width_y)
+    pen.text(((left+right)/2, width_y-19), f"{width:g}", anchor="mm", fill=ink, font=font)
+
+    overall_x = left - 44
+    pen.line((overall_x, top, overall_x, bottom), fill=score, width=2)
+    for y in (top, bottom):
+        pen.line((overall_x-8, y, left-8, y), fill=score, width=2)
+        tick(overall_x, y)
+    pen.text((overall_x-13, (top+bottom)/2), f"{panel_height:g}", anchor="rm", fill=ink, font=font)
+
+    chain_x = right + 44
+    pen.line((chain_x, top, chain_x, bottom), fill=score, width=2)
+    edges = (top, board_top, board_bottom, bottom)
+    for y in edges:
+        pen.line((right+8, y, chain_x+8, y), fill=score, width=2)
+        tick(chain_x, y)
+    for start, end, dimension in zip(edges, edges[1:], (rail, height, rail)):
+        pen.text((chain_x+13, (start+end)/2), f"{dimension:g}", anchor="lm", fill=ink, font=font)
+
     image.save(path, quality=94, subsampling=0)
 
 
