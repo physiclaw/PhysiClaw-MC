@@ -19,7 +19,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from board_data import assembly, check_paste, geometry, require
 from inspection_views import (
     COPPER_COLOURS, PAPER, SVG, append_artwork, board_bounds, board_edges,
-    component_reference, draw, drill_map, mask_and_paste, probe_map, save,
+    component_reference, draw, drill_map, mask_and_paste, panel_drawing, probe_map, save,
     shapes, text, usb_review,
 )
 from kicad_board import Board
@@ -313,7 +313,7 @@ def l3_copper_colours(board, work, complete, run):
     return zones
 
 
-def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
+def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, panel_path, run):
     routing = work / "routing-view.kicad_pcb"
     board.write_routing_view(routing)
 
@@ -351,6 +351,7 @@ def pcb_views(board, pcb, work, out, cam, fill_and_cap, assy, run):
                 outlines=fab if source == routing else None,
             )
 
+    panel_drawing(panel_path, board, bounds)
     component_reference(out, board, bounds, fab, BOARD, VERSION)
     drill_map(out, cam, fill_and_cap, edges, bounds, board)
     mask_and_paste(out, pcb, work, board, bounds,
@@ -548,7 +549,8 @@ def build(work, *, verbose=False):
     run("pcb", "export", "step", "--board-only", *step_options, "-o", step, pcb)
     require(step.stat().st_size > 0, "KiCad wrote an empty STEP model")
     assembly_drawing(board, work, assy / "top-assembly.pdf", run)
-    pcb_views(board, pcb, work, view, cam, fill_and_cap, assy, run)
+    pcb_views(board, pcb, work, view, cam, fill_and_cap, assy,
+              dist / f"{DIST_PREFIX}-panel.jpg", run)
     shutil.copyfile(ROOT / "manufacturing/process.md", review / "process.md")
     shutil.copyfile(ROOT / firmware_config, review / firmware_config)
     shutil.copyfile(ROOT / "LICENSE", review / "LICENSE")

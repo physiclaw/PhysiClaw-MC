@@ -54,7 +54,8 @@ files. Coordinates are in millimetres with X to the right and Y up.
 ## Assembly
 
 Select **Standard SMT assembly (标准型)** at JLC China. Gerbers and CPL use
-single-board coordinates. Confirm tooling rails, fiducials, separation,
+single-board coordinates. Supply `dist/PHYSICLAW-JLC-panel.jpg` to CAM as the
+one-board assembly layout. Confirm tooling rails, fiducials, separation,
 connector overhangs and tool clearance on the panel drawing. The board has
 a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]

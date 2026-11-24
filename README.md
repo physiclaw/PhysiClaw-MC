@@ -67,6 +67,7 @@ and CPL from that build together.
 | JLC upload field | File |
 | --- | --- |
 | PCB (Gerbers and drills) | `dist/PHYSICLAW-JLC-Gerbers.zip` |
+| Proposed assembly panel (拼板示意图) | `dist/PHYSICLAW-JLC-panel.jpg` |
 | SMT bill of materials (BOM) | `dist/PHYSICLAW-JLC-BOM.csv` |
 | SMT placement file (CPL) | `dist/PHYSICLAW-JLC-CPL-mm.csv` |
 

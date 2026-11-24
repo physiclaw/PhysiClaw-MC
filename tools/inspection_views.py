@@ -5,6 +5,8 @@ import math
 import re
 from xml.etree import ElementTree as ET
 
+from PIL import Image, ImageDraw, ImageFont
+
 from board_data import read_drill, require
 from kicad_board import children, rotate, values
 
@@ -267,6 +269,47 @@ def artwork_boxes(panel):
 def mounting_pads(board):
     return (pad for footprint in board.footprints for pad in footprint.pads
             if min(pad.drill) >= 3)
+
+
+def panel_drawing(path, board, bounds):
+    """Draw one board with 10 mm top and bottom assembly rails."""
+    x0, y0, width, height = bounds
+    scale, rail = 16, 10
+    left, top = 65, 100
+    right = left + round(width * scale)
+    bottom = top + round((height + 2 * rail) * scale)
+    image = Image.new("RGB", (right + 200, bottom + 85), "white")
+    pen = ImageDraw.Draw(image)
+    font = ImageFont.load_default(size=26)
+    ink = "#263840"
+    pen.rectangle((left, top, right, bottom), fill="#dce4e9", outline=ink, width=3)
+    board_top = top + rail * scale
+    board_bottom = bottom - rail * scale
+    pen.rectangle((left, board_top, right, board_bottom), fill="#f4f8f7", outline=ink, width=3)
+    for footprint in board.footprints:
+        for pad in footprint.pads:
+            if not pad.on_layer("F.Cu"):
+                continue
+            x = left + (pad.xy[0] - x0) * scale
+            y = board_top + (pad.xy[1] - y0) * scale
+            w, h = (v * scale / 2 for v in pad.size)
+            corners = [rotate(u, v, pad.angle) for u, v in ((-w,-h), (w,-h), (w,h), (-w,h))]
+            if pad.shape == "circle":
+                pen.ellipse((x-w, y-h, x+w, y+h), fill="#91a49d")
+            else:
+                pen.polygon([(x+u, y+v) for u,v in corners], fill="#91a49d")
+    pen.text((left, 32), "1x1", fill=ink, font=ImageFont.load_default(size=38))
+    pen.text((right, 32), f"{width:g}x{height + 2 * rail:g} mm",
+             anchor="ra", fill=ink, font=ImageFont.load_default(size=38))
+    pen.text(((left+right)/2, bottom+35), f"{width:g} mm", anchor="mm", fill=ink, font=font)
+    for start, end, dimension in ((top, board_top, rail), (board_top, board_bottom, height),
+                                  (board_bottom, bottom, rail)):
+        x = right + 25
+        pen.line((x, start, x, end), fill=ink, width=2)
+        for y in (start, end):
+            pen.line((x-7, y, x+7, y), fill=ink, width=2)
+        pen.text((x+17, (start+end)/2), f"{dimension:g} mm", anchor="lm", fill=ink, font=font)
+    image.save(path, quality=94, subsampling=0)
 
 
 def component_reference(out, board, bounds, fab, board_name, version):
