@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reserve the 0.32 mm drill for the 50 filled and capped thermal holes at
+  U2, U5, U6 and U8. Use 0.62 mm lands for a 0.15 mm annular ring.
+  Tent both faces of the four 0.30 mm USB data vias beside J2 and U3.
 - Increase inner-layer hole clearance to 0.30 mm and open the same-net
   gaps at the VBUS-detect and interlock-enable branches.
 
@@ -81,8 +84,7 @@
   the other three X windings over L3 ground. Shorten STEP and DIR and
   give each current shunt two ground vias.
 - Tie the reversible USB-C contacts on L1 and extend L3 ground under VBUS.
-  Move the U3 data vias off-pad. Resin-fill and copper-cap the four J2–U3
-  data vias (0.60 mm lands, 0.30 mm drills) and 50 thermal holes.
+  Move the U3 data vias off-pad.
 - Add two 49.9 Ω shunts to U7 port 1 and move C29 and its 3.3 V via.
 - Use 4.7 µF 0805 capacitors on both TMC2209 5VOUT rails.
 - Move the solenoid flyback diode D4, rotate it 180°, and reroute the

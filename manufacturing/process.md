@@ -30,16 +30,18 @@ bare-board electrical testing.
   [Jack drawing] · [JLC China process limits]
 - **Via clearances.** Allow 0.25 mm from drill edge to other-net copper on the
   outer layers and 0.30 mm on the inner layers.
-  USB signal vias use 0.30 mm drills, 0.60 mm lands and 0.15 mm nominal
-  rings. Drill-to-mask gaps are 0.220 mm at
-  both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
+  Tent both faces of the four 0.30 mm USB signal vias beside J2 and U3.
+  Their 0.60 mm lands have 0.15 mm nominal rings. Drill-to-mask gaps are
+  0.220 mm at both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
   [JLC PCB capabilities]
 - **Filled and capped vias.** Specify epoxy fill, planarization and copper
-  caps on both faces (IPC-4761 Type VII) for the **54** 0.30 mm holes in
-  `sk.gbr` and `PHYSICLAW-JLC-fill-and-cap.csv`. The list covers four off-pad
-  USB vias (two each at J2 and U3) and 50 thermal holes (U2: 12, U5/U6: 16
-  each, U8: 6 including four mask-covered corners). Confirm all locations,
-  flush thermal-pad caps and mask coverage of the USB vias in CAM.
+  caps on both faces (IPC-4761 Type VII) for the **50 thermal holes** marked
+  in `sk.gbr` and `PHYSICLAW-JLC-fill-and-cap.csv`. Each uses a 0.32 mm drill
+  and a 0.62 mm land. There are 12 at U2, 16 each at U5 and U6, and 6 at U8
+  including four mask-covered corners.
+  Confirm all locations, flush thermal-pad caps and the supplied mask in CAM.
+  下单时请仅对 `sk.gbr` 标出的 50 个 Ø0.32 mm 散热孔做环氧树脂塞孔、磨平及双面电镀铜盖帽。
+  J2 和 U3 旁的 4 个 Ø0.30 mm USB 信号过孔仅做双面盖油。阻焊按原稿。
   [JLC Gerber preparation] · [JLC via treatment]
 - **Finish and mask.** Confirm a flat finish, mask registration and
   fine-pitch dams. Preserve the paste and mask geometry. Put the

@@ -7,7 +7,7 @@ from collections import Counter, defaultdict
 import xml.etree.ElementTree as ET
 
 
-THERMAL_DRILL_MM = 0.30
+THERMAL_DRILL_MM = 0.32
 
 
 def require(condition, message):
@@ -257,14 +257,12 @@ def geometry(board, cam, fill_and_cap, out):
         "NPTH": [],
     }
     thermal_counts = {"U2": 12, "U5": 16, "U6": 16, "U8": 6}
-    usb_fill_pins = {("J2", "A6"), ("J2", "A7"), ("U3", "1"), ("U3", "3")}
-    thermals, probes, usb_pads = [], [], []
+    require(not board.capped_vias, "Only the footprint thermal holes may be filled and capped")
+    thermals, probes = [], []
     for f in board.footprints:
         ref = f.ref
         for pad in f.pads:
             x, y = pad.xy
-            if (ref, pad.number) in usb_fill_pins:
-                usb_pads.append((ref, pad))
             if ref.startswith("TP"):
                 probes.append(
                     (
@@ -300,6 +298,11 @@ def geometry(board, cam, fill_and_cap, out):
     observed = {
         kind: read_drill(next(cam.glob(f"*-{kind}.drl"))) for kind in expected
     }
+    require(
+        sum(row[2] == THERMAL_DRILL_MM for drills in observed.values() for row in drills)
+        == len(thermals),
+        "The 0.32 mm drill is reserved for the filled and capped thermal holes",
+    )
 
     def rounded(rows):
         return Counter(tuple(round(n, 3) for n in row) for row in rows)
@@ -309,25 +312,7 @@ def geometry(board, cam, fill_and_cap, out):
             rounded(observed[kind]) == rounded(native),
             kind + " drill geometry differs from CAD",
         )
-    # Associate each off-pad USB via with its nearby contact on the same data net.
-    data_holes = []
-    for x, y, drill, net in board.capped_vias:
-        at = (x, y)
-        matches = [
-            (ref, pad.number)
-            for ref, pad in usb_pads
-            if pad.net == net
-            and math.dist(at, pad.xy) <= 1.25
-            and pad.edge_distance(at) - drill / 2 >= 0.20 - 1e-6
-        ]
-        require(len(matches) == 1 and drill == 0.30, f"Unexpected capped via at {at}")
-        (ref, pin), = matches
-        data_holes.append((ref, pin, x, -y, drill))
-    require(
-        Counter(row[:2] for row in data_holes) == Counter(usb_fill_pins),
-        "Expected one off-pad capped data via at each J2 and U3 data fanout",
-    )
-    holes = sorted(thermals + data_holes)
+    holes = sorted(thermals)
     fill_drills = Counter((x, -y, d, d, 0) for _, _, x, y, d in holes)
     plated_drills = Counter(observed["PTH"])
     require(

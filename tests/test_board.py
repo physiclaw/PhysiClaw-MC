@@ -165,7 +165,6 @@ class PlacementGeometryTests(unittest.TestCase):
         cls.vias = {
             tuple(values(v, "at")): v for v in children(cls.board.tree, "via")
         }
-        cls.capped_positions = {(x, y) for x, y, _, _ in cls.board.capped_vias}
         cls.ground_fills = plane_fills(cls.board, "GND")
         cls.segments = defaultdict(list)
         for segment in children(cls.board.tree, "segment"):
@@ -251,7 +250,7 @@ class PlacementGeometryTests(unittest.TestCase):
             size, = values(via, "size")
             self.assertGreater(distance - size / 2, 1e-6,
                                f"Via land at {at} touches SMT pad {ref}.{number}")
-            minimum = 0.20 if at in self.capped_positions else 0.125
+            minimum = 0.20 if values(via, "net")[0] in {"USB_DP_CONN", "USB_DM_CONN"} else 0.125
             self.assertGreaterEqual(gap + 1e-6, minimum,
                                     f"Via drill at {at} too close to SMT pad {ref}.{number}")
             for pad in self.footprints["F1"].pads:
@@ -259,7 +258,8 @@ class PlacementGeometryTests(unittest.TestCase):
                                         f"Via at {at} too close to F1.{pad.number}")
 
     def test_fill_layer_uses_the_drill_diameter_at_each_flash(self):
-        holes = [("U8", "9", 115.0, -69.0, 0.30), ("J2", "A6", 162.9, -63.25, 0.20)]
+        # Synthetic locations exercise aperture selection for two drill diameters.
+        holes = [("U1", "1", 115.0, -69.0, 0.32), ("U2", "2", 162.9, -63.25, 0.30)]
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "sk.gbr"
             write_via_fill_layer(path, holes)
@@ -267,7 +267,7 @@ class PlacementGeometryTests(unittest.TestCase):
         self.assertIn("%TF.FileFunction,Viafill*%", records)
         self.assertEqual(
             [r for r in records if r.startswith(("%ADD", "D", "X"))],
-            ["%ADD10C,0.200*%", "%ADD11C,0.300*%", "D10*", "X162900000Y-63250000D03*",
+            ["%ADD10C,0.300*%", "%ADD11C,0.320*%", "D10*", "X162900000Y-63250000D03*",
              "D11*", "X115000000Y-69000000D03*"],
         )
 
@@ -689,11 +689,19 @@ class PlacementGeometryTests(unittest.TestCase):
                 for layer in ("In1.Cu", "B.Cu"):
                     self.assertTrue(in_ground_fill(stitch, fills[layer]), layer)
 
-        for net, _, _ in USB_C_CONTACTS:
+        for net, j2_pin, _ in USB_C_CONTACTS:
             vias = {at: v for at, v in self.vias.items() if values(v, "net") == [net]}
             self.assertEqual(len(vias), 2)
-            self.assertTrue(vias.keys() <= self.capped_positions)
+            u3_pin = "1" if net == "USB_DP_CONN" else "3"
+            for ref, pin in (("J2", j2_pin), ("U3", u3_pin)):
+                pad = pad_center(self.footprints[ref], pin)
+                self.assertEqual(sum(math.dist(at, pad) <= 1.25 for at in vias), 1)
             for via in vias.values():
+                tenting, = children(via, "tenting")
+                for side in ("front", "back"):
+                    self.assertEqual(str(values(tenting, side)[0]), "yes")
+                for treatment in ("filling", "capping"):
+                    self.assertEqual(str(values(via, treatment)[0]), "no")
                 self.assertEqual(values(via, "size"), [0.60])
                 self.assertEqual(values(via, "drill"), [0.30])
                 self.assertEqual(values(via, "layers"), ["F.Cu", "B.Cu"])
