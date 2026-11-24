@@ -1,0 +1,5 @@
+#VRML V2.0 utf8
+# Bourns SRP5050FA nominal body and underside terminal envelope.
+Transform { translation 0 0.000000 0.964567 children [ Shape { appearance Appearance { material Material { diffuseColor 0.20 0.20 0.21 } } geometry Box { size 2.165354 2.086614 1.850394 } } ] }
+Transform { translation 0 0.639764 0.019685 children [ Shape { appearance Appearance { material Material { diffuseColor 0.68 0.68 0.68 } } geometry Box { size 1.692913 0.433071 0.039370 } } ] }
+Transform { translation 0 -0.639764 0.019685 children [ Shape { appearance Appearance { material Material { diffuseColor 0.68 0.68 0.68 } } geometry Box { size 1.692913 0.433071 0.039370 } } ] }

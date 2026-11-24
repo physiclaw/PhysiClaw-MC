@@ -82,9 +82,9 @@
       "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
     },
     {
-      "local_symbol": "Regulator_Switching_AP63203WU",
-      "source": "Regulator_Switching:AP63203WU",
-      "note": "Flattened installed KiCad 10.0.8 symbol; grouped pins expanded without changing connectivity"
+      "local_symbol": "Regulator_Switching_TPS54302",
+      "source": "Regulator_Switching:TPS54302",
+      "note": "KiCad 10.0.8 symbol with the local TI DDC0006A footprint assigned"
     },
     {
       "local_symbol": "Switch_SW_Push",
@@ -147,12 +147,15 @@
     "Physiclaw:Texas_UQFN-10_1.5x2mm_P0.5mm": "Package_DFN_QFN:Texas_UQFN-10_1.5x2mm_P0.5mm",
     "Physiclaw:Resistor_SMD_R_0402_1005Metric": "Resistor_SMD:R_0402_1005Metric",
     "Physiclaw:Package_SO_SSOP-8_2.95x2.8mm_P0.65mm": "Package_SO:SSOP-8_2.95x2.8mm_P0.65mm",
-    "Physiclaw:Package_TO_SOT_SMD_SOT-23-5": "Package_TO_SOT_SMD:SOT-23-5"
+    "Physiclaw:Package_TO_SOT_SMD_SOT-23-5": "Package_TO_SOT_SMD:SOT-23-5",
+    "Physiclaw:Capacitor_SMD_C_1210_3225Metric": "Capacitor_SMD:C_1210_3225Metric",
+    "Physiclaw:Bourns_SRP5050FA": "Bourns SRP5050FA recommended layout, https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf"
   },
   "modifications": {
     "Physiclaw:TestPoint_Pad_D1.0mm_Compact": "Derived from the vendored KiCad TestPoint:TestPoint_Pad_D1.0mm. The courtyard diameter is reduced to 1.5 mm. The 1.0 mm copper and mask pad is retained.",
     "Physiclaw:RF_Module_ESP32-WROOM-32UE": "KiCad 10 ESP32-WROOM-32UE manufacturer land pattern. The 12 exposed-pad holes use 0.32 mm drills and 0.62 mm lands. Official Espressif STEP with verified offset.",
     "Physiclaw:Package_DFN_QFN_VQFN-28-1EP_5x5mm_P0.5mm_EP3.7x3.7mm_ThermalVias": "The 16 exposed-pad holes use 0.32 mm drills and 0.62 mm lands.",
+    "Texas_DDC0006A": "TI TPS54302 datasheet, DDC0006A drawing 4214841/E. 1.10 × 0.60 mm lands, 0.95 mm pitch, 2.70 mm row spacing. The solder mask opening extends 0.05 mm beyond each copper edge. Body graphics and 3D envelope adapted from the local KiCad TSOT-23-6 footprint.",
     "TPS1H200A_DGN0008K": "TI DGN0008K-C01, drawing 4232899/A. Six 0.32 mm thermal holes with 0.62 mm lands at the project via locations, 1.76 × 2.11 mm central paste opening with 0.05 mm corner radius, 1.57 × 1.89 mm mask opening.",
     "Physiclaw:Texas_UQFN-10_1.5x2mm_P0.5mm": "Installed KiCad 10 land pattern checked against TI RSE0010A. Tiny silk marker moved to Fab. Project dimensional preview, not manufacturer mechanical CAD.",
     "Physiclaw:Button_Switch_SMD_SW_SPST_TS1187A": "XKB TS-1187A-B-A-B. Dedicated 1.00 × 0.75 mm rounded paste windows follow drawing SP-A0162-41 Rev 01. The TL3342 STEP file is a body envelope.",
@@ -188,6 +191,8 @@
     "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step": "KiCad packages3D/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step",
     "R_0402_1005Metric.step": "KiCad packages3D/Resistor_SMD.3dshapes/R_0402_1005Metric.step",
     "SSOP-8_2.95x2.8mm_P0.65mm.step": "KiCad packages3D/Package_SO.3dshapes/SSOP-8_2.95x2.8mm_P0.65mm.step",
-    "SOT-23-5.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step"
+    "SOT-23-5.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step",
+    "C_1210_3225Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+    "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions, 5.5 × 5.3 × 4.8 mm nominal."
   }
 }

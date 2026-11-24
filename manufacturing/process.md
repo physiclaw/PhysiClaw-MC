@@ -61,7 +61,7 @@ a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]
 
 Upload `dist/PHYSICLAW-JLC-BOM.csv` and
-`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 94 top-side placements.
+`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 97 top-side placements.
 Confirm MPNs, LCSC codes and stock including feeder losses. Fit Littelfuse
 `0467005.NRHF` (5 A, LCSC `C151140`) at F1.
 
@@ -98,6 +98,14 @@ catalog orientation in `manufacturing/jlc-parts.csv`. Save the approved
 preview with the lot.
 [JLC placement FAQ]
 
+- **U1 TPS54302DDCR.** In the board top view, pin 1 is the upper-right land
+  at (116.400, −57.000) mm. The C311983 catalog pad axis gives 180° in
+  the CPL. Confirm the pin-1 mark in the assembly preview. The six copper
+  and paste lands measure 1.10 × 0.60 mm. The 1.20 × 0.70 mm mask openings
+  give 0.05 mm clearance per edge and a 0.25 mm mask web between pins.
+- **L1 and C2.** The CPL places L1 at 90° and C2 at 270°. From above,
+  L1’s two wide terminations run left-to-right and C2’s long body axis
+  runs top-to-bottom. Allow 5.0 mm height above the PCB for L1.
 - **ICs.** Check pin 1 at U4, U5, U6, U7, U8, and U9. The expected CPL angles
   are U4 0°, U5 0°, U6 0°, U7 0°, U8 90°, and U9 90°.
 - **U7 lands.** Confirm the four 0.20 × 0.55 mm copper lands on pins 2, 3,
@@ -195,6 +203,16 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   ESP_EN (TP9), ACT_OE_N (TP12), DRIVERS_DISABLE (TP5), and SOL_ENABLE (TP14)
   against local ground. Verify the actuators stay inhibited during cold start,
   a slow supply ramp, brownout, RESET, and bootloader entry.
+- **3.3 V buck.** At 12 V input, probe across C2 and simultaneously
+  measure TP3 against TP4 using short probe grounds. Capture cold start,
+  a logic-rail load step up to 0.60 A total and back down, and simultaneous
+  stepping, Wi-Fi and solenoid switching. Record input peaks, rail ripple,
+  overshoot, settling and U1/L1 temperatures at thermal equilibrium. After
+  startup, verify V3V3 stays within 3.0–3.6 V and ESP_EN remains released
+  during the load changes. Check that input peaks stay below C2’s 25 V
+  rating. With actuators disconnected, use a current-limited bench supply
+  and a controlled output short. Verify recovery without a power cycle at
+  room temperature and after warm-up.
 - **Motor and solenoid wiring.** Verify both winding pairs as described in
   [Motor harnesses](#motor-harnesses). With the component side up and USB at
   right, J5's upper pin 1 is switched positive and lower pin 2 is ground.

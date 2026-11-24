@@ -240,7 +240,7 @@ class PlacementGeometryTests(unittest.TestCase):
             for pad in footprint.pads
             if pad.kind == "smd" and (pad.on_layer("F.Cu") or pad.on_layer("B.Cu"))
         ]
-        # Mask is 1:1 on the signal and passive lands in this clearance check.
+        # Measure from the copper edge. U1's larger mask opening is checked separately.
         for at, via in self.vias.items():
             drill, = values(via, "drill")
             distance, ref, number = min(
@@ -510,8 +510,14 @@ class PlacementGeometryTests(unittest.TestCase):
         regions = plane_fills(self.board, "V3V3")["In2.Cu"]
         self.assertEqual(len(regions), 1, "3.3 V must be continuous on L3")
         power_vias = self.through_via_positions("V3V3")
+        output = pad_center(self.footprints["C5"], "1")
+        nearby = [at for at in power_vias if math.dist(at, output) < 2]
+        self.assertEqual(len(nearby), 2, "C5 needs two local 3.3 V plane feeds")
+        for at in nearby:
+            self.assertLess(planar_trace_length(self.board, "V3V3", ("F.Cu", output),
+                                                ("F.Cu", at), top_only=True), 2)
         # The U6 feeds land beside C23 / VCC_IO and the MS2 address pin.
-        for at in ((117.85, 51.3), (120.15, 51.3), (151.725, 80.09), (153.3, 84.5)):
+        for at in (*nearby, (151.725, 80.09), (153.3, 84.5)):
             with self.subTest(at=at):
                 self.assertIn(at, power_vias)
                 self.assertTrue(in_ground_fill(at, regions))
@@ -528,25 +534,40 @@ class PlacementGeometryTests(unittest.TestCase):
                     at = (x, 50.51 + width * row / rows)
                     self.assertTrue(in_ground_fill(at, supply), at)
 
-    def test_buck_feedback_has_a_dedicated_top_trace_from_c4(self):
-        c4 = pad_center(self.footprints["C4"], "1")
-        fb = pad_center(self.footprints["U1"], "1")
-        # Both pads share the supply net. An ordinary connectivity check
-        # would also accept a feedback pickup from the load side of the plane.
-        adjacent = defaultdict(list)
-        for track in self.segments["F.Cu", "V3V3"]:
-            a, b = (tuple(values(track, key)) for key in ("start", "end"))
-            adjacent[a].append((b, track))
-            adjacent[b].append((a, track))
+    def test_buck_feedback_senses_c5_and_returns_at_u1_on_top(self):
+        def pad(ref, pin):
+            return ("F.Cu", pad_center(self.footprints[ref], pin))
 
-        self.assertEqual(len(adjacent[fb]), 1)
-        bend, first = adjacent[fb][0]
-        self.assertCountEqual([end for end, _ in adjacent[bend]], [fb, c4])
-        second = next(track for end, track in adjacent[bend] if end == c4)
-        self.assertTrue({fb, bend, c4}.isdisjoint(self.vias))
-        for track in (first, second):
+        fb, = [p.net for p in self.footprints["U1"].pads if p.number == "4"]
+        for net, start, end, max_length in (
+            ("V3V3", pad("C5", "1"), pad("R43", "1"), 12),
+            (fb, pad("U1", "4"), pad("R43", "2"), 6),
+            (fb, pad("U1", "4"), pad("C35", "2"), 8),
+            (fb, pad("U1", "4"), pad("R44", "1"), 3),
+            ("GND", pad("R44", "2"), pad("U1", "1"), 8),
+        ):
+            with self.subTest(net=net, start=start, end=end):
+                length = planar_trace_length(self.board, net, start, end, top_only=True)
+                self.assertLess(length, max_length)
+        self.assertTrue(self.segments["F.Cu", fb])
+        self.assertFalse(self.through_via_positions(fb))
+        self.assertFalse(in_ground_fill(pad("R44", "2")[1], self.ground_fills["F.Cu"]))
+        for track in self.segments["F.Cu", fb]:
             for point in track_samples(track):
                 self.assertTrue(in_ground_fill(point, self.ground_fills["In1.Cu"]), point)
+
+    def test_buck_ddc_lands_keep_mask_clear_of_via_drills(self):
+        regulator = self.footprints["U1"]
+        footprint = next(n for n in children(self.board.tree, "footprint")
+                         if n[1] == regulator.land)
+        margin, = values(footprint, "solder_mask_margin")
+        self.assertAlmostEqual(margin, 0.05)
+        self.assertEqual(len(regulator.pads), 6)
+        for pad in regulator.pads:
+            self.assertEqual(pad.size, (1.1, 0.6))
+            for at, via in self.vias.items():
+                drill, = values(via, "drill")
+                self.assertGreaterEqual(pad.edge_distance(at) - margin - drill / 2, 0.125)
 
     def test_usb_bridge_and_x_driver_take_power_between_pin_and_bypass_capacitor(self):
         net = "V3V3"
@@ -579,8 +600,7 @@ class PlacementGeometryTests(unittest.TestCase):
         self.assertAlmostEqual(length, math.dist(vias[1], pin))
 
     def test_power_led_has_a_direct_feed_from_the_3v3_plane(self):
-        # The buck feedback and LED share a net. DRC also accepts feeding the
-        # LED through the dedicated feedback trace.
+        # Keep LED current on its own plane feed, away from the buck pickup.
         regions = plane_fills(self.board, "V3V3")["In2.Cu"]
         led_feed = ("F.Cu", pad_center(self.footprints["R2"], "1"))
         self.assertTrue(any(

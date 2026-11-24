@@ -3,7 +3,7 @@
 ## Power and control
 
 - A single 12 V adapter supplies both motors, the solenoid, and the logic.
-  The 2.5 A steady-state input target covers all three loads. An AP63203 buck
+  The 2.5 A steady-state input target covers all three loads. A TPS54302 buck
   regulator supplies 3.3 V to the logic.
 - The ESP32-WROOM-32UE-N4 uses an external antenna. A CH340C bridges the
   ESP32's UART to USB-C for programming and serial communication. Each
@@ -22,7 +22,7 @@ to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
 
 | IC | Circuit and layout |
 | --- | --- |
-| U1 AP63203WU-7 | Fixed 3.3 V feedback, EN follows VIN. L1 3.9 µH, C2 10 µF, C4/C5 22 µF each, C3 100 nF from BST to SW. SW stays on L1 copper. [Diodes datasheet, Table 2](https://www.diodes.com/datasheet/download/AP63200-AP63201-AP63203-AP63205.pdf) |
+| U1 TPS54302DDCR | The 100 kΩ / 22.1 kΩ divider sets 3.293 V typical. EN floats for always-on operation. L1 is 6.8 µH, C2 is 47 µF / 25 V, C3 is 100 nF from BOOT to SW, C4/C5 are 47 µF each, and C35 is 47 pF across R43. The DDC0006A land pattern follows TI’s package drawing. [TI datasheet, §§4, 6.3, 7.2 and 10](https://www.ti.com/lit/ds/symlink/tps54302.pdf) |
 | U2 ESP32-WROOM-32UE-N4 | C6/C7 are 22 µF and 100 nF. EN uses 10 kΩ and 1 µF. GPIO0 has a pull-up and download transistors. GPIO2/GPIO12 use the module straps. GPIO34 takes an externally pulled-up fault signal. [Espressif datasheet](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) |
 | U3 USBLC6-2SC6 | Pins 1/6 carry D+, 3/4 carry D−, 5 connects to VBUS and C12, and 2 returns to ground beside J2. [ST datasheet](https://www.st.com/resource/en/datasheet/usblc6-2.pdf) |
 | U4 CH340C | V3 and VCC share 3.3 V with 100 nF at each pin. R232 is low. The internal oscillator drives the UART, with TXD/RXD crossed to the ESP32. [WCH datasheet](https://www.wch-ic.com/downloads/CH340DS1_PDF.html) |
@@ -52,19 +52,20 @@ exported netlist agree with the manufacturer pinouts cited above.
 
 | Circuit | Fit and operating margin |
 | --- | --- |
-| 12 V input and buck | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. At 12 V in, 3.3 V out and 0.60 A load, U1's nominal 1.1 MHz and 3.9 µH give about 0.56 A peak-to-peak ripple and 0.88 A peak in L1. L1 is rated 2.1 A thermal and 3 A saturation. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [Q1 datasheet](https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf) · [U1 datasheet, §§9–10](https://www.diodes.com/datasheet/download/AP63200-AP63201-AP63203-AP63205.pdf) · [L1 ratings](https://jlcpcb.com/partdetail/Sunlord-SWPA4030S3R9MT/C96899) · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
+| 12 V input | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [Q1 datasheet](https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf) · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
+| 3.3 V buck | At 12 V in and 0.60 A out, 6.8 µH at 400 kHz gives 0.88 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Bourns rates L1 at 7.8 A typical for 30% inductance loss at 25 °C, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.205–3.381 V static at 12 V. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Bourns L1 data](https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
 | Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. At 0.400 A RMS with 0.100 Ω shunts and the 180 mV sense range, the nominal equation gives an IRUN register value near 11. This fits the StealthChop range of 8–31 and is below ADI's preferred 16–31 for best microstep precision. Verify the programmed range and measure phase current and low-speed motion with the intended motors. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] |
 | Solenoid | U9 drives U8 IN through 10 kΩ with 47 kΩ to ground. At a 3.3 V drive and TI's 150 kΩ minimum internal pulldown the input is about 2.58 V, above its 1.8 V high threshold. R33 gives a nominal 1.21 A limit, about 1.02–1.41 A including its 1% tolerance and TI's ±15% under the specified limit-test conditions. Compare the minimum to cold-coil current at the highest adapter voltage. At 200 Hz a 1% command lasts 50 µs. TI gives 20–90 µs turn-on delay at 13.5 V and 0.1 A, before the output rise. Determine usable duty range and release time on the actual coil. [TI datasheet, §§5.5–5.6](https://www.ti.com/lit/ds/symlink/tps1h200a-q1.pdf) |
 
 ### IC availability
 
-JLCPCB's public international parts catalog reported the quantities below on
-23 November 2026. They describe that catalog before assembly losses. JLC
+JLCPCB’s public international parts catalog reported the quantities below on
+23 November 2026 for U2–U11. They describe that catalog before assembly losses. JLC
 China order allocation and replenishment dates require a lot-specific quote.
 
 | Ref | Manufacturer part number | JLCPCB reported pieces |
 | --- | --- | ---: |
-| U1 | AP63203WU-7 | [7](https://jlcpcb.com/partdetail/C780769) |
+| U1 | TPS54302DDCR | [C311983 listing](https://jlcpcb.com/partdetail/TexasInstruments-TPS54302DDCR/C311983) |
 | U2 | ESP32-WROOM-32UE-N4 | [9,712](https://jlcpcb.com/partdetail/C701344) |
 | U3 | USBLC6-2SC6 | [38,798](https://jlcpcb.com/partdetail/C7519) |
 | U4 | CH340C, SOP-16 | [16](https://jlcpcb.com/partdetail/C7464026) |
@@ -77,10 +78,9 @@ China order allocation and replenishment dates require a lot-specific quote.
 
 For U8, TI lists the exact switch as active and AEC-Q100 qualified, and
 DigiKey lists the DGN part in cut tape. Request JLC sourcing of that MPN
-before scheduling assembly. For U1, Farnell lists the fixed 3.3 V order
-code. For U4, JLC's second listing for the same WCH CH340C in SOP-16
+before scheduling assembly. For U4, JLC's second listing for the same WCH CH340C in SOP-16
 reported 71,042 pieces under C84681. Confirm pin 1 and catalog rotation in
-the placement preview if adopting that code. [TI U8 status](https://www.ti.com/product/TPS1H200A-Q1/part-details/TPS1H200AQDGNRQ1) · [DigiKey U8](https://www.digikey.com/en/products/detail/texas-instruments/TPS1H200AQDGNRQ1/9593381) · [Farnell U1](https://jp.farnell.com/en-JP/diodes-inc/ap63203wu-7/dc-dc-conv-sync-buck-1-1mhz-85deg/dp/3518307) · [JLC alternate U4 listing](https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH340C/C84681)
+the placement preview if adopting that code. [TI U8 status](https://www.ti.com/product/TPS1H200A-Q1/part-details/TPS1H200AQDGNRQ1) · [DigiKey U8](https://www.digikey.com/en/products/detail/texas-instruments/TPS1H200AQDGNRQ1/9593381) · [JLC alternate U4 listing](https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH340C/C84681)
 
 ## Layout and enclosure
 
@@ -95,13 +95,15 @@ on the left. Use `component-reference.svg` to locate components by designator.
   from Q1 pin 2. Its anode connects straight across to the gate at pin 4,
   where the trace turns down to R1. D2 clamps transients on V12.
   Its cathode reaches C1 through the
-  L3 12 V plane, and two vias tie its anode to L2 ground. At U1 in the
-  upper left, one L1 trace connects the SW pin, C3's switch-side pad and
-  the inductor. C4 sits on the feedback-pin side of the inductor. A
-  dedicated 6.36 mm top-layer trace runs from its positive pad down the
-  west side of C3, then turns 45° into U1 pin 1. C5 feeds the 3.3 V
-  plane through two vias beside its positive pad.
-  R2 and the power LED draw from their own via to the 3.3 V plane.
+  L3 12 V plane, and two vias tie its anode to L2 ground. At U1, C2's
+  positive pad feeds VIN directly. C2 ground and U1 ground each have two
+  vias to L2. From U1 pin 2, a straight 2.18 mm trace, 0.55 mm wide, reaches
+  L1. C3 branches from the switch-side land. On the other side of L1,
+  a wide 3.3 V trace feeds C4 and C5. Two vias at
+  C5 feed the 3.3 V plane. A separate sense trace runs from C5 to R43 and
+  C35. Below U1, a straight trace joins the feedback ends of R44, R43 and
+  C35. R44 returns to U1 pin 1 on the top layer. A copper-pour keepout
+  isolates this return up to pin 1. R2 shares the reset supervisor’s plane feed. TP3 has its own via.
 - **Planes and returns.** L2 is a continuous ground plane. On L3, the
   12 V zone fills the area outside the 3.3 V and ground zones. Each
   supply forms one continuous region. Four ground regions connect to L2.
@@ -206,7 +208,7 @@ components and cables.
 | U8 output to J5 | 0.40 mm for the first 1.10 mm, then 0.80 and 1.20 mm | 0.80 A solenoid |
 | U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.40 A RMS per phase |
 | U5/U6 current-sense pins to shunts | 0.30 and 0.50 mm on X, 0.25 and 0.45 mm on Y | Same phase current |
-| Buck and ESP32 | 0.60 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
+| Buck and ESP32 | 0.55 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
 
 C16 bypasses U5's 3.3 V digital I/O supply. The L3 supply via sits on
 the 1.62 mm trace between C16 and U5 pin 15, 0.83 mm from the capacitor.
