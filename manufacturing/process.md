@@ -65,7 +65,7 @@ board has a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]
 
 Upload `dist/PHYSICLAW-JLC-BOM.csv` and
-`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 97 top-side placements.
+`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 96 top-side placements.
 Confirm MPNs, LCSC codes and stock including feeder losses. Fit Littelfuse
 `0467005.NRHF` (5 A, LCSC `C151140`) at F1.
 
@@ -109,9 +109,13 @@ preview with the lot.
   runs top-to-bottom. Allow 5.0 mm height above the PCB for L1.
 - **ICs.** Check pin 1 at U4, U5, U6, U7, and U9. The expected CPL angles
   are U4 0°, U5 0°, U6 0°, U7 0°, and U9 90°.
-- **Solenoid transistors.** Q6 uses 90° and Q7 uses 270° in the CPL. Verify
-  Q6 pin 1 (source) and Q7 pin 1 (base) against the assembly drawing.
-  Q6 pins 5–8 connect to J5 pin 1.
+- **Q1 and Q6.** Fit UMW AO4407A (`C2841482`) at both positions. The
+  alternate is AOS AO4407A (`C16072`). If using the alternate, select its
+  exact code for both positions in the assembly order and record it with
+  the lot. Both catalog footprints use the same pin 1 to pin 4 axis.
+  Check pin 1 (source) at Q1 (270°) and Q6 (90°) against the assembly
+  drawing. Q6 pins 5–8 connect to J5 pin 1.
+- **Q7.** Check pin 1 (base) at 270° in the CPL.
 - **U7 lands.** Confirm the four 0.20 × 0.55 mm copper lands on pins 2, 3,
   7 and 8 with JLC CAM and assembly. TI specifies this land pattern, and the
   smaller dimension is below JLC’s generic SMD-pad guideline.

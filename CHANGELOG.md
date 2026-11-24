@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use UMW AO4407A (C2841482) as the primary part at Q1 and Q6, with
+  AOS AO4407A (C16072) as the pin-compatible alternate.
 - Drive the 12 V solenoid with an AO4407A and MMBT3904. Retain hardware
   inhibit, PWM and flyback at J5. The discrete output has no branch current
   limit or fault feedback. Use its matching FluidNC configuration.

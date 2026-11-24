@@ -12327,7 +12327,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf"
+		(property "Datasheet" "https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -12373,7 +12373,19 @@
 				)
 			)
 		)
-		(property "LCSC" "C16072"
+		(property "Manufacturer" "UMW"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "57dc7f88-fcb0-4040-8957-cb8924cf4569")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2841482"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -17161,7 +17173,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf"
+		(property "Datasheet" "https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -17207,7 +17219,19 @@
 				)
 			)
 		)
-		(property "LCSC" "C16072"
+		(property "Manufacturer" "UMW"
+			(at 0 0 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b807887d-2ace-4000-a000-52332e5adc24")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C2841482"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
