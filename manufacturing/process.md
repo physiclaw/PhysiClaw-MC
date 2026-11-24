@@ -237,12 +237,21 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   during simultaneous stepping, Wi-Fi, acceleration and braking. The steady
   input target is 2.5 A. With the SMBJ15A at D2 on V12, measure hot-plug and
   braking peaks and verify adapter overload recovery.
-- **Solenoid.** Use the rated 12 V / 0.8 A coil and a current-limited supply.
-  Check J5 stays off at power-up and during reset. Arm with `$RM=0` and
-  measure Q6 gate-to-source voltage, J5 voltage and coil current at 200 Hz
-  with `M3 S10`, `M3 S500` and `M3 S1000` at 100% override. At full
-  duty expect roughly −8 V gate-to-source. Verify flyback decay and release
-  after `M5` and `$RM=1`. Check Q6, Q7 and D4 temperature under load.
+- **Solenoid PWM.** Use the intended harness, rated 12 V / 0.8 A coil and a
+  current-limited supply. Verify J5 stays off at power-up and during reset.
+  Arm with `$RM=0`. At 200 Hz and 100% override, capture J5 voltage and coil
+  current at `M3 S10`, `M3 S500`, `M3 S990` and `M3 S1000`. At S10 and
+  S990 compare the 50 µs commanded on- and off-intervals respectively with
+  the actual pulses at J5. Record the shortest usable on- and off-pulse if
+  the application uses commands closer to either endpoint.
+- **Q6 voltage stress.** Probe differentially at the package with short leads.
+  Use pin 3 as the source reference for gate pin 4 and drain pin 5. Expect
+  about 0 V gate-to-source when off and −8.1 V at full duty with 12 V applied.
+  Capture the most negative drain-to-source voltage and both gate-to-source
+  peaks during coil turn-off, adapter hot-plug and motor braking with the coil
+  connected. Record headroom to the UMW absolute limits of −30 V and ±25 V,
+  respectively. Verify current decay and mechanical release after `M5` and
+  `$RM=1`, and check Q6, Q7 and D4 temperatures under load. [UMW AO4407A][Q6 datasheet]
   J5 has no branch short-circuit trip or GPIO fault indication.
 - **USB.** With USB alone, verify that the 3.3 V rail stays off and the host
   detects no USB device. Apply 12 V and verify enumeration, flashing, and
@@ -263,6 +272,7 @@ For each shipped board, record the firmware version, configuration revision,
 and functional test result with the [board and source identifiers](../CONTRIBUTING.md#release-a-hardware-revision).
 
 [First-article acceptance]: #first-article-acceptance
+[Q6 datasheet]: https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf
 [JST XH datasheet]: https://www.jst-mfg.com/product/pdf/eng/eXH.pdf
 [JST PH datasheet]: https://www.jst-mfg.com/product/pdf/eng/ePH.pdf
 [JLC stackups]: https://jlcpcb.com/impedance

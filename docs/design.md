@@ -55,7 +55,24 @@ exported netlist agree with the manufacturer pinouts cited above.
 | 12 V input | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [UMW Q1 datasheet][UMW AO4407A] · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
 | 3.3 V buck | At 12 V in and 0.60 A out, 6.8 µH at 400 kHz gives 0.88 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Cjiang lists 7.8 A typical saturation current for L1, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.205–3.381 V static at 12 V. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Cjiang FEXL0550A land pattern and ratings](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
 | Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. At 0.400 A RMS with 0.100 Ω shunts and the 180 mV sense range, the nominal equation gives an IRUN register value near 11. This fits the StealthChop range of 8–31 and is below ADI's preferred 16–31 for best microstep precision. Verify the programmed range and measure phase current and low-speed motion with the intended motors. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] |
-| Solenoid | U9 drives Q7 through 2.2 kΩ R21. R22 pulls the base to ground during reset or disarm. At 12 V, a saturated Q7 and the 2.2 kΩ / 1 kΩ gate divider give about −8.1 V gate-to-source. Using UMW’s 18.5 mΩ maximum at −4.5 V and 25 °C gives a conservative conduction-loss estimate of 12 mW at 0.8 A and full duty. At 200 Hz, a 1% command is 50 µs. Verify the actual gate swing, duty range, coil release and temperature on the first article. The 5 A input fuse and adapter are shared by the board. The solenoid branch has no dedicated current limit or fault feedback. |
+| Solenoid | U9 drives Q7 through 2.2 kΩ R21. R22 pulls the base to ground during reset or disarm, and R33 returns Q6's gate to its source. The 5 A input fuse and adapter are shared by the board. The solenoid branch has no dedicated current limit or fault feedback. |
+
+### Q6 switching margins
+
+At 12 V, allowing 0.2 V across saturated Q7 gives 3.69 mA through R33 and R45
+and −8.1 V from Q6 gate to source. UMW specifies 18.5 mΩ maximum at −4.5 V
+and 25 °C. Using that figure at 0.8 A gives about 15 mV drop and 12 mW
+conduction loss at full duty. On-resistance rises with junction temperature.
+[UMW AO4407A, pp. 3 and 5][UMW AO4407A]
+
+When D4 conducts at turn-off, Q6 sees the local V12 rail plus D4's forward
+drop across source and drain. Harness ringing and rail surges add to that
+stress. UMW rates Q6 for −30 V drain-to-source and ±25 V gate-to-source.
+R33 alone turns Q6 off through 2.2 kΩ. UMW measured switching times with a
+3 Ω generator. At the configured 200 Hz, a 1% on- or off-interval is 50 µs.
+Use measured edges to establish the usable duty range with the intended coil
+and harness. [UMW AO4407A, pp. 1 and 3][UMW AO4407A] ·
+[First-article measurements](../manufacturing/process.md#first-article-acceptance)
 
 ### JLC China availability
 
