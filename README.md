@@ -85,8 +85,8 @@ through-hole assembly.
 
 ## Edit and verify the design
 
-Update the schematic, including each changed part's MPN and LCSC fields,
-then run **Update PCB from Schematic**. For substitutions, verify the
+Update the schematic's MPN, LCSC code, datasheet and manufacturer (when
+specified), then run **Update PCB from Schematic**. For substitutions, verify the
 footprint and update the [JLC part table](manufacturing/jlc-parts.csv).
 Run the placement geometry checks and regenerate the outputs. The build also
 runs KiCad ERC and DRC.

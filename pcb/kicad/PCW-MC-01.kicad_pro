@@ -414,7 +414,7 @@
       "GND": [
         "Ground"
       ],
-      "SOL_RETURN": [
+      "SOL_POS": [
         "Load2A"
       ],
       "USB_DM": [

@@ -70,7 +70,7 @@ was L1 (1,379 pieces). The PJ-102BH through-hole jack had 68 pieces.
 | Reference | Stocked ordering code | Compatibility with the board |
 | --- | --- | --- |
 | Q1, Q6 | UMW AO4407A, C2841482 | The −30 V P-channel MOSFET uses a 1.27 mm pitch SOP-8. Pins 1–3 are source, pin 4 is gate and pins 5–8 are drain. The AOS AO4407A (C16072) fits the same lands and pinout. [UMW datasheet][UMW AO4407A] · [AOS datasheet](https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf) |
-| L1 | FEXL0550A-6R8M, C5378515 | 6.8 µH ±20%, 28.6 mΩ maximum DCR. The recommended lands are 4.7 × 1.25 mm with a 2.0 mm gap, identical to the PCB footprint. The catalog pad 1 to pad 2 axis is 0°, giving 90° in the CPL. [Cjiang datasheet](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) |
+| L1 | FEXL0550A-6R8M, C5378515 | 6.8 µH ±20%, 28.6 mΩ maximum DCR. The existing Bourns SRP5050FA footprint matches the 4.7 × 1.25 mm recommended lands and 2.0 mm gap. Both parts have a 5.5 × 5.3 × 4.8 mm nominal body. Allow 5.0 mm maximum part height for L1. The catalog pad 1 to pad 2 axis is 0°, giving 90° in the CPL. [Cjiang datasheet](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) |
 | C4, C5 | GRM21BR61A476ME15L, C124129 | The L and K suffixes identify reel size. Both contain the same 0805, 47 µF, 10 V X5R capacitor with the same DC-bias curve. [Murata datasheet](https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM21BR61A476ME15-01A.pdf) |
 | R44 | RT0603BRD0722K1L, C723484 | 22.1 kΩ ±0.1%, 100 mW, ±25 ppm/°C, 0603. The divider ratio and initial tolerance are unchanged. [Yageo datasheet](https://yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722K1L) |
 

@@ -473,7 +473,7 @@
     )
     (uuid "60c51072-f6f5-5785-b054-bd3e75e60062")
   )
-  (text "Protected high-side output / 12 V"
+  (text "P-channel high-side output / 12 V"
     (at 201.93 114.3 0)
     (effects
       (font

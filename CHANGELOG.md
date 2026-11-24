@@ -6,7 +6,8 @@
   AOS AO4407A (C16072) as the pin-compatible alternate.
 - Drive the 12 V solenoid with an AO4407A and MMBT3904. Retain hardware
   inhibit, PWM and flyback at J5. The discrete output has no branch current
-  limit or fault feedback. Use its matching FluidNC configuration.
+  limit or fault feedback. Retire the fault probe TP7 and use the matching
+  FluidNC configuration.
 
 - Reserve the 0.32 mm drill for the 44 filled and capped thermal holes at
   U2, U5 and U6. Use 0.62 mm lands for a 0.15 mm annular ring.
@@ -57,8 +58,7 @@
   and zero vias, down from 98.0 mm and ten vias. With U10 and U11
   relocated, ESP_EN uses 15.7 mm more trace than before the Q3 move.
 - Route the X motor outputs into J3 on three parallel L4 diagonals and remove
-  a bend at J4 pin 1. Simplify the indicator, USB CC1 and solenoid fault
-  routes and move TP7 onto the fault trace.
+  a bend at J4 pin 1. Simplify the indicator and USB CC1 routes.
 - Route J1 through F1 to Q1 entirely on L1 and remove nine power vias.
   Straighten the nearby gate, Y_STEP and U6 bypass routes.
 - Consolidate the L3 power and ground pours. Improve the 12 V path to D2,
@@ -78,8 +78,7 @@
   onto their traces. The seven interlock nets now use 6 vias and 182.1 mm of
   trace, down from 26 vias and 243.7 mm.
 - Place C6 and C7 together at the ESP32 supply pin and group its reset circuit
-  on L1. Reduce the fault trace from nine bends to four and extend L3 ground
-  beneath the revised DTR and RTS routes on L4.
+  on L1. Extend L3 ground beneath the revised DTR and RTS routes on L4.
 - Route Y_STEP beside Y_DIR and group the idle and alarm traces on L4 over
   L3 ground. Shorten the alarm trace from 22.8 to 14.1 mm and remove three
   DTR vias by routing from the USB bridge to the boot transistor on L1.

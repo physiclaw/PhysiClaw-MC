@@ -193,6 +193,6 @@
     "SSOP-8_2.95x2.8mm_P0.65mm.step": "KiCad packages3D/Package_SO.3dshapes/SSOP-8_2.95x2.8mm_P0.65mm.step",
     "SOT-23-5.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step",
     "C_1210_3225Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
-    "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions, 5.5 × 5.3 × 4.8 mm nominal."
+    "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions. The fitted Cjiang FEXL0550A has the same 5.5 × 5.3 × 4.8 mm nominal body and 4.3 × 1.1 mm terminal faces. Cjiang FEXL series specification, mechanical dimensions: https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf"
   }
 }

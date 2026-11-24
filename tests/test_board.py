@@ -460,6 +460,8 @@ class PlacementGeometryTests(unittest.TestCase):
                 self.assertAlmostEqual(length, math.dist(a, b))
 
     def test_solenoid_switch_polarity_and_default_off_paths(self):
+        assignments = self.project["net_settings"]["netclass_assignments"]
+        self.assertIn("Load2A", assignments.get("SOL_POS", []))
         expected = {
             "Q6": {"1": "V12", "2": "V12", "3": "V12", "4": "SOL_GATE",
                    "5": "SOL_POS", "6": "SOL_POS", "7": "SOL_POS", "8": "SOL_POS"},

@@ -111,6 +111,8 @@ def assembly(board, netlist, native_positions, package_table, out, *, bom_path, 
         land = f.land
         require(
             all(f.fields[k] == fields[k] for k in ("MPN", "LCSC"))
+            and f.fields.get("Manufacturer", "") == (fields.get("Manufacturer") or "")
+            and f.fields.get("Datasheet", "") == c.findtext("datasheet", "")
             and f.fields["Value"] == c.findtext("value")
             and land == c.findtext("footprint"),
             "PCB/schematic identity mismatch at " + ref,

@@ -8,7 +8,7 @@
   (condition "A.NetName == 'VIN_RAW' || A.NetName == 'VIN_FUSED'")
   (constraint track_width (min 0.8mm)))
 
-(rule "Protected solenoid positive output minimum escape width"
+(rule "Switched solenoid positive output minimum escape width"
   (condition "A.NetName == 'SOL_POS'")
   (constraint track_width (min 0.4mm)))
 
