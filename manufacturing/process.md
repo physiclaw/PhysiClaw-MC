@@ -198,11 +198,13 @@ Complete the unpowered checks in [First-article acceptance] before power-up.
    directory, run `sh install-wifi.sh` for the ESP32. On a new module, close
    FluidTerm and run `sh install-fs.sh` to initialize the filesystem. This
    replaces its contents. [FluidNC v4.1.1 release] · [FluidNC installation guide]
-3. Verify the rear `PCW-MC-01 R100` legend and R17–R20 (0.100 Ω) against the
-   assembly BOM. Upload this revision’s `firmware/config.yaml` only to this
-   shunt population. Set
+3. Verify the rear `PCW-MC-01` legend and confirm the assembly matches the
+   BOM, including the 0.100 Ω shunts at R17–R20. Upload this revision’s
+   `firmware/config.yaml`. Set
    `$Config/Filename=config.yaml` and restart. Save the 115200-baud boot log.
-   Verify both TMC2209s respond on UART1 at addresses 0 and 1.
+   Confirm the log reports `Kinematic system: CoreXY` and both TMC2209s
+   pass their UART1 checks at addresses 0 (J3, right motor B) and 1
+   (J4, left motor A).
 
 If automatic bootloader entry fails, bridge rear TP1 (IO0) to TP2 (GND),
 press and release RESET, and remove the bridge once the installer connects.
@@ -249,14 +251,16 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
 - **Power-cycle operation and motor current.** With the motors connected and
   solenoid disconnected, cycle 12 V. Verify TP12 (ACT_OE_N) starts high and
   goes low automatically after normal boot. TP5 (DRIVERS_DISABLE) must stay
-  high and J5 off until commanded. Jog each axis directly. Turn J5 on with
+  high and J5 off until commanded. Run the [four CoreXY jogs](../firmware/README.md#first-jogs)
+  to verify the belt assignments, toolhead direction and travel scale. Turn J5 on with
   `M3 S1000`, cycle 12 V again, and verify J5 stays off until a new command.
-  Use the supplied [0.600 A RMS setting](../firmware/README.md) for both
-  axes. Verify the intended motors support the configured phase current.
-  Use a winding current probe on each axis at steady low speed. Measure
+  Use the supplied [0.800 A RMS setting](../firmware/README.md#motor-current-and-outputs)
+  for both motors. Verify the intended motors support the configured phase current.
+  Use a pure X or Y move to keep both motors stepping at steady low speed.
+  Probe one winding of each motor. Measure
   RMS over complete electrical cycles and capture sine peaks. Compare each
-  axis with the nominal 0.597 A RMS and 0.844 A peak for this setting,
-  allowing for driver, shunt and probe tolerances. Check both axes against
+  motor with the nominal 0.7955 A RMS and 1.125 A peak for this setting,
+  allowing for driver, shunt and probe tolerances. Check both motors against
   the motor's ratings. Verify the 500 ms idle disable.
 - **Combined load.** Run the actual payload through repeated loaded moves
   and reversals at the specified top speed and acceleration with both motors
@@ -278,7 +282,7 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   SMBJ13A, the specified clamp at the TVS is 21.5 V at 28 A (10/1000 µs,
   25 °C). [TMC2209 datasheet, §3.1](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf)
 - **Solenoid PWM.** Use the intended harness, rated 12 V / 0.8 A coil and a
-  current-limited supply. Verify J5 and green SOL OUT (D9) stay off at
+  current-limited supply. Verify J5 and green SOL (D9) stay off at
   power-up and during reset. Compare D9 with the voltage across J5 at
   zero and full duty. Repeat with the coil unplugged. Yellow SOL CMD (D6)
   follows the command before the interlock.

@@ -1770,7 +1770,7 @@
         )
       )
     )
-    (property "Value" "GREEN / SOL OUT"
+    (property "Value" "GREEN / SOL"
       (at 274.32 97.78999999999999 90)
       (effects
         (font

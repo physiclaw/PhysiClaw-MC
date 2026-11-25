@@ -319,6 +319,27 @@ class PlacementGeometryTests(unittest.TestCase):
                     self.board, net, start, clamp, top_only=True,
                 ), 8.0)
 
+    def test_corexy_profile_matches_the_gantry_and_motor_connectors(self):
+        config = (Path(__file__).resolve().parents[1] / "firmware/config.yaml").read_text()
+        self.assertRegex(config, r"(?m)^kinematics:\n  CoreXY:\n    x_scaler: 1\.0$")
+        for axis, travel, address, step, direction in (
+            ("x", 110, 0, 25, 26),  # J3 X MOTOR, right motor B
+            ("y", 200, 1, 21, 22),   # J4 Y MOTOR, left motor A
+        ):
+            with self.subTest(axis=axis):
+                block = re.search(rf"^  {axis}:\n((?:    .*\n)+)", config, re.MULTILINE)
+                self.assertIsNotNone(block)
+                self.assertIn("    motor0:\n      tmc_2209:\n", block[1])
+                settings = dict(
+                    line.strip().split(": ", 1) for line in block[1].splitlines() if ": " in line
+                )
+                self.assertEqual(float(settings["steps_per_mm"]), 80)
+                self.assertEqual(int(settings["microsteps"]), 16)
+                self.assertEqual(float(settings["max_travel_mm"]), travel)
+                self.assertEqual(int(settings["addr"]), address)
+                self.assertEqual(settings["step_pin"], f"gpio.{step}")
+                self.assertEqual(settings["direction_pin"].split(":")[0], f"gpio.{direction}")
+
     def test_motor_profile_matches_the_shunts_on_both_axes(self):
         config = (Path(__file__).resolve().parents[1] / "firmware/config.yaml").read_text()
         for axis, references in (("x", ("R17", "R18")), ("y", ("R19", "R20"))):
@@ -329,7 +350,7 @@ class PlacementGeometryTests(unittest.TestCase):
                 self.assertIsNotNone(setting)
                 run = re.search(r"^        run_amps: ([\d.]+)$", block[1], re.MULTILINE)
                 self.assertIsNotNone(run)
-                self.assertAlmostEqual(float(run[1]), 0.600)
+                self.assertAlmostEqual(float(run[1]), 0.800)
                 for ref in references:
                     resistance = float(self.footprints[ref].fields["Value"].split("R")[0])
                     self.assertEqual(resistance, float(setting[1]))

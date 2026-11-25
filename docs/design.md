@@ -52,19 +52,19 @@ schematic parity reported zero violations, unconnected items or parity
 issues. All 21 repository tests passed. The IC pin assignments in the
 exported netlist agree with the manufacturer pinouts cited above.
 
-### R100 operating margins
+### Operating margins
 
 | Circuit | Fit and operating margin |
 | --- | --- |
 | 12 V input | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [UMW Q1 datasheet][UMW AO4407A] · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
 | 3.3 V buck | At 12 V in, 3.347 V out and 0.60 A load, 6.8 µH at 400 kHz gives 0.89 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Cjiang lists 7.8 A typical saturation current for L1, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.257–3.437 V static at 12 V, before divider temperature drift, distribution drop and transients. U11’s maximum rising threshold is 3.08 × 1.02 × 1.015 = 3.189 V, leaving 68 mV of static release margin. The high corner is 163 mV below the 3.6 V logic limit. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Cjiang FEXL0550A land pattern and ratings](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
-| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. With 0.100 Ω shunts and a 0.600 A RMS request, TMCStepper selects the 180 mV sense range and IRUN = 17. The nominal winding current is 0.597 A RMS per phase (0.844 A sine peak). Measure the winding current with the intended motors. Under standard reset settings with open VREF, an enabled driver can request about 1.40 A RMS. These figures exclude resistor tolerance, copper resistance and IC variation. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] · [TMCStepper current calculation](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMCStepper.cpp#L18-L41) |
+| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. With 0.100 Ω shunts and a 0.800 A RMS request, TMCStepper selects the 180 mV sense range and IRUN = 23. The nominal winding current is 0.7955 A RMS per phase (1.125 A sine peak). Measure the winding current with the intended motors. Under standard reset settings with open VREF, an enabled driver can request about 1.40 A RMS. These figures exclude resistor tolerance, copper resistance and IC variation. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] · [TMCStepper current calculation](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMCStepper.cpp#L18-L41) |
 | Solenoid | U9 drives Q7 through 2.2 kΩ R21. R22 pulls the base to ground during reset or disarm, and R33 returns Q6's gate to its source. The 5 A input fuse and adapter are shared by the board. The solenoid branch has no dedicated current limit or fault feedback. |
 
 ### Q6 switching margins
 
 D6 (yellow, SOL CMD) follows GPIO32 before the hardware interlock. D9 (green,
-SOL OUT) and R46 (5.1 kΩ) form a separate branch across the J5 terminals.
+SOL) and R46 (5.1 kΩ) form a separate branch across the J5 terminals.
 At 12 V the branch draws about 2 mA. D9 follows the output PWM and can
 light with the coil unplugged.
 
@@ -257,7 +257,7 @@ components and cables.
 | J1 through F1 to Q1 | 1.50 mm, with a 0.50 mm long, 1.00 mm wide connection at each F1 pad | 2.50 A steady input |
 | Q1 to L3 12 V | Three 0.80 mm feeds and three 0.30 mm drilled vias | 2.50 A shared |
 | Q6 output to J5 | 0.85 mm drain bus, 1.00 mm to D4 and 1.20 mm to J5 | 0.80 A solenoid |
-| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.60 A RMS per phase, 0.85 A peak (rounded design values) |
+| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.80 A RMS per phase, 1.13 A peak (rounded design values) |
 | U5/U6 current-sense pins to shunts | 0.30 and 0.50 mm on X, 0.25 and 0.45 mm on Y | Same phase current |
 | Buck and ESP32 | 0.55 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
 
@@ -271,9 +271,9 @@ supply pins.
 With 35 µm outer copper at 70 °C, each 0.50 mm fuse neck dissipates
 about 1.8 mW at 2.5 A. The DC winding paths from U5/U6 to J3/J4 measure
 12–23 mΩ per lead using routed lengths and widths, a 1.53 mm via barrel and
-18 µm via-wall plating. At 0.60 A RMS the highest-loss lead dissipates
-about 8.3 mW. Each 0.100 Ω shunt dissipates up to 0.036 W averaged over a
-sine cycle and 0.072 W at a 0.85 A crest. Check shunt temperature against
+18 µm via-wall plating. At 0.80 A RMS the highest-loss lead dissipates
+about 14.7 mW. Each 0.100 Ω shunt dissipates up to 0.064 W averaged over a
+sine cycle and 0.128 W at a 1.13 A crest. Check shunt temperature against
 the 0.5 W part's derating curve in the assembled enclosure.
 
 Each driver has 16 filled and capped exposed-pad vias into the ground
@@ -282,10 +282,10 @@ under its 24 V short-duration test. Continuous dual-axis operation at 12 V
 depends on heat dissipation in the fitted enclosure. Qualify both drivers
 together at the specified ambient and payload. [ADI datasheet, §20.3][TMC2209 datasheet]
 
-- **12 V rail, 2.50 A design budget.** At 0.60 A RMS and 1.6 Ω per cold
-  winding, the two 17HD4401S motors together dissipate about 2.3 W in
+- **12 V rail, 2.50 A design budget.** At 0.80 A RMS and 1.6 Ω per cold
+  winding, the two 17HD4401S motors together dissipate about 4.1 W in
   copper. The 0.8 A coil adds 9.6 W. The 30 W continuous board budget
-  leaves 18.1 W for hot-winding resistance rise, mechanical output, drivers,
+  leaves 16.3 W for hot-winding resistance rise, mechanical output, drivers,
   logic and board losses. The 3 A adapter supplies up to 36 W. Measure J1
   current and driver VS directly during loaded acceleration and braking.
 - **3.3 V rail, 0.60 A total.** From the inductor output, the copper drop

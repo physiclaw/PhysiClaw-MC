@@ -2,17 +2,24 @@
 
 ## Unreleased
 
+- Enable CoreXY in the PCW-MC-01 FluidNC profile. J3 (X MOTOR) drives right motor B
+  and J4 (Y MOTOR) drives left motor A. Set gantry travel to 110 × 200 mm,
+  maximum speed to 10000 mm/min and acceleration to 1000 mm/s² on both axes.
 - Set the solenoid PWM frequency to 1 kHz.
-- Mark the 0.100 Ω motor-shunt board R100. Set both axes to 0.600 A RMS
-  in stock FluidNC and specify a regulated 12 V / 3 A adapter.
+- Set both axes to 0.800 A RMS in stock FluidNC with 0.100 Ω motor shunts
+  and specify a regulated 12 V / 3 A adapter.
 - Accept normal motion and solenoid commands after a power cycle. Both
   outputs stay off until commanded.
 - Increase buck startup margin with 102 kΩ at R43. Fit a 13 V standoff
   Littelfuse SMBJ13A at D2 and qualify C2 peaks and both drivers’ supply
   slopes with the production adapter.
 
-- Add a green SOL OUT indicator across the J5 solenoid terminals alongside
-  the existing yellow SOL CMD indicator.
+- Add a green output indicator across the J5 solenoid terminals. The SOL
+  label, D9 and R46 share one row below J5. The yellow SOL CMD indicator
+  shows the command.
+- Center the front crab and PHYSICLAW wordmark between the motor drivers.
+- Move the rear crab to the former board ID position and center PHYSICLAW
+  and PCW-MC-01 beneath it.
 - Straighten the Q7 base and collector routes on the top layer. TP14
   sits at the base branch between R21 and R22. R45 and R33 share a
   straight gate trace to Q6.

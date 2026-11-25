@@ -1,9 +1,13 @@
-# PCW-MC-01 R100 (0.100 ohm shunts) running stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
-# Both axes request 0.600 A RMS per phase with a regulated 12 V / 3 A adapter.
-# Set steps/mm, travel and direction for the machine. Solenoid is 12 V / 0.8 A.
+# PCW-MC-01 running stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
+# Both CoreXY motors request 0.800 A RMS per phase with a regulated 12 V / 3 A adapter.
+# Verify motor direction and travel on the assembled machine. Solenoid is 12 V / 0.8 A.
 # Programming and first-article tests are described in manufacturing/process.md.
-name: PCW-MC-01 R100
+name: PCW-MC-01
 board: PCW-MC-01
+
+kinematics:
+  CoreXY:
+    x_scaler: 1.0
 
 stepping:
   engine: RMT
@@ -44,36 +48,38 @@ axes:
   # Physical ENN has a pull-up, holding both drivers disabled while unarmed.
   # idle_ms releases both motors after 500 ms; no indefinite holding torque.
   shared_stepper_disable_pin: gpio.13:high
+  # J3 (X MOTOR) drives right motor B on the upper belt (X + Y).
   x:
     steps_per_mm: 80.0
-    max_rate_mm_per_min: 500.0
-    acceleration_mm_per_sec2: 25.0
-    max_travel_mm: 100.0
+    max_rate_mm_per_min: 10000.0
+    acceleration_mm_per_sec2: 1000.0
+    max_travel_mm: 110.0
     soft_limits: false
     motor0:
       tmc_2209:
         uart_num: 1
         addr: 0
         r_sense_ohms: 0.100
-        run_amps: 0.600
+        run_amps: 0.800
         hold_amps: 0.150
         microsteps: 16
         run_mode: StealthChop
         use_enable: false
         step_pin: gpio.25
         direction_pin: gpio.26
+  # J4 (Y MOTOR) drives left motor A on the lower belt (X - Y).
   y:
     steps_per_mm: 80.0
-    max_rate_mm_per_min: 500.0
-    acceleration_mm_per_sec2: 25.0
-    max_travel_mm: 100.0
+    max_rate_mm_per_min: 10000.0
+    acceleration_mm_per_sec2: 1000.0
+    max_travel_mm: 200.0
     soft_limits: false
     motor0:
       tmc_2209:
         uart_num: 1
         addr: 1
         r_sense_ohms: 0.100
-        run_amps: 0.600
+        run_amps: 0.800
         hold_amps: 0.150
         microsteps: 16
         run_mode: StealthChop
