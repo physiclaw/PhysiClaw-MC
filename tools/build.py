@@ -195,6 +195,8 @@ L3_REGIONS = {
     "V12": ("12 V", COPPER_COLOURS["In2.Cu"]),
     "V3V3": ("3.3 V", "#74479b"),
     "GND": ("GND", "#477484"),
+    "USB_DTR_N": ("DTR/RTS", "#ae4376"),
+    "USB_RTS_N": ("DTR/RTS", "#ae4376"),
 }
 
 
@@ -259,7 +261,8 @@ def style_copper_plot(path, label, colour, show_pours, *, bottom=None, zone_colo
     text(header, x, y-3.6, f"{BOARD} · {VERSION} · Top view · {mode}",
          size=1.55, colour="#475569")
     if zone_colours is not None:
-        offsets, legend = (33, 24, 14, 6), (*L3_REGIONS.values(), ("Other", colour))
+        offsets = (40, 32, 24, 16, 6)
+        legend = (*dict.fromkeys(L3_REGIONS.values()), ("Other", colour))
     elif bottom is not None:
         offsets, legend = (23, 11), (("L1 Top", COPPER_COLOURS["F.Cu"]),
                                      ("L4 Bottom", COPPER_COLOURS["B.Cu"]))

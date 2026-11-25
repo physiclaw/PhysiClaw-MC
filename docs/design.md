@@ -5,7 +5,7 @@
 - A single 12 V adapter supplies both motors, the solenoid, and the logic.
   The full-load design budget is 2.5 A from a regulated 12 V / 3 A adapter. A TPS54302 buck
   regulator supplies 3.3 V to the logic.
-- The ESP32-WROOM-32UE-N4 uses an external antenna. A CH340C bridges the
+- The ESP32-WROOM-32UE-N4 uses an external antenna. A CP2102N bridges the
   ESP32's UART to USB-C for programming and serial communication. Each
   TMC2209 uses direct STEP and DIR signals, a dedicated current-sense
   circuit, and a separate address on the shared UART.
@@ -25,10 +25,9 @@ to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
 | --- | --- |
 | U1 TPS54302DDCR | The 102 kΩ / 22.1 kΩ divider sets 3.347 V typical. EN floats for always-on operation. L1 is 6.8 µH, C2 is 47 µF / 25 V, C3 is 100 nF from BOOT to SW, C4/C5 are 47 µF each, and C35 is 47 pF across R43. The DDC0006A land pattern follows TI’s package drawing. [TI datasheet, §§4, 6.3, 7.2 and 10](https://www.ti.com/lit/ds/symlink/tps54302.pdf) |
 | U2 ESP32-WROOM-32UE-N4 | C6/C7 are 22 µF and 100 nF. EN uses 10 kΩ and 1 µF. GPIO0 has a pull-up and download transistors. GPIO2/GPIO12 use the module straps. GPIO34 is unconnected. [Espressif datasheet](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) |
-| U3 USBLC6-2SC6 | Pins 1/6 carry D+, 3/4 carry D−, 5 connects to VBUS and C12, and 2 returns to ground beside J2. [ST datasheet](https://www.st.com/resource/en/datasheet/usblc6-2.pdf) |
-| U4 CH340C | V3 and VCC share 3.3 V with 100 nF at each pin. R232 is low. The internal oscillator drives the UART, with TXD/RXD crossed to the ESP32. [WCH datasheet](https://www.wch-ic.com/downloads/CH340DS1_PDF.html) |
+| U3 SP0503BAHTG | Pins 2, 3 and 4 clamp VBUS, D+ and D− respectively to ground at pin 1. [Littelfuse datasheet](https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756) |
+| U4 CP2102N-A02-GQFN24R | VIO, VDD and VREGIN use the board’s regulated 3.3 V. R47 pulls RSTb up through 1 kΩ. Pins 3 and 4 connect directly to D+ and D−. [Silicon Labs, figures 2.3 and 2.6](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf) |
 | U5/U6 TMC2209-LA-T | Each driver has 100 nF at each VS pin, 220 µF bulk, 22 nF across CPI–CPO, 100 nF across VCP–VS and two 0.100 Ω shunts with separate ground returns. CLK is grounded. MS1/MS2 select addresses 0 and 1. VREF is open for digital current scaling. [ADI datasheet §§2, 3, 21][TMC2209 datasheet] · [FluidNC driver initialization](https://github.com/bdring/FluidNC/blob/v4.1.1/FluidNC/src/Motors/TMC2209Driver.cpp) |
-| U7 TS3USB221ARSER | S selects port 2. OE stays high until VBUS turns on Q5. C29 bypasses VCC. [TI datasheet][TS3USB221A datasheet] |
 | Q6 AO4407A and Q7 MMBT3904 | Q6 source pins 1–3 connect to V12 and drain pins 5–8 feed J5 pin 1. Q7 sinks the gate through R45. R33 returns the gate to V12 when Q7 is off. D4 returns flyback current from ground to the switched output. [UMW datasheet][UMW AO4407A] · [CJ datasheet](https://www.jscj-elec.com/gallery/file/MMBT3904%20SOT-23V2.pdf) |
 | U9 SN74LVC2G125DCTR | ACT_OE_N controls both active-low enables. With U9 disabled, R9 pulls the driver disables high and R22 pulls the solenoid input low. C31 is 100 nF. [TI datasheet](https://www.ti.com/lit/ds/symlink/sn74lvc2g125.pdf) |
 | U10 SN74LVC1G132DBVR | The Schmitt NAND enables U9 when ESP_EN and ACTUATOR_ARM are both high. R35 pulls ARM low at startup. C32 is 100 nF. [TI datasheet](https://www.ti.com/lit/ds/symlink/sn74lvc1g132.pdf) |
@@ -54,43 +53,20 @@ exported netlist agree with the manufacturer pinouts cited above.
 
 ### IC datasheet review, 25 November 2026
 
-This review covers the working tree based on `b0c2198`, including the routed
-PCB with SHA-256 prefix `8d6e89f8535b`. A fresh KiCad 10.0.8 build passed
-ERC, zone-refilled DRC, schematic parity, and the assembly checks for 105
-fitted references and 47 MPNs. All 42 repository tests passed. The exported
-netlist and PCB agree with the package pinouts for all ten fitted U-designators
-in the IC implementation table. The findings below concern operation of the
-assembled circuits and the stock firmware. First-article measurements are pending.
+The CP2102N migration supersedes the USB circuit in commit `4bc99ea`. The remaining IC and firmware findings below come from the 25 November board review. First-article measurements are pending.
 
-Datasheet editions reviewed were TPS54302 rev. C, ESP32-WROOM-32UE v2.1,
-USBLC6-2 rev. 7, CH340 v3C, TMC2209 rev. 1.09, TS3USB221A rev. C,
-SN74LVC2G125 rev. Q, SN74LVC1G132 rev. E and TLV803E rev. J.
+Datasheets used for the current circuit include TPS54302 rev. C, ESP32-WROOM-32UE v2.1, CP2102N rev. 1.5, Littelfuse SP050xBA, TMC2209 rev. 1.09, SN74LVC2G125 rev. Q, SN74LVC1G132 rev. E and TLV803E rev. J.
+
 Firmware findings use the tagged source and the project's cited TMCStepper
 v0.7.3. FluidNC's build accepts a range of library versions. A UART capture
 on the shipped image can establish the actual register sequence.
 [Manufacturer links](#ic-implementation) · [FluidNC dependency range](https://github.com/bdring/FluidNC/blob/v4.1.1/platformio.ini)
 
-**USB host removal can leave the data switch on.** With 12 V still applied
-after enumeration, U4's full-speed D+ pull-up can feed J2 VBUS through the
-enabled U7 and U3's upper steering diode. VBUS then supplies Q5 base current
-through R29 (10 kΩ). Q5 only needs to sink about 33 µA through R30 (100 kΩ)
-to keep U7 enabled. This feedback path exists in the exported netlist.
-For scale, a DC estimate with a 3.3 V pull-up through 1.5 kΩ, a 0.6 V
-steering-diode drop, 0.7 V at Q5's base and the USB-IF fixture's three
-15 kΩ loads gives about 2.03 V on VBUS and 2.63 V on D+. That supplies
-135 µA to the fixture's VBUS resistor and 133 µA to Q5's base. Even an
-illustrative weaker pull-up (3.0 V through 3 kΩ) and a 1.0 V steering-diode
-drop give 1.18 V on fixture VBUS. These steady-state estimates assume U7
-was enabled and the CH340C pull-up remains active. With the cable physically
-removed, current into the host is zero. With the cable attached and host
-port power switched off, the outcome depends on how strongly the host
-discharges VBUS and loads the data lines. A host that pulls VBUS low enough
-turns Q5 off. Re-enumeration failures and host damage have not been
-demonstrated. For first-article qualification, keep J1 powered, measure J2
-VBUS, D+, D− and U7 pin 6 before enumeration and after transferring the
-enumerated device to the fixture. The Appendix F limit is 0.4 V on each
-of the three USB lines. Check port power cycling separately on the intended
-host or hub. [USB schematic](../pcb/kicad/schematics/03-usb.kicad_sch) · [ST USBLC6-2 rev. 7, §2.2](https://www.st.com/resource/en/datasheet/usblc6-2.pdf#page=4) · [WCH CH340, §5.1](https://www.wch-ic.com/downloads/CH340DS1_PDF.html) · [TI switch function][TS3USB221A datasheet] · [USB-IF back-voltage test, Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
+**USB host detection and power sequencing.** J2 VBUS reaches U4 pin 8 through R29 (22.1 kΩ) with R30 (47.5 kΩ) to ground. At 5.0 V the nominal sense voltage is 3.41 V. At 4.4 V and opposing 1% tolerances the lower bound is 2.98 V before leakage. The board’s 3.437 V high supply corner gives a 2.837 V input-high requirement. Silicon Labs explicitly permits the divider to limit input current while VIO is off. U3 has separate ground clamps for D+, D− and VBUS. The previous external data-line-to-VBUS feedback path has been removed. [Silicon Labs, §2.3 and tables 3.7, 3.10](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=9) · [Littelfuse diode topology](https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756)
+
+**Bridge supply, UART and package.** Pins 5, 6 and 7 share 3.3 V. The installed bypass network has three 100 nF and three 4.7 µF capacitors. Pin 2 and the exposed pad return to ground. TXD (21) drives ESP_RX and RXD (20) receives ESP_TX through R28. DTR (23) and RTS (19) drive the existing auto-download circuit. The QFN24 copper lands, mask expansion and four paste windows follow §7.2. The factory USB descriptor advertises bus power and 100 mA. Set the power descriptor for the fitted self-powered board and verify it on the production unit. [Silicon Labs, §§2.1, 4.5, 5.2 and 7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf)
+
+With 12 V retained, transfer the enumerated board from the host to the Appendix F fixture and measure VBUS, D+ and D− against the 0.4 V limit. Exercise host power removal and re-enumeration separately in both plug orientations. [USB-IF test procedure, Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
 
 **Both TMC2209s use the single-node UART reply delay.** The board connects
 both PDN_UART pins to one bus at addresses 0 and 1. ADI specifies
@@ -220,17 +196,14 @@ China order allocation and replenishment dates require a lot-specific quote.
 | --- | --- | ---: |
 | U1 | TPS54302DDCR | [C311983 listing](https://jlcpcb.com/partdetail/TexasInstruments-TPS54302DDCR/C311983) |
 | U2 | ESP32-WROOM-32UE-N4 | [9,712](https://jlcpcb.com/partdetail/C701344) |
-| U3 | USBLC6-2SC6 | [38,798](https://jlcpcb.com/partdetail/C7519) |
-| U4 | CH340C, SOP-16 | [16](https://jlcpcb.com/partdetail/C7464026) |
+| U3 | SP0503BAHTG | [C7074 listing](https://jlcpcb.com/partdetail/C7074) |
+| U4 | CP2102N-A02-GQFN24R | [C969151 listing](https://jlcpcb.com/partdetail/C969151) |
 | U5/U6 | TMC2209-LA-T, two per board | [21,405](https://jlcpcb.com/partdetail/C2150710) |
-| U7 | TS3USB221ARSER | [95,696](https://jlcpcb.com/partdetail/C128396) |
 | U9 | SN74LVC2G125DCTR | [1,929](https://jlcpcb.com/partdetail/C206035) |
 | U10 | SN74LVC1G132DBVR | [25,652](https://jlcpcb.com/partdetail/C403723) |
 | U11 | TLV803EA30DBZR | [6,912](https://jlcpcb.com/partdetail/C5218924) |
 
-For U4, JLC's second listing for the same WCH CH340C in SOP-16
-reported 71,042 pieces under C84681. Confirm pin 1 and catalog rotation in
-the placement preview if adopting that code. [JLC alternate U4 listing](https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH340C/C84681)
+Check available stock for U3 and U4 against the assembly quantity when ordering.
 
 ## Layout and enclosure
 
@@ -244,7 +217,7 @@ on the left. Use `component-reference.svg` to locate components by designator.
 | Board area | Top copper (L1) | Bottom copper (L4) |
 | --- | --- | --- |
 | 12 V input and buck | From J1 on the right, follow F1 and Q1 to the 12 V plane. Pick up the supply at C2 beside U1 in the upper left. U1 feeds the inductor, then C4 and C5. | Power distribution uses the inner planes. |
-| USB-C and serial | Start at J2. The data pair returns to the top at U3, passes through U7 and ends at U4. DTR and RTS leave U4 together for the reset transistors. | Only the short data-pair escape between J2 and U3 uses L4. |
+| USB-C and serial | Follow J2 D+/D− past the U3 shunt pads to the south edge of U4. The two UART signals leave its west side toward the ESP32. | The short connector escape uses L4. From the U3 data pads to U4 both lanes stay on L1. |
 | Reset and interlock | In the upper left, follow U11 through R40 and down between the pads of C33 and R2. The diagonal meets the switch trace, passes through TP9 and heads east toward the ESP32. From the ESP32 EN trace, a branch runs south to U10. | BOOT_N has a short spur to the rear IO0 probe, TP1. |
 | Status lights | Start at U2 pins 30 and 31. At the far vias, keep following the same diagonals to R26 (IDLE) and R27 (ALARM). Turn east along each resistor row to D7 and D8. | Two parallel diagonals connect the ESP32 side to the indicator rows. |
 | Solenoid | Follow U2 pin 8 through the interlock at U9, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. From pin 1, the indicator trace angles down and right, then runs straight into R46. It continues left to D9 and straight up to J5 pin 2. | The command and switched output stay on L1. |
@@ -288,19 +261,8 @@ on the left. Use `component-reference.svg` to locate components by designator.
   outside their via and connector-pad clearances. Each via or winding
   connector pin on these routes is within 1.89 mm of a plated
   connection from the same L3 ground region to L2, measured centre to centre.
-- **USB and reset.** Follow the USB data pair from J2 through U3 and U7 to
-  the CH340C (U4). On L1, two 0.30 mm VBUS branches leave U3 pin 5
-  at matching 45° angles, run 2.15 mm north and south, then turn toward
-  J2. The upper branch passes through C12 and between the pads of R13.
-  The lower branch passes between the pads of R12. CC1 runs from
-  J2 to R12 in 3.34 mm with one bend. CC2 reaches R13 in 2.15 mm.
-  The ESP32 receive line runs diagonally beside TX into U4 pin 2 on L1.
-  Both reset controls stay on L1. From U4 pins 13 and 14, follow DTR
-  and RTS north to R5 and Q3. To find their southern branches, look at
-  the opposite row of U4 pins. RTS passes between pins 3 and 4 to R6.
-  DTR passes between pins 4 and 5 to R8, then runs west between the pads
-  of C11 and R6 to Q4. The 3.3 V via between U4 pin 4 and C11 feeds both
-  on one straight trace.
+- **USB and reset.** J2’s paired data traces reach U4 pins 3 and 4 past U3. J2 VBUS branches to U3 pin 2 and the R29/R30 detection divider. U4 pin 8 senses the divided voltage. The UART leaves U4 pins 20 and 21 toward the ESP32. DTR and RTS each use one short L3 crossing between two vias to reach the auto-download transistors.
+
   From Q3, follow ESP_EN across the upper end of U2 to its EN pin. On
   the left, the reset supervisor U11 connects through R40 to the same
   trace as SW1 and TP9. The rear recovery pads TP1 (IO0) and TP2 (GND)
@@ -409,8 +371,8 @@ together at the specified ambient and payload. [ADI datasheet, §20.3][TMC2209 d
   leaves 16.3 W for hot-winding resistance rise, mechanical output, drivers,
   logic and board losses. The 3 A adapter supplies up to 36 W. Measure J1
   current and driver VS directly during loaded acceleration and braking.
-- **3.3 V rail, 0.60 A total.** From the inductor output, the copper drop
-  is about 3.7 mV at the ESP32 and 3.3 mV at the CH340.
+- **3.3 V rail, 0.60 A total.** Measure the local rail at the CP2102N and ESP32 during combined USB, Wi-Fi and actuator operation.
+
 - **Q1 vias, 2.00 A total.** With the 12 V loads scaled proportionally,
   the vias beside Q1 pins 1, 2 and 3 carry about 0.69, 0.59 and 0.72 A,
   respectively. The three via barrels dissipate about 2.1 mW in total.
@@ -426,33 +388,12 @@ over L2 and measure 3.132 mm between contact centres. The USB Type-C
 recommendation is at most 3.5 mm. CC1 and CC2 each have a 5.1 kΩ
 pull-down. [USB Type-C Rev 2.4, Table 3-5, note 2]
 
-Both lanes drop to L4 on opposite sides of the J2 contact row, then
-return to L1 through off-pad vias beside U3. Six plated ground vias tie
-their dedicated L3 reference to the continuous L2 ground plane.
-The J2 D− via is 0.79 mm from its nearest ground stitch, centre
-to centre. From J2 to U4 through U3 and U7, the D+/D− trace-length
-mismatch is 1.27 mm in both plug orientations, excluding package
-internals and via barrels.
-[TI USB layout guidance] · [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
-
-R41 and R42 (49.9 Ω, 1%, 0402) separately shunt U7's 1D+ and 1D− pins
-to ground, following TI's recommendation for unused pins. Their top-layer
-routes measure 1.17 mm and 1.16 mm, respectively, and the resistors share
-a ground via. [TI TS3USB221A datasheet, §8.2.2][TS3USB221A datasheet]
-
-The 90 Ω differential sections use 0.28 mm traces and a 0.18 mm gap.
-A 2D cross-section model estimated 89–91 Ω on uniform L1, 89 Ω on uniform
-L4, 96 Ω near the L4 via launch and 92 Ω at the 0.26 mm D− entry to U7.4.
-The 0.38 mm ends of the L4 fanouts modelled at 45 Ω single-ended.
-Inputs were JLC04161H-7628 (outer dielectric 0.2104 mm, Dk 4.4),
-40.64 µm finished copper and solder mask (Dk 3.8).
-[JLC stackup] · [TI layout guidance, §8.4][TS3USB221A datasheet]
+Both lanes use one short L4 escape between J2 and U3 with a nearby ground return at each transition. From the U3 data pads the pair continues on L1 into U4. The routed lengths differ by 0.48 mm for either plug orientation, excluding via barrels and package internals. The nominal differential sections use 0.28 mm traces with 0.18 mm edge spacing, with local changes at pads and via launches. Request 90 Ω ±10% coupons on both outer layers and check the full-speed waveform on the assembled board. [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
 
 [USB Type-C Rev 2.4, Table 3-5, note 2]:
   https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/USB-Type_2D00_C-Spec-R2.4-_2D00_-October-2024.pdf
 [JLC stackup]: https://jlcpcb.com/impedance
 [TMC2209 datasheet]: https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf
-[TS3USB221A datasheet]: https://www.ti.com/lit/ds/symlink/ts3usb221a.pdf
 [TI USB layout guidance]: https://www.ti.com/lit/an/slla414a/slla414a.pdf
 
 [UMW AO4407A]: https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf

@@ -115,6 +115,16 @@
       "local_symbol": "Protected_SN74LVC1G132",
       "source": "TI SCES546E DBV pin table",
       "note": "Project functional block; original pin positions retained. Explicit NAND/Schmitt labels and hysteresis glyph. Same DBV/SOT-23-5 footprint."
+    },
+    {
+      "local_symbol": "Interface_USB_CP2102N-Axx-xQFN24",
+      "source": "Interface_USB:CP2102N-Axx-xQFN24",
+      "note": "Installed KiCad 10.0.8 symbol, pins checked against the manufacturer pin table."
+    },
+    {
+      "local_symbol": "Power_Protection_SP0503BAHT",
+      "source": "Power_Protection:SP0503BAHT",
+      "note": "Installed KiCad 10.0.8 symbol, pins checked against the manufacturer pin table."
     }
   ],
   "footprints": {
@@ -149,7 +159,10 @@
     "Physiclaw:Package_SO_SSOP-8_2.95x2.8mm_P0.65mm": "Package_SO:SSOP-8_2.95x2.8mm_P0.65mm",
     "Physiclaw:Package_TO_SOT_SMD_SOT-23-5": "Package_TO_SOT_SMD:SOT-23-5",
     "Physiclaw:Capacitor_SMD_C_1210_3225Metric": "Capacitor_SMD:C_1210_3225Metric",
-    "Physiclaw:Bourns_SRP5050FA": "Bourns SRP5050FA recommended layout, https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf"
+    "Physiclaw:Bourns_SRP5050FA": "Bourns SRP5050FA recommended layout, https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf",
+    "Physiclaw:Package_TO_SOT_SMD_SOT-143": "Package_TO_SOT_SMD:SOT-143",
+    "Physiclaw:Capacitor_SMD_C_0402_1005Metric": "Capacitor_SMD:C_0402_1005Metric",
+    "Physiclaw:SiliconLabs_CP2102N_QFN24": "Silicon Labs CP2102N Rev. 1.5, §7.2, figure and table 7.2. Body and courtyard from KiCad Package_DFN_QFN_QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm"
   },
   "modifications": {
     "Physiclaw:TestPoint_Pad_D1.0mm_Compact": "Derived from the vendored KiCad TestPoint:TestPoint_Pad_D1.0mm. The courtyard diameter is reduced to 1.5 mm. The 1.0 mm copper and mask pad is retained.",
@@ -193,6 +206,9 @@
     "SSOP-8_2.95x2.8mm_P0.65mm.step": "KiCad packages3D/Package_SO.3dshapes/SSOP-8_2.95x2.8mm_P0.65mm.step",
     "SOT-23-5.step": "KiCad packages3D/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step",
     "C_1210_3225Metric.step": "KiCad packages3D/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
-    "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions. The fitted Cjiang FEXL0550A has the same 5.5 × 5.3 × 4.8 mm nominal body and 4.3 × 1.1 mm terminal faces. Cjiang FEXL series specification, mechanical dimensions: https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf"
+    "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions. The fitted Cjiang FEXL0550A has the same 5.5 × 5.3 × 4.8 mm nominal body and 4.3 × 1.1 mm terminal faces. Cjiang FEXL series specification, mechanical dimensions: https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf",
+    "QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step": "KiCad 10.0.8 Package_DFN_QFN.3dshapes/QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step",
+    "SOT-143.step": "KiCad 10.0.8 Package_TO_SOT_SMD.3dshapes/SOT-143.step",
+    "C_0402_1005Metric.step": "KiCad 10.0.8 Capacitor_SMD.3dshapes/C_0402_1005Metric.step"
   }
 }

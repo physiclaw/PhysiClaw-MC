@@ -359,10 +359,8 @@ def draw_inset(svg, index, box, crop, caption, refs, coords, flows):
     for ref in refs:
         px, py = project(coords[ref])
         focus_view(svg, "pcb-"+ref, (px, py), min(260, 16*scale), (x, y, w, h))
-        # The pair of 0402 terminations stands upright, side by side at 1.06 mm pitch.
-        turn = -90 if ref in {"R41", "R42"} else 0
         group = draw(svg, "g", data_ref=ref, data_board_xy="%g %g" % coords[ref],
-                     transform=f"translate({px:.3f} {py:.3f}) rotate({turn})")
+                     transform=f"translate({px:.3f} {py:.3f})")
         label(group, 0, 0, ref, 15, "#10302f", text_anchor="middle", dy=".35em",
               font_family=MONO, font_weight=700, stroke="white", stroke_width=3.5,
               paint_order="stroke fill", stroke_linejoin="round")

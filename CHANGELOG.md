@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Replace the CH340C and USB data switch with a self-powered CP2102N-A02
+  and SP0503BAHTG ground clamps. Route the USB pair directly from the
+  clamp pads to the bridge and keep the ESP32 auto-download interface.
+
 - Route Y STEP and DIR with one turn each on the bottom. Continue both
   status-light diagonals through their vias to R26 and R27, and take X_A2
   directly off its via toward J3.

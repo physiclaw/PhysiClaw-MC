@@ -82,7 +82,7 @@ function routingFigure(lesson, inZone) {
   }
   const board = pane('实板走线', 'board');
   const schematic = pane('电路原理图', 'schematic');
-  const keyRef = ({input:'Q1', usb:'U7', sol:'Q6'})[lesson.id] || lesson.pin;
+  const keyRef = ({input:'Q1', usb:'U4', sol:'Q6'})[lesson.id] || lesson.pin;
   let schematicRef = keyRef;
   let schematicWide = false;
   const changeScale = btn('', 'schematic-scale', () => {

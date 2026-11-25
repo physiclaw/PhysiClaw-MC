@@ -17,7 +17,7 @@
   (constraint track_width (min 0.25mm)))
 
 (rule "USB local fine-pitch escape vias"
-  (condition "A.Type == 'Via' && A.insideArea('USB escape and return vias') && (A.NetName == 'USB_OE_N' || A.NetName == 'GND')")
+  (condition "A.Type == 'Via' && A.insideArea('USB escape and return vias') && A.NetName == 'GND'")
   (constraint via_diameter (min 0.5mm))
   (constraint annular_width (min 0.1mm)))
 

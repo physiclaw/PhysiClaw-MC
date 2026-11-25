@@ -385,7 +385,7 @@ def component_reference(out, board, bounds, fab, board_name, version):
 
 
 def mask_and_paste(out, pcb, work, board, bounds, plot):
-    detail_rows = (("U7", 77), ("U5", 110))
+    detail_rows = (("U4", 77), ("U5", 110))
     paste_colour = "#74479b"
     top_colour = COPPER_COLOURS["F.Cu"]
     detail_columns = (("F.Paste", 80, "Paste", paste_colour),
@@ -443,7 +443,14 @@ def usb_review(out, board, bounds, fab):
             "USB review encountered an unknown copper layer")
     pads = [(f.ref, p) for f in board.footprints for p in f.pads if is_usb(p.net)]
     usb_refs = {ref for ref, _ in pads}
-    anchors = [(*f.xy, f.ref) for f in board.footprints if f.ref in usb_refs]
+    anchors = []
+    for footprint in board.footprints:
+        if footprint.ref in usb_refs:
+            # The shunt array straddles both lanes. Point to its common pad
+            # so the component callout can leave the footprint above the pair.
+            xy = (next(p.xy for p in footprint.pads if p.net == "GND")
+                  if footprint.ref == "U3" else footprint.xy)
+            anchors.append((*xy, footprint.ref))
     coords = ([values(s, k) for s in segments for k in ("start","end")]
               + [p.xy for _, p in pads] + [values(v, "at") for v in vias]
               + [(x, y) for x, y, _ in anchors])

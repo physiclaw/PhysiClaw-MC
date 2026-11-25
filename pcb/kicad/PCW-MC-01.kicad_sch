@@ -410,7 +410,7 @@
     )
     (uuid "5c328034-56d0-5b13-95ad-8e66a024c6d1")
   )
-  (text "ESD / isolation / CH340C"
+  (text "ESD / VBUS sense / CP2102N"
     (at 24.13 95.25 0)
     (effects
       (font

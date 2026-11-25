@@ -417,22 +417,10 @@
       "SOL_POS": [
         "Load2A"
       ],
-      "USB_DM": [
-        "USB data"
-      ],
       "USB_DM_CONN": [
         "USB data"
       ],
-      "USB_DM_ESD": [
-        "USB data"
-      ],
-      "USB_DP": [
-        "USB data"
-      ],
       "USB_DP_CONN": [
-        "USB data"
-      ],
-      "USB_DP_ESD": [
         "USB data"
       ],
       "V12": [

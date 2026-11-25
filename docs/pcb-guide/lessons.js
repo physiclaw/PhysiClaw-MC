@@ -89,20 +89,17 @@ const lessons=[
   {
     id:'usb',name:'USB-C 通信',group:'控制',pin:'J2',short:'电脑与串口之间的桥',sheet:4,
     headline:'为什么只插 USB，电脑还看不到这块板？',
-    intro:'J2 接受 USB 数据，板上的 CH340C 和 ESP32 都从 J1 经降压取电。电脑和 12 V 适配器同时接上后，USB 数据才能一路抵达主控。',
+    intro:'J1 的 12 V 经降压给 ESP32 和 CP2102N 供电。J2 的 VBUS 告诉串口桥电脑是否接入。',
     states:[
-      ['12 V 和 USB 都接入',[['J2 · D+ / D−','电脑送出数据'],['U3','静电保护'],['U7 · 第 2 路','接通数据线'],['U4 · CH340C','转换为 ESP32 串口']],
-       'USB 端的 VBUS 经 R29 使 Q5 导通，把 U7 的 OE 拉低，固定选中的第 2 通道接通。CH340C 在板上 3.3 V 下工作，内部时钟支持 USB 全速通信，板子的启动日志走 115200 波特串口。'],
-      ['仅接 12 V 冷启动',[['J1','逻辑电源正常'],['Q5','没有 VBUS，截止'],['R30 / U7','使能拉高，数据断开']],
-       '仅接 12 V 冷启动时，ESP32 可独立运行，R30 将 OE 拉高。主机已枚举后再拔线时，D+ 可能经 U3 回馈 VBUS，使开关继续接通。'],
-      ['只接 USB',[['J2 · VBUS','仅进入检测和保护电路'],['3.3 V 轨','没有 J1 输入'],['U4 / U2','未上电，无法枚举']],
-       'VBUS 没有接入降压电源入口。即使插的是能传数据的线，单靠 USB 也不能启动这块自供电的控制板。']
+      ['12 V 和 USB 都接入',[['J2','D+ / D−'],['U4 · CP2102N','USB 转串口'],['U2 · ESP32','启动日志和下载']], '数据线经过 U3 的对地保护点直接连到 U4。主机可以打开串口，DTR 和 RTS 经 Q3、Q4 控制自动下载。'],
+      ['仅接 12 V',[['J1','板上 3.3 V 正常'],['R30','VBUS 检测脚拉低'],['U2','可独立运行']], '拔掉 USB 后，R30 把 U4 的 8 脚拉低，串口桥可以识别主机离开。'],
+      ['只接 USB',[['J2','VBUS 到检测分压器'],['U4 / U2','未上电']], 'USB 插座不给主板供电。插入 USB 数据线后，还要接上 J1 才能枚举。']
     ],
     notes:[
-      ['插头翻面后为什么还能用？','J2 两侧的 D+ 触点相连，D− 触点也相连。CC1、CC2 各用一个 5.1 kΩ 对地下拉，帮助主机识别连接。U7 的选择脚固定，并不随插头方向切换。'],
-      ['为什么需要低电容的保护器件？','D+、D− 是成对传信息的高速线。U3 在插座旁泄放静电，每路附加的电容最大为 3.5 pF，有助于保留边沿。板上的差分阻抗目标为 90 Ω ±10%。'],
-      ['那两只 49.9 Ω 电阻接在哪里？','R41、R42 分别接在 U7 未使用的第 1 通道两根线上，各自终接到地。与 CH340C 通信的数据走第 2 通道。']
-    ],sources:[['WCH 串口桥','https://www.wch.cn/products/CH340.html'],['ST 静电保护','https://www.st.com/en/protections-and-emi-filters/usblc6-2.html'],['TI USB 开关','https://www.ti.com/lit/ds/symlink/ts3usb221a.pdf']]
+      ['插头翻面为什么还能通信？','两侧 D+ 触点在 J2 旁相连，D− 同样相连。CC1、CC2 各有一只 5.1 kΩ 对地下拉。'],
+      ['为什么 D+ 不会经过 U3 抬高 VBUS？','U3 对 D+、D−、VBUS 分别提供到地的保护，每条支路的公共端是地。'],
+      ['正常插入时检测脚是多少伏？','5 V 经 R29（22.1 kΩ）、R30（47.5 kΩ）分压，U4 的 8 脚约为 3.41 V。']
+    ],sources:[['Silicon Labs CP2102N','https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf'],['Littelfuse SP0503BAHTG','https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756']]
   },
   {
     id:'lock',name:'执行器互锁',group:'控制',pin:'U10',short:'上电时让负载保持关闭',sheet:9,

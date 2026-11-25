@@ -17,7 +17,7 @@ bare-board electrical testing.
   CAM. Specify **90 Ω differential ±10%** on L1 over L2 GND and L4 over
   L3 GND. Request TDR results for coupons on both layers. Use 0.28 mm
   traces, a 0.18 mm edge gap and production copper, mask and reference
-  planes. Keep the 0.26 mm U7 entry and 0.34–0.38 mm L4 fanouts. Recheck
+  planes. Preserve the local necks at U3 and the L4 via fanouts. Recheck
   routing for stackup changes.
   [JLC stackups] · [JLC impedance control]
 - **Drills and slots.** Use the separate metric PTH/NPTH files and retain G85
@@ -31,8 +31,7 @@ bare-board electrical testing.
 - **Via clearances.** Allow 0.25 mm from drill edge to other-net copper on the
   outer layers and 0.30 mm on the inner layers.
   Tent both faces of the four 0.30 mm USB signal vias beside J2 and U3.
-  Their 0.60 mm lands have 0.15 mm nominal rings. Drill-to-mask gaps are
-  0.220 mm at both J2 vias, 0.250 mm at U3.1 and 0.227 mm at U3.3.
+  Their 0.60 mm lands have 0.15 mm nominal rings. Keep the USB via drills clear of the connector and clamp pad openings.
   [JLC PCB capabilities]
 - **Filled and capped vias.** Specify epoxy fill, planarization and copper
   caps on both faces (IPC-4761 Type VII) for the **44 thermal holes** marked
@@ -79,10 +78,7 @@ body temperatures on the first article and keep the profile with the lot.
 - **F1.** Littelfuse specifies a 245–250 °C lead-free peak in its recommended
   profile. [Littelfuse 467 datasheet]
 
-Use the front paste Gerber and 0.10 mm foil at U7. The four
-0.55 × 0.20 mm rounded apertures have area ratios of 0.763 on 0.10 mm foil
-and 0.636 on 0.12 mm foil. Review paste transfer with JLC for foil or
-aperture changes. [TI stencil area-ratio guidance]
+For U4, Silicon Labs recommends a 0.125 mm stencil. The front paste Gerber has four 0.90 × 0.90 mm centre openings on 1.20 mm pitch and 1:1 perimeter apertures. Confirm the stencil with assembly and inspect the centre joint on the first article. [CP2102N, §7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=39)
 
 Inspect both F1 terminations and the J2 contact row after reflow. Inspect R12,
 R13, R26 and R27 for skew or tombstoning. Their ground lands use 0.20 mm
@@ -107,8 +103,8 @@ preview with the lot.
 - **L1 and C2.** The CPL places L1 at 90° and C2 at 270°. From above,
   L1’s two wide terminations run left-to-right and C2’s long body axis
   runs top-to-bottom. Allow 5.0 mm height above the PCB for L1.
-- **ICs.** Check pin 1 at U4, U5, U6, U7, and U9. The expected CPL angles
-  are U4 0°, U5 0°, U6 0°, U7 0°, and U9 90°.
+- **ICs.** Check U3 pin 1 (common ground, 180° CPL) and the U4 QFN24 pin-1 mark (90° CPL) against the placement review. Check U5 and U6 at 0° and U9 at 90°.
+
 - **Q1 and Q6.** Fit UMW AO4407A (`C2841482`) at both positions. The
   alternate is AOS AO4407A (`C16072`). If using the alternate, select its
   exact code for both positions in the assembly order and record it with
@@ -116,13 +112,8 @@ preview with the lot.
   Check pin 1 (source) at Q1 (270°) and Q6 (90°) against the assembly
   drawing. Q6 pins 5–8 connect to J5 pin 1.
 - **Q7.** Check pin 1 (base) at 270° in the CPL.
-- **U7 lands.** Confirm the four 0.20 × 0.55 mm copper lands on pins 2, 3,
-  7 and 8 with JLC CAM and assembly. TI specifies this land pattern, and the
-  smaller dimension is below JLC’s generic SMD-pad guideline.
-  [TI RSE0010A land pattern](https://www.ti.com/lit/ds/symlink/ts3usb221a.pdf) · [JLC PCB capabilities]
-- **U7 termination resistors.** Confirm the 0.96 mm nominal body gap to
-  R41/R42 with JLC. The QFN-to-0402 recommendation is 1.00 mm.
-  [JLC SMT component spacing]
+- **U4 lands.** Confirm 0.30 × 0.85 mm perimeter lands, the 2.55 mm square ground pad and 0.06 mm solder-mask expansion at U4. [Silicon Labs, table 7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=39)
+
 - **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D9. D4
   uses a 180° CPL rotation, with its cathode facing +X. Check LED colour
   and diode package against the BOM.
@@ -226,10 +217,8 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   (pin 3) and U11 RESET (pin 2) together. Verify VDD exceeds 3.189 V
   continuously through the reset delay, RESET releases once and ESP_EN
   stays high through Wi-Fi transmission and dual-axis load changes. Probe
-  U4 VCC (pin 16) and V3 (pin 4) against local ground during USB traffic.
-  Include ripple and transient excursions in the 3.1–3.6 V acceptance range.
-  Verify USB enumeration and continuous data transfer through these load steps.
-  [WCH CH340 datasheet, §6.3](https://www.wch-ic.com/downloads/CH340DS1_PDF.html)
+  U4 pins 5, 6 and 7 against local ground during USB traffic. Include ripple and transient excursions in the 3.0–3.6 V acceptance range. Verify enumeration and sustained serial traffic through the load steps. [Silicon Labs, table 3.1](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=10)
+
   With actuators disconnected, use a current-limited bench supply
   and a controlled output short. Verify recovery without a power cycle at
   room temperature and after warm-up.
@@ -308,6 +297,7 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   Repeat the functional checks after cycling 12 V with USB connected,
   during motor and solenoid operation, and after the assembled enclosure's
   ESD test.
+  Program the CP2102N self-powered configuration and set Max Power for the actual VBUS draw. Read back the USB configuration descriptor after a power cycle. With J1 still powered, transfer the enumerated board to the back-voltage fixture and record VBUS, D+ and D− (each ≤0.4 V). Then reconnect and check automatic download using DTR/RTS. [CP2102N, §4.5](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=26) · [USB-IF Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
 - **Thermal and communications.** Run both axes at the qualified current to
   thermal equilibrium at 40 °C in still air and at 50 °C enclosure air
   temperature. Check J1, F1, Q1, U1/L1, U5/U6, R17–R20, J3/J4, the motor

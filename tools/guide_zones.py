@@ -91,19 +91,18 @@ ZONES = [
              "R10 串 1 kΩ 将发送端接入总线。回读从 TMC_BUS 经 R11（0 Ω）到 GPIO16 RX。",
              ("U2.28 > R10.1", "R11.1 > U2.27")),
     ]),
-    Zone("usb", "USB-C 通信", "J2 接 USB 数据。板上 3.3 V 给 U7、U4 和 ESP32 供电，USB 的 VBUS 用于检测主机。", [
+    Zone("usb", "USB-C 通信", "J2 接 USB 数据。板上 3.3 V 给 U4 和 ESP32 供电，USB 的 VBUS 用于检测主机。", [
         ("USB-C 插座至串口桥", (44.4, 4.2, 71.5, 21.1)),
     ], [
-        Flow("USB 数据 · 双向", "jack:J2 D± ⇄ chip:U3 ESD ⇄ switch:U7 通道 2 ⇄ chip:U4 CH340C",
-             "D+、D− 成对传输。U3 为两线提供静电泄放路径，U7 接通时将两线连到全速 USB 串口桥。",
-             tuple(f"{a} <> {b}" for a, b in (("J2.A6","U3.1"),("J2.A7","U3.3"),("U3.6","U7.3"),
-                                                ("U3.4","U7.4"),("U7.8","U4.5"),("U7.7","U4.6")))),
-        Flow("VBUS 控制开关", "rail:J2 VBUS → resistor:R29 → switch:Q5 → io:U7 OE 低",
-             "VBUS 经 R29 驱动 Q5，Q5 拉低 OE。R30 在 Q5 截止时上拉 OE。枚举后拔线可能经 D+ 回馈 VBUS。",
-             ("R29.2 > Q5.1", "Q5.3 > U7.6")),
+        Flow("USB 数据 · 双向", "jack:J2 D± ⇄ chip:U4 CP2102N",
+             "D+、D− 从插座连到串口桥。U3 在插座旁给两线提供对地静电保护。",
+             ("J2.A6 <> U3.3", "J2.A7 <> U3.4", "U3.3 <> U4.3", "U3.4 <> U4.4")),
+        Flow("VBUS 检测", "rail:J2 VBUS → resistor:R29 / R30 → io:U4 VBUS",
+             "R29 和 R30 将主机的 5 V 分压送到 U4 的 8 脚，主机移除后 R30 将检测脚拉低。",
+             ("J2.A4 > R29.1", "R29.2 > U4.8")),
         Flow("串口收发", "chip:U4 TXD / RXD ⇄ io:交叉收发 ⇄ chip:U2 UART0",
              "U4 TXD 接 U2 RX。U2 TX 经 R28 接 U4 RXD。DTR/RTS 另送 Q3/Q4，控制复位与启动模式。",
-             ("U4.2 > U2.34", "U2.35 > R28.1", "R28.2 > U4.3")),
+             ("U4.21 > U2.34", "U2.35 > R28.1", "R28.2 > U4.20")),
     ]),
     Zone("lock", "执行器互锁", "U10 同时检查 ESP_EN 与 ARM。只有两者都为高，U9 才接通电机禁用命令和电磁铁命令。", [
         ("与非门与双缓冲器", (14.5, 19, 33.5, 34)),
