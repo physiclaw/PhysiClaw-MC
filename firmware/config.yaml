@@ -1,8 +1,8 @@
-# PCW-MC-01 running stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
-# Conservative bring-up values. Set steps/mm, travel and direction for your
-# machine. Solenoid is 12 V / 0.8 A; motor ratings remain unconfirmed.
+# PCW-MC-01 R100 (0.100 ohm shunts) running stock FluidNC v4.1.1, classic ESP32 WROOM, 4 MB.
+# Both axes request 0.600 A RMS per phase with a regulated 12 V / 3 A adapter.
+# Set steps/mm, travel and direction for the machine. Solenoid is 12 V / 0.8 A.
 # Programming and first-article tests are described in manufacturing/process.md.
-name: PCW-MC-01
+name: PCW-MC-01 R100
 board: PCW-MC-01
 
 stepping:
@@ -16,15 +16,14 @@ start:
   must_home: false
   check_limits: false
 
-# Hardware U9 remains disabled after reset. Check both TMC UART reports before
-# running macro 0 (ARM). Stock FluidNC does not guarantee a UART failure alarms.
+# GPIO27 releases U9 after startup with the solenoid off and motors disabled.
 user_outputs:
   digital0_pin: gpio.27
 
 macros:
-  after_reset: "M5&M65 P0"
+  after_reset: "M5&$MD&M64 P0"
   macro0: "M5&$MD&M64 P0"
-  macro1: "M5&$MD&M65 P0"
+  macro1: "M65 P0&M5&$MD"
 
 # Discrete state indicators, active high. Neither is a heartbeat/watchdog.
 status_outputs:
@@ -56,7 +55,7 @@ axes:
         uart_num: 1
         addr: 0
         r_sense_ohms: 0.100
-        run_amps: 0.400
+        run_amps: 0.600
         hold_amps: 0.150
         microsteps: 16
         run_mode: StealthChop
@@ -74,7 +73,7 @@ axes:
         uart_num: 1
         addr: 1
         r_sense_ohms: 0.100
-        run_amps: 0.400
+        run_amps: 0.600
         hold_amps: 0.150
         microsteps: 16
         run_mode: StealthChop
@@ -84,13 +83,13 @@ axes:
 
 # Solenoid PWM: S0..1000 commands 0..100% duty; M5 switches OFF.
 # Duty is not a measured/regulated current in amperes.
-# 200 Hz is a bring-up setting; qualify the switch/coil before changing it.
+# Qualify 1 kHz with the intended switch, coil and harness.
 # Pulse duration/rest are user-controlled; there is no automatic timing rule.
 # Keep spindle override at 100% when interpreting S as duty percentage.
 # M3/M5 synchronize with queued motion; feed-hold is not solenoid OFF.
 # Do not use Z moves: FluidNC creates an unconnected virtual Z automatically.
 PWM:
-  pwm_hz: 200
+  pwm_hz: 1000
   output_pin: gpio.32
   enable_pin: NO_PIN
   direction_pin: NO_PIN

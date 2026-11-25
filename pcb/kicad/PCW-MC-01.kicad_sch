@@ -259,7 +259,7 @@
       (color 0 0 0 0)
     )
     (uuid "325a3462-3fa7-5cdb-bc23-26f0c495b53c")
-    (property "Sheetname" "Power, machine state and solenoid command indicators"
+    (property "Sheetname" "Power, machine state and solenoid indicators"
       (at 106.68 111.76 0)
       (effects
         (font
@@ -494,7 +494,7 @@
     )
     (uuid "6c713dbc-1937-57f2-a9dd-c98887085ccd")
   )
-  (text "Power / idle / alarm / command"
+  (text "Power / idle / alarm / solenoid command and output"
     (at 110.49000000000001 121.92 0)
     (effects
       (font

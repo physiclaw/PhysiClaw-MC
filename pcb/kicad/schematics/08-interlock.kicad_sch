@@ -3403,7 +3403,7 @@
     )
     (uuid "8ffde1fc-7b62-5ccc-8284-3dea1aa377fe")
   )
-  (text "Arm deliberately after driver setup."
+  (text "On normal boot, FluidNC turns both outputs off, then raises ARM."
     (at 20.32 183.51500000000001 0)
     (effects
       (font

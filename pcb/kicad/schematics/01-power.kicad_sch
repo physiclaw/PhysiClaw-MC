@@ -3051,7 +3051,7 @@
         (justify left)
       )
     )
-    (property "Value" "SMBJ15A"
+    (property "Value" "SMBJ13A"
       (at 148.59 63.5 90)
       (effects
         (font
@@ -3069,7 +3069,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "SMBJ15A"
+    (property "MPN" "SMBJ13A"
       (at 139.7 45.72 0)
       (effects
         (font
@@ -3078,7 +3078,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C83846"
+    (property "LCSC" "C151252"
       (at 139.7 45.72 0)
       (effects
         (font
@@ -3087,7 +3087,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://app.mectronic.com/dsheet/SMBJ15A_LITTELFUSE.pdf"
+    (property "Datasheet" "https://www.littelfuse.com/products/overvoltage-protection/tvs-diodes/surface-mount/smbj/smbj13a"
       (at 139.7 45.72 0)
       (effects
         (font
@@ -5163,7 +5163,7 @@
         (justify right)
       )
     )
-    (property "Value" "100k"
+    (property "Value" "102k"
       (at 143.51 146.05 0)
       (effects
         (font
@@ -5181,7 +5181,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "AT0603BRD07100KL"
+    (property "MPN" "RT0603BRD07102KL"
       (at 147.32 144.78 0)
       (effects
         (font
@@ -5190,7 +5190,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C855559"
+    (property "LCSC" "C861068"
       (at 147.32 144.78 0)
       (effects
         (font
@@ -5199,7 +5199,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://jlcpcb.com/partdetail/YAGEO-AT0603BRD07100KL/C855559"
+    (property "Datasheet" "https://yageogroup.com/component-documentation/download/specsheet/RT0603BRD07102KL"
       (at 147.32 144.78 0)
       (effects
         (font

@@ -3,7 +3,7 @@
 ## Power and control
 
 - A single 12 V adapter supplies both motors, the solenoid, and the logic.
-  The 2.5 A steady-state input target covers all three loads. A TPS54302 buck
+  The full-load design budget is 2.5 A from a regulated 12 V / 3 A adapter. A TPS54302 buck
   regulator supplies 3.3 V to the logic.
 - The ESP32-WROOM-32UE-N4 uses an external antenna. A CH340C bridges the
   ESP32's UART to USB-C for programming and serial communication. Each
@@ -11,8 +11,9 @@
   circuit, and a separate address on the shared UART.
 - Q6 (AO4407A) switches the positive coil lead. Q7 (MMBT3904) drives its gate.
   A flyback diode carries coil current when the switch opens. The hardware interlock
-  inhibits the drivers and solenoid during reset and until the operator
-  arms the board through FluidNC.
+  inhibits the drivers and solenoid during hardware reset. When FluidNC
+  starts in Idle, it disables motor drive and solenoid PWM before releasing
+  the interlock for normal commands.
 
 The KiCad project contains the editable schematic. `make build` exports it
 to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
@@ -22,7 +23,7 @@ to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
 
 | IC | Circuit and layout |
 | --- | --- |
-| U1 TPS54302DDCR | The 100 kΩ / 22.1 kΩ divider sets 3.293 V typical. EN floats for always-on operation. L1 is 6.8 µH, C2 is 47 µF / 25 V, C3 is 100 nF from BOOT to SW, C4/C5 are 47 µF each, and C35 is 47 pF across R43. The DDC0006A land pattern follows TI’s package drawing. [TI datasheet, §§4, 6.3, 7.2 and 10](https://www.ti.com/lit/ds/symlink/tps54302.pdf) |
+| U1 TPS54302DDCR | The 102 kΩ / 22.1 kΩ divider sets 3.347 V typical. EN floats for always-on operation. L1 is 6.8 µH, C2 is 47 µF / 25 V, C3 is 100 nF from BOOT to SW, C4/C5 are 47 µF each, and C35 is 47 pF across R43. The DDC0006A land pattern follows TI’s package drawing. [TI datasheet, §§4, 6.3, 7.2 and 10](https://www.ti.com/lit/ds/symlink/tps54302.pdf) |
 | U2 ESP32-WROOM-32UE-N4 | C6/C7 are 22 µF and 100 nF. EN uses 10 kΩ and 1 µF. GPIO0 has a pull-up and download transistors. GPIO2/GPIO12 use the module straps. GPIO34 is unconnected. [Espressif datasheet](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) |
 | U3 USBLC6-2SC6 | Pins 1/6 carry D+, 3/4 carry D−, 5 connects to VBUS and C12, and 2 returns to ground beside J2. [ST datasheet](https://www.st.com/resource/en/datasheet/usblc6-2.pdf) |
 | U4 CH340C | V3 and VCC share 3.3 V with 100 nF at each pin. R232 is low. The internal oscillator drives the UART, with TXD/RXD crossed to the ESP32. [WCH datasheet](https://www.wch-ic.com/downloads/CH340DS1_PDF.html) |
@@ -33,7 +34,8 @@ to `build/schematic.pdf`. [KiCad project](../pcb/kicad/PCW-MC-01.kicad_pro) ·
 | U10 SN74LVC1G132DBVR | The Schmitt NAND enables U9 when ESP_EN and ACTUATOR_ARM are both high. R35 pulls ARM low at startup. C32 is 100 nF. [TI datasheet](https://www.ti.com/lit/ds/symlink/sn74lvc1g132.pdf) |
 | U11 TLV803EA30DBZR | Active-low open-drain reset, 3.08 V nominal falling threshold and 200 ms nominal release delay. R40 couples reset to ESP_EN, R3 pulls up and C33 bypasses VDD. [TI datasheet](https://www.ti.com/lit/ds/symlink/tlv803e.pdf) |
 
-ADI calls for 2.2–4.7 µF and a short ground return at each 5VOUT. C17 and C24
+Both STDBY pins (20) are grounded, and C16/C23 bypass the drivers’ 3.3 V
+VCC_IO supplies. ADI calls for 2.2–4.7 µF and a short ground return at each 5VOUT. C17 and C24
 return directly to their drivers, with clearance to the L1 GND pour.
 At 25 °C and 5 V bias, Samsung's typical curves give 0.96 µF for the former
 2.2 µF 0603 and 3.36 µF for the fitted 4.7 µF, 25 V X7R 0805 (C98195).
@@ -50,14 +52,21 @@ schematic parity reported zero violations, unconnected items or parity
 issues. All 21 repository tests passed. The IC pin assignments in the
 exported netlist agree with the manufacturer pinouts cited above.
 
+### R100 operating margins
+
 | Circuit | Fit and operating margin |
 | --- | --- |
 | 12 V input | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [UMW Q1 datasheet][UMW AO4407A] · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
-| 3.3 V buck | At 12 V in and 0.60 A out, 6.8 µH at 400 kHz gives 0.88 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Cjiang lists 7.8 A typical saturation current for L1, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.205–3.381 V static at 12 V. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Cjiang FEXL0550A land pattern and ratings](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
-| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. At 0.400 A RMS with 0.100 Ω shunts and the 180 mV sense range, the nominal equation gives an IRUN register value near 11. This fits the StealthChop range of 8–31 and is below ADI's preferred 16–31 for best microstep precision. Verify the programmed range and measure phase current and low-speed motion with the intended motors. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] |
+| 3.3 V buck | At 12 V in, 3.347 V out and 0.60 A load, 6.8 µH at 400 kHz gives 0.89 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Cjiang lists 7.8 A typical saturation current for L1, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.257–3.437 V static at 12 V, before divider temperature drift, distribution drop and transients. U11’s maximum rising threshold is 3.08 × 1.02 × 1.015 = 3.189 V, leaving 68 mV of static release margin. The high corner is 163 mV below the 3.6 V logic limit. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Cjiang FEXL0550A land pattern and ratings](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
+| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. With 0.100 Ω shunts and a 0.600 A RMS request, TMCStepper selects the 180 mV sense range and IRUN = 17. The nominal winding current is 0.597 A RMS per phase (0.844 A sine peak). Measure the winding current with the intended motors. Under standard reset settings with open VREF, an enabled driver can request about 1.40 A RMS. These figures exclude resistor tolerance, copper resistance and IC variation. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] · [TMCStepper current calculation](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMCStepper.cpp#L18-L41) |
 | Solenoid | U9 drives Q7 through 2.2 kΩ R21. R22 pulls the base to ground during reset or disarm, and R33 returns Q6's gate to its source. The 5 A input fuse and adapter are shared by the board. The solenoid branch has no dedicated current limit or fault feedback. |
 
 ### Q6 switching margins
+
+D6 (yellow, SOL CMD) follows GPIO32 before the hardware interlock. D9 (green,
+SOL OUT) and R46 (5.1 kΩ) form a separate branch across the J5 terminals.
+At 12 V the branch draws about 2 mA. D9 follows the output PWM and can
+light with the coil unplugged.
 
 At 12 V, allowing 0.2 V across saturated Q7 gives 3.69 mA through R33 and R45
 and −8.1 V from Q6 gate to source. UMW specifies 18.5 mΩ maximum at −4.5 V
@@ -69,14 +78,14 @@ When D4 conducts at turn-off, Q6 sees the local V12 rail plus D4's forward
 drop across source and drain. Harness ringing and rail surges add to that
 stress. UMW rates Q6 for −30 V drain-to-source and ±25 V gate-to-source.
 R33 alone turns Q6 off through 2.2 kΩ. UMW measured switching times with a
-3 Ω generator. At the configured 200 Hz, a 1% on- or off-interval is 50 µs.
+3 Ω generator. At the configured 1 kHz, a 1% on- or off-interval is 10 µs.
 Use measured edges to establish the usable duty range with the intended coil
 and harness. [UMW AO4407A, pp. 1 and 3][UMW AO4407A] ·
 [First-article measurements](../manufacturing/process.md#first-article-acceptance)
 
 ### JLC China availability
 
-On 24 November 2026 all 43 SMT ordering codes and all four hand-soldered codes
+Before the R43 and D2 substitutions on 24 November 2026 all 43 SMT ordering codes and all four hand-soldered codes
 in the generated BOM had domestic stock for a two-board build. The JLC China
 SMT catalog showed 41,963 pieces of UMW AO4407A (C2841482), used at both
 Q1 and Q6, and 6,959 pieces of the AOS alternate (C16072). Q7 uses C20526
@@ -89,7 +98,13 @@ was L1 (1,379 pieces). The PJ-102BH through-hole jack had 68 pieces.
 | Q1, Q6 | UMW AO4407A, C2841482 | The −30 V P-channel MOSFET uses a 1.27 mm pitch SOP-8. Pins 1–3 are source, pin 4 is gate and pins 5–8 are drain. The AOS AO4407A (C16072) fits the same lands and pinout. [UMW datasheet][UMW AO4407A] · [AOS datasheet](https://www.aosmd.com/sites/default/files/res/datasheets/AO4407A.pdf) |
 | L1 | FEXL0550A-6R8M, C5378515 | 6.8 µH ±20%, 28.6 mΩ maximum DCR. The existing Bourns SRP5050FA footprint matches the 4.7 × 1.25 mm recommended lands and 2.0 mm gap. Both parts have a 5.5 × 5.3 × 4.8 mm nominal body. Allow 5.0 mm maximum part height for L1. The catalog pad 1 to pad 2 axis is 0°, giving 90° in the CPL. [Cjiang datasheet](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) |
 | C4, C5 | GRM21BR61A476ME15L, C124129 | The L and K suffixes identify reel size. Both contain the same 0805, 47 µF, 10 V X5R capacitor with the same DC-bias curve. [Murata datasheet](https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM21BR61A476ME15-01A.pdf) |
-| R44 | RT0603BRD0722K1L, C723484 | 22.1 kΩ ±0.1%, 100 mW, ±25 ppm/°C, 0603. The divider ratio and initial tolerance are unchanged. [Yageo datasheet](https://yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722K1L) |
+| R44 | RT0603BRD0722K1L, C723484 | 22.1 kΩ ±0.1%, 100 mW, ±25 ppm/°C, 0603. R43 is the matching 102 kΩ, 0.1% upper resistor (C861068). [Yageo datasheet](https://yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722K1L) |
+
+R17–R20 use Yageo RL1206FR-7W0R1L, 0.100 Ω, 1%, 0.5 W in 1206
+(C859927), included in the original domestic stock check. On 24 November
+2026 the domestic catalog showed 7,842 pieces of the revised R43 and 1,004
+of D2. [R17–R20](https://www.jlc-smt.com/lcsc/detail/C859927.html) ·
+[R43](https://www.jlc-smt.com/lcsc/detail/C861068.html) · [D2](https://www.jlc-smt.com/lcsc/detail/C151252.html)
 
 J1 (C3095964), J3/J4 (C144395), J5 (C5188434) and C1/C15/C22 (C5111097)
 are purchased for manual installation. Upload only the SMT BOM for placement.
@@ -127,7 +142,7 @@ on the left. Use `component-reference.svg` to locate components by designator.
   F1 provides overcurrent protection, Q1 blocks reverse polarity, and
   D1 clamps Q1's gate-to-source voltage. Its cathode shares the L1 feed
   from Q1 pin 2. Its anode connects straight across to the gate at pin 4,
-  where the trace turns down to R1. D2 clamps transients on V12.
+  where the trace turns down to R1. D2 (Littelfuse SMBJ13A) has 13 V standoff and clamps to at most 21.5 V at the specified 28 A, 10/1000 µs pulse at 25 °C. This leaves 3.5 V to C2’s 25 V rating under that test condition. Qualify local peaks with the shipped adapter and harness. [Littelfuse SMBJ data](https://datasheet.lcsc.com/lcsc/Littelfuse-SMBJ11A_C224004.pdf)
   Its cathode reaches C1 through the
   L3 12 V plane, and two vias tie its anode to L2 ground. At U1, C2's
   positive pad feeds VIN directly. C2 ground and U1 ground each have two
@@ -242,7 +257,7 @@ components and cables.
 | J1 through F1 to Q1 | 1.50 mm, with a 0.50 mm long, 1.00 mm wide connection at each F1 pad | 2.50 A steady input |
 | Q1 to L3 12 V | Three 0.80 mm feeds and three 0.30 mm drilled vias | 2.50 A shared |
 | Q6 output to J5 | 0.85 mm drain bus, 1.00 mm to D4 and 1.20 mm to J5 | 0.80 A solenoid |
-| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.40 A RMS per phase |
+| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.60 A RMS per phase, 0.85 A peak (rounded design values) |
 | U5/U6 current-sense pins to shunts | 0.30 and 0.50 mm on X, 0.25 and 0.45 mm on Y | Same phase current |
 | Buck and ESP32 | 0.55 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
 
@@ -253,18 +268,26 @@ Both traces are 0.30 mm wide. U5 takes motor power through its two 12 V
 supply pins.
 [TMC2209 datasheet, §§3 and 20.2][TMC2209 datasheet]
 
-For 35 µm outer copper, the IPC-2152 curve fit gives about 9 °C rise for
-a uniform 1.50 mm trace at 2.50 A.
-Each short 1.00 mm fuse connection dissipates about 1.8 mW at 2.50 A
-using the hot-copper resistance. The fuse body also heats its pads.
-[KiCad track-current equations](https://docs.kicad.org/doxygen/tracks__width__versus__current__formula_8h.html)
+With 35 µm outer copper at 70 °C, each 0.50 mm fuse neck dissipates
+about 1.8 mW at 2.5 A. The DC winding paths from U5/U6 to J3/J4 measure
+12–23 mΩ per lead using routed lengths and widths, a 1.53 mm via barrel and
+18 µm via-wall plating. At 0.60 A RMS the highest-loss lead dissipates
+about 8.3 mW. Each 0.100 Ω shunt dissipates up to 0.036 W averaged over a
+sine cycle and 0.072 W at a 0.85 A crest. Check shunt temperature against
+the 0.5 W part's derating curve in the assembled enclosure.
 
-The DC model assumes 35 µm outer copper, 15.2 µm inner copper, 18 µm
-via-wall plating and copper resistivity at 70 °C.
+Each driver has 16 filled and capped exposed-pad vias into the ground
+copper. ADI's thermal example already gives 2.8 W per driver at 1.4 A RMS
+under its 24 V short-duration test. Continuous dual-axis operation at 12 V
+depends on heat dissipation in the fitted enclosure. Qualify both drivers
+together at the specified ambient and payload. [ADI datasheet, §20.3][TMC2209 datasheet]
 
-- **12 V rail, 2.50 A total.** The model assigns 0.75 A to each motor
-  driver, 0.80 A to the solenoid and 0.20 A to the buck input. On the
-  revised board, measure the voltage drop between Q1 and Q6 under combined load.
+- **12 V rail, 2.50 A design budget.** At 0.60 A RMS and 1.6 Ω per cold
+  winding, the two 17HD4401S motors together dissipate about 2.3 W in
+  copper. The 0.8 A coil adds 9.6 W. The 30 W continuous board budget
+  leaves 18.1 W for hot-winding resistance rise, mechanical output, drivers,
+  logic and board losses. The 3 A adapter supplies up to 36 W. Measure J1
+  current and driver VS directly during loaded acceleration and braking.
 - **3.3 V rail, 0.60 A total.** From the inductor output, the copper drop
   is about 3.7 mV at the ESP32 and 3.3 mV at the CH340.
 - **Q1 vias, 2.00 A total.** With the 12 V loads scaled proportionally,

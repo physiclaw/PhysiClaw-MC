@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Set the solenoid PWM frequency to 1 kHz.
+- Mark the 0.100 Ω motor-shunt board R100. Set both axes to 0.600 A RMS
+  in stock FluidNC and specify a regulated 12 V / 3 A adapter.
+- Accept normal motion and solenoid commands after a power cycle. Both
+  outputs stay off until commanded.
+- Increase buck startup margin with 102 kΩ at R43. Fit a 13 V standoff
+  Littelfuse SMBJ13A at D2 and qualify C2 peaks and both drivers’ supply
+  slopes with the production adapter.
+
+- Add a green SOL OUT indicator across the J5 solenoid terminals alongside
+  the existing yellow SOL CMD indicator.
 - Straighten the Q7 base and collector routes on the top layer. TP14
   sits at the base branch between R21 and R22. R45 and R33 share a
   straight gate trace to Q6.

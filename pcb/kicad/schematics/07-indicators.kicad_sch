@@ -485,11 +485,11 @@
     (date "2026-11-17")
     (rev "v1.0")
     (company "PhysiClaw")
-    (comment 2 "Machine state and solenoid command indicators")
+    (comment 2 "Machine state and solenoid indicators")
     (comment 3 "Board PCW-MC-01 | Assembly PCW-MC-01-ASM")
     (comment 1 "12 V / 3 A adapter | 2.5 A steady target | ENGINEERING DRAFT")
   )
-  (text "MACHINE STATE AND SOLENOID COMMAND INDICATORS"
+  (text "MACHINE STATE AND SOLENOID INDICATORS"
     (at 20.32 20.32 0)
     (effects
       (font
@@ -1656,7 +1656,7 @@
     )
     (uuid "6fa94481-b86e-5b7e-a653-4981f80fefc2")
   )
-  (text "D6 follows the solenoid command before U9; it does not measure coil current."
+  (text "D6 follows the GPIO32 command before U9. D9 indicates voltage across the J5 load terminals."
     (at 20.32 174.625 0)
     (effects
       (font
@@ -1675,5 +1675,269 @@
       (justify left)
     )
     (uuid "50dabe7e-4676-53b5-bd18-ea7db1120b67")
+  )
+
+  (symbol
+    (lib_id "Physiclaw:Device_R")
+    (at 261.62 71.12 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "0795ed43-2816-5a5f-adb4-414ff393efc4")
+    (property "Reference" "R46"
+      (at 265.43 69.85000000000001 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "5.1k"
+      (at 265.43 72.39 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "Physiclaw:Resistor_SMD_R_0603_1608Metric"
+      (at 233.68 45.72 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "0603WAF5101T5E"
+      (at 233.68 45.72 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C23186"
+      (at 233.68 45.72 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://uploadcdn.oneyac.com/attachments/files/brand_pdf/uni-ohm/B0/F7/Chip_Series.pdf"
+      (at 233.68 45.72 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "a110c2d5-4bd0-5fb3-ba2e-d46e0fdc1df0")
+    )
+    (pin "2"
+      (uuid "a884de84-cfdd-533b-b810-a22f52b48fc8")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/325a3462-3fa7-5cdb-bc23-26f0c495b53c"
+          (reference "R46")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Physiclaw:Device_LED")
+    (at 261.62 96.52 90)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "6ea02120-aad1-5a01-8bf8-d99f8b96d8f6")
+    (property "Reference" "D9"
+      (at 274.32 95.25 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Value" "GREEN / SOL OUT"
+      (at 274.32 97.78999999999999 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+      )
+    )
+    (property "Footprint" "Physiclaw:LED_SMD_LED_0603_1608Metric"
+      (at 233.68 76.2 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "MPN" "LTST-C190KGKT"
+      (at 233.68 76.2 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "LCSC" "C125094"
+      (at 233.68 76.2 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS22-2000-074/LTST-C190KGKT.PDF"
+      (at 233.68 76.2 0)
+      (effects
+        (font
+          (size 1.0 1.0)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid "d86c9314-4ec9-5886-9fbb-9976abd94a72")
+    )
+    (pin "2"
+      (uuid "f8986340-56f2-5338-b59c-6b99eaebfbdd")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/325a3462-3fa7-5cdb-bc23-26f0c495b53c"
+          (reference "D9")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 261.62 67.31)
+      (xy 261.62 55.88)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "df537683-3c9c-56ca-84cb-a77d097ac5cd")
+  )
+  (global_label "SOL_POS"
+    (shape bidirectional)
+    (at 261.62 55.88 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "bf1cacbd-a774-5675-906e-b126e331b2ab")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 261.62 55.88 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+  )
+  (wire
+    (pts
+      (xy 261.62 74.93)
+      (xy 261.62 92.71)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "102061e3-8e49-55b4-850a-809b7ad0b6d0")
+  )
+  (wire
+    (pts
+      (xy 261.62 100.33)
+      (xy 261.62 120.65)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "a1c72e37-b8aa-5b39-9ac7-fb71bdf437c3")
+  )
+  (symbol
+    (lib_id "Physiclaw:DrawingPower_GND")
+    (at 261.62 120.65 0)
+    (unit 1)
+    (in_bom no)
+    (on_board no)
+    (dnp no)
+    (uuid "f8691653-e8ec-5766-b23a-256c995e616c")
+    (property "Reference" "#PWR1706"
+      (at 261.62 120.65 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Value" "GND"
+      (at 261.62 124.46 0)
+      (effects
+        (font
+          (size 1.15 1.15)
+        )
+      )
+    )
+    (pin "1"
+      (uuid "fda154c0-1a02-5d59-be69-a29ba18b98b4")
+    )
+    (instances
+      (project "PCW-MC-01"
+        (path "/43c422d9-74ff-5880-b391-e1338c3eef6c/325a3462-3fa7-5cdb-bc23-26f0c495b53c"
+          (reference "#PWR1706")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "SOL_OUT_LED_A"
+    (at 261.62 83.82 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (justify left)
+    )
+    (uuid "04abe138-50b4-5f87-8ee5-b476e8d0e352")
+  )
+  (text "J5 OUTPUT / GREEN"
+    (at 246.38 39.37 0)
+    (effects
+      (font
+        (size 1.524 1.524)
+        (bold yes)
+      )
+      (justify left)
+    )
+    (uuid "8eeedaea-45c8-55ba-85d8-309bddc7aab4")
   )
 )

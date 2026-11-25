@@ -3,6 +3,7 @@
 import heapq
 import json
 import math
+import re
 import unittest
 from collections import defaultdict
 from pathlib import Path
@@ -318,6 +319,36 @@ class PlacementGeometryTests(unittest.TestCase):
                     self.board, net, start, clamp, top_only=True,
                 ), 8.0)
 
+    def test_motor_profile_matches_the_shunts_on_both_axes(self):
+        config = (Path(__file__).resolve().parents[1] / "firmware/config.yaml").read_text()
+        for axis, references in (("x", ("R17", "R18")), ("y", ("R19", "R20"))):
+            with self.subTest(axis=axis):
+                block = re.search(rf"^  {axis}:\n((?:    .*\n)+)", config, re.MULTILINE)
+                self.assertIsNotNone(block)
+                setting = re.search(r"^        r_sense_ohms: ([\d.]+)$", block[1], re.MULTILINE)
+                self.assertIsNotNone(setting)
+                run = re.search(r"^        run_amps: ([\d.]+)$", block[1], re.MULTILINE)
+                self.assertIsNotNone(run)
+                self.assertAlmostEqual(float(run[1]), 0.600)
+                for ref in references:
+                    resistance = float(self.footprints[ref].fields["Value"].split("R")[0])
+                    self.assertEqual(resistance, float(setting[1]))
+
+    def test_idle_startup_turns_outputs_off_before_releasing_interlock(self):
+        config = (Path(__file__).resolve().parents[1] / "firmware/config.yaml").read_text()
+        self.assertIn('  after_reset: "M5&$MD&M64 P0"', config.splitlines())
+        self.assertIn("  digital0_pin: gpio.27", config.splitlines())
+        self.assertIn("  shared_stepper_disable_pin: gpio.13:high", config.splitlines())
+
+    def test_solenoid_pwm_matches_the_first_article_profile(self):
+        config = (Path(__file__).resolve().parents[1] / "firmware/config.yaml").read_text()
+        pwm = re.search(r"^PWM:\n((?:  .*\n)+)", config, re.MULTILINE)
+        self.assertIsNotNone(pwm)
+        settings = dict(line.strip().split(": ", 1) for line in pwm[1].splitlines())
+        self.assertEqual(int(settings["pwm_hz"]), 1000)
+        self.assertEqual(settings["output_pin"], "gpio.32")
+        self.assertEqual(settings["speed_map"], "0=0% 1000=100%")
+
     def test_x_driver_shunt_paths_match_at_each_track_width(self):
         paths = []
         for net, pin, resistor in (("X_SENSE_A", "23", "R17"), ("X_SENSE_B", "27", "R18")):
@@ -472,6 +503,10 @@ class PlacementGeometryTests(unittest.TestCase):
             "R45": {"1": "SOL_GATE_SINK", "2": "SOL_GATE"},
             "D4": {"1": "SOL_POS", "2": "GND"},
             "J5": {"1": "SOL_POS", "2": "GND"},
+            "R23": {"1": "SOL_CMD", "2": "SOL_LED_A"},
+            "D6": {"1": "GND", "2": "SOL_LED_A"},
+            "R46": {"1": "SOL_POS", "2": "SOL_OUT_LED_A"},
+            "D9": {"1": "GND", "2": "SOL_OUT_LED_A"},
         }
         for ref, pin_nets in expected.items():
             with self.subTest(ref=ref):

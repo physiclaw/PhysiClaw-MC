@@ -65,7 +65,7 @@ board has a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]
 
 Upload `dist/PHYSICLAW-JLC-BOM.csv` and
-`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 96 top-side placements.
+`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 98 top-side placements.
 Confirm MPNs, LCSC codes and stock including feeder losses. Fit Littelfuse
 `0467005.NRHF` (5 A, LCSC `C151140`) at F1.
 
@@ -123,7 +123,7 @@ preview with the lot.
 - **U7 termination resistors.** Confirm the 0.96 mm nominal body gap to
   R41/R42 with JLC. The QFN-to-0402 recommendation is 1.00 mm.
   [JLC SMT component spacing]
-- **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D8. D4
+- **Diodes and LEDs.** Align the cathode with pad 1 on D1–D4 and D6–D9. D4
   uses a 180° CPL rotation, with its cathode facing +X. Check LED colour
   and diode package against the BOM.
 - **J2 USB-C.** The 8.94 × 7.30 mm shell is centred at (166.040, −63.000) mm.
@@ -134,7 +134,7 @@ preview with the lot.
   (125.250, −51.690) mm. The antenna connector faces +Y at the top board edge.
 - **SW1 RESET.** In the catalog’s zero-angle view, pins 1 and 2 form the upper
   terminal and pins 3 and 4 form the lower terminal. Verify open at rest.
-- **C859927 shunt resistors.** Align the long axis. A 180° rotation is
+- **C859927 shunt resistors.** Fit 0.100 Ω, 0.5 W at R17–R20 and align the long axis. A 180° rotation is
   electrically equivalent.
 
 The CPL uses physical body centres and counterclockwise angles in top view.
@@ -180,8 +180,10 @@ cable housing is PHR-6 (2.00 mm pitch). [JST PH datasheet]
 Leave PH positions 2 and 5 empty for this pinout. With the harness
 disconnected from the board, check the motor windings at the XH plug.
 Measure one winding across pins 1–2 and the other across pins 3–4.
-Any pair spanning the two windings should read open. Plug in both
-harnesses with board power off.
+Any pair spanning the two windings should read open. With power off, plug
+in both harnesses and check continuity from each metal motor case and the
+conductive frame to board GND (J1 pin 2). This bond drains belt static.
+All four J3/J4 contacts are winding outputs. [TMC2209 datasheet, §3.7](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=17)
 
 ## Programming
 
@@ -189,16 +191,18 @@ Complete the unpowered checks in [First-article acceptance] before power-up.
 
 1. Keep the motors and solenoid disconnected. Attach the external antenna
    and a USB-C data cable. Power J1 with a regulated 12 V / 3 A adapter.
-   Use a centre-positive barrel plug with a 5.5 mm outer diameter and a
-   2.5 mm inner diameter.
+   Including tolerance and ripple, the steady adapter output must stay at or
+   below D2’s 13 V standoff. Use a centre-positive barrel plug with a
+   5.5 mm outer diameter and a 2.5 mm inner diameter.
 2. On macOS or Linux, extract `fluidnc-v4.1.1-posix.zip`. From the extracted
    directory, run `sh install-wifi.sh` for the ESP32. On a new module, close
    FluidTerm and run `sh install-fs.sh` to initialize the filesystem. This
    replaces its contents. [FluidNC v4.1.1 release] · [FluidNC installation guide]
-3. Upload this revision’s `firmware/config.yaml` to the board. Set
+3. Verify the rear `PCW-MC-01 R100` legend and R17–R20 (0.100 Ω) against the
+   assembly BOM. Upload this revision’s `firmware/config.yaml` only to this
+   shunt population. Set
    `$Config/Filename=config.yaml` and restart. Save the 115200-baud boot log.
-   Verify both TMC2209s respond on UART1 at addresses 0 and 1 and the actuators
-   remain disarmed at startup.
+   Verify both TMC2209s respond on UART1 at addresses 0 and 1.
 
 If automatic bootloader entry fails, bridge rear TP1 (IO0) to TP2 (GND),
 press and release RESET, and remove the bridge once the installer connects.
@@ -209,16 +213,22 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
 - **Startup.** Before power-up, measure input resistance and check polarity,
   joints, and fit. Use a current-limited supply. Capture V12 (TP10), V3V3 (TP3),
   ESP_EN (TP9), ACT_OE_N (TP12), DRIVERS_DISABLE (TP5), and SOL_ENABLE (TP14)
-  against local ground. Verify the actuators stay inhibited during cold start,
+  against local ground. Verify the actuators stay off during cold start,
   a slow supply ramp, brownout, RESET, and bootloader entry.
 - **3.3 V buck.** At 12 V input, probe across C2 and simultaneously
   measure TP3 against TP4 using short probe grounds. Capture cold start,
   a logic-rail load step up to 0.60 A total and back down, and simultaneous
   stepping, Wi-Fi and solenoid switching. Record input peaks, rail ripple,
   overshoot, settling and U1/L1 temperatures at thermal equilibrium. After
-  startup, verify V3V3 stays within 3.0–3.6 V and ESP_EN remains released
-  during the load changes. Check that input peaks stay below C2’s 25 V
-  rating. With actuators disconnected, use a current-limited bench supply
+  warm-up, repeat power cycling and the load steps. Probe C33 at U11 VDD
+  (pin 3) and U11 RESET (pin 2) together. Verify VDD exceeds 3.189 V
+  continuously through the reset delay, RESET releases once and ESP_EN
+  stays high through Wi-Fi transmission and dual-axis load changes. Probe
+  U4 VCC (pin 16) and V3 (pin 4) against local ground during USB traffic.
+  Include ripple and transient excursions in the 3.1–3.6 V acceptance range.
+  Verify USB enumeration and continuous data transfer through these load steps.
+  [WCH CH340 datasheet, §6.3](https://www.wch-ic.com/downloads/CH340DS1_PDF.html)
+  With actuators disconnected, use a current-limited bench supply
   and a controlled output short. Verify recovery without a power cycle at
   room temperature and after warm-up.
 - **Motor and solenoid wiring.** Verify both winding pairs as described in
@@ -228,22 +238,55 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
 - **Motor driver supplies.** Fit C17 and C24 as 4.7 µF, 25 V, X7R, 0805
   (C98195). For a substitution, review the manufacturer's DC-bias curve
   at 5.0–5.25 V. Probe directly across each capacitor during startup and
-  simultaneous stepping. Record the DC level and ripple, and check for
-  sustained oscillation. The datasheet's 4.80–5.25 V range applies at
-  24 V supply, 25 °C junction temperature and zero external 5VOUT load.
+  simultaneous acceleration with the solenoid switching. Using the production
+  adapter and harness, capture the lowest VS and VCC_IO at each driver
+  during motion. Require VS to stay above 4.75 V and VCC_IO (C16/C23)
+  within the board's 3.1–3.6 V range. Record the 5VOUT level and ripple
+  and check for dips or sustained oscillation. The datasheet's 4.80–5.25 V
+  range applies at 24 V supply, 25 °C junction temperature and zero external
+  5VOUT load.
   [TMC2209 datasheet, §20.2]
-- **Combined load.** Confirm motor ratings before using 0.400 A RMS run
-  and 0.150 A hold. Record winding and input current and 3.3 V transients
-  during simultaneous stepping, Wi-Fi, acceleration and braking. The steady
-  input target is 2.5 A. With the SMBJ15A at D2 on V12, measure hot-plug and
-  braking peaks and verify adapter overload recovery.
+- **Power-cycle operation and motor current.** With the motors connected and
+  solenoid disconnected, cycle 12 V. Verify TP12 (ACT_OE_N) starts high and
+  goes low automatically after normal boot. TP5 (DRIVERS_DISABLE) must stay
+  high and J5 off until commanded. Jog each axis directly. Turn J5 on with
+  `M3 S1000`, cycle 12 V again, and verify J5 stays off until a new command.
+  Use the supplied [0.600 A RMS setting](../firmware/README.md) for both
+  axes. Verify the intended motors support the configured phase current.
+  Use a winding current probe on each axis at steady low speed. Measure
+  RMS over complete electrical cycles and capture sine peaks. Compare each
+  axis with the nominal 0.597 A RMS and 0.844 A peak for this setting,
+  allowing for driver, shunt and probe tolerances. Check both axes against
+  the motor's ratings. Verify the 500 ms idle disable.
+- **Combined load.** Run the actual payload through repeated loaded moves
+  and reversals at the specified top speed and acceleration with both motors
+  stepping, Wi-Fi active, and the solenoid at its highest rated duty. Include
+  slow continuous stepping for driver heating. Verify repeatable return
+  to a physical reference and sufficient torque throughout the speed range.
+  Log J1 input current and the 3.3 V rail. Require steady input at or below
+  2.5 A and peak demand within the production adapter's specification.
+  Verify adapter overload recovery.
+- **12 V transients.** Use the production adapter and longest supported power
+  lead. Capture plug-in at J1 with the adapter already live, hot restart and
+  worst-case dual-axis braking. Repeat cold and after warm-up. Probe directly
+  across C2 and at both VS pins (22 and 28) of each driver, using the adjacent
+  bypass capacitor and a short ground spring. Record peak voltage and the
+  fastest resolved rising slope at each VS pin, including ringing. Require
+  less than 1 V/µs and less than 29 V at each VS pin, and less than 25 V at
+  C2 including measurement uncertainty. Record headroom and investigate any C2 peak above
+  the 22.5 V board qualification target before release. With the Littelfuse
+  SMBJ13A, the specified clamp at the TVS is 21.5 V at 28 A (10/1000 µs,
+  25 °C). [TMC2209 datasheet, §3.1](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf)
 - **Solenoid PWM.** Use the intended harness, rated 12 V / 0.8 A coil and a
-  current-limited supply. Verify J5 stays off at power-up and during reset.
-  Arm with `$RM=0`. At 200 Hz and 100% override, capture J5 voltage and coil
-  current at `M3 S10`, `M3 S500`, `M3 S990` and `M3 S1000`. At S10 and
-  S990 compare the 50 µs commanded on- and off-intervals respectively with
-  the actual pulses at J5. Record the shortest usable on- and off-pulse if
-  the application uses commands closer to either endpoint.
+  current-limited supply. Verify J5 and green SOL OUT (D9) stay off at
+  power-up and during reset. Compare D9 with the voltage across J5 at
+  zero and full duty. Repeat with the coil unplugged. Yellow SOL CMD (D6)
+  follows the command before the interlock.
+  At 100% spindle override, capture J5 voltage and coil current at
+  `M3 S10`, `M3 S500`, `M3 S990` and `M3 S1000`. Verify a 1.00 ms PWM
+  period (1 kHz) at S500. Compare the commanded 10 µs on-interval at S10
+  and off-interval at S990 with the measured intervals at J5. Record the
+  usable duty range and verify it covers the intended operating range.
 - **Q6 voltage stress.** Probe differentially at the package with short leads.
   Use pin 3 as the source reference for gate pin 4 and drain pin 5. Expect
   about 0 V gate-to-source when off and −8.1 V at full duty with 12 V applied.
@@ -261,9 +304,14 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   Repeat the functional checks after cycling 12 V with USB connected,
   during motor and solenoid operation, and after the assembled enclosure's
   ESD test.
-- **Thermal and communications.** Record steady-state temperatures at 40 °C
-  in still air and at 50 °C enclosure air temperature while pulsing the
-  coil. Check J1, F1, Q1, U1/L1, both drivers, and Q6/D4. Verify
+- **Thermal and communications.** Run both axes at the qualified current to
+  thermal equilibrium at 40 °C in still air and at 50 °C enclosure air
+  temperature. Check J1, F1, Q1, U1/L1, U5/U6, R17–R20, J3/J4, the motor
+  plugs and Q6/D4 during the combined-load test. Log both drivers' OTPW/OT
+  flags throughout the test and require both to stay clear. Check the shunt
+  loads against the manufacturer's temperature derating curve and motor
+  winding temperatures against the motor rating. Qualify continuous
+  dual-axis operation only at the load and ambient that pass. Verify
   external antenna performance and cable fit.
 
 Before batch release, file the approved stackup, placement preview, thermal
