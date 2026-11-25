@@ -44,6 +44,13 @@ For offline builds, run `uv sync --locked` once while online, then use
 
 ### Review the PCB
 
+Open the [中文互动图解](docs/pcb-guide/index.html) in a browser to explore the
+nine circuit areas. Select a component label to compare its routed footprint
+with the same part in the KiCad schematic. Each area has a standalone SVG
+with signal directions and fitted-part specifications. All 105 references
+are covered, and the guide works offline from the checkout. To refresh the
+illustrations after a build, run `uv run --locked python tools/guide_illustrations.py`.
+
 The views are in `build/view/`.
 
 - **Copper.** The `L1-*` through `L4-*` SVGs show filled copper in top-view

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#192d26">
+  <title>控制板图解 · PhysiClaw PCW-MC-01</title>
+  <link rel="stylesheet" href="guide.css">
+  <script defer src="parts.js"></script>
+  <script defer src="lessons.js"></script>
+  <script defer src="routing.js"></script>
+  <script defer src="guide.js"></script>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap topbar">
+    <a href="#overview" class="brand" aria-label="PhysiClaw 整板总览"><span class="brandmark" aria-hidden="true"><i></i><i></i><i></i></span>PhysiClaw</a>
+    <nav aria-label="页内导航"><a href="#overview">整板地图</a><a href="#lesson">分区讲解</a><a href="#library">元件索引</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <section id="overview" aria-labelledby="main-title">
+    <div class="intro">
+      <div><div class="model"><span></span> PCW-MC-01 <b>/</b> REV 1.0</div>
+        <h1 id="main-title">运动控制板图解</h1>
+        <p>从一只 12 V 插座出发，看电和信号怎样让两条皮带、一只电磁铁动起来。</p>
+      </div>
+      <div class="metrics" aria-label="整板规格"><div><strong>70 × 50</strong><small>板尺寸 / mm</small></div><div><strong>4</strong><small>铜层</small></div><div><strong>105</strong><small>装配位号</small></div></div>
+    </div>
+    <div class="atlas">
+      <figure class="map">
+        <div class="maphead"><span><i class="sight" aria-hidden="true"></i>双层走线 · 元件面俯视</span><small>L1 + L4</small></div>
+        <div class="mapbody"><div class="pcb" id="main-board"><svg class="overview-copper" viewBox="0 0 72 50" role="img" aria-label="双层走线叠图，顶层为红色，底层为绿色。"><image href="assets/top-bottom-routing.svg" x="-4" y="-12" width="77.977" height="65.9872"/></svg></div></div>
+        <figcaption><span>选择标记，对照局部走线与原理图</span><a href="assets/top-bottom-routing.svg" target="_blank" rel="noopener">双层走线原图</a></figcaption>
+      </figure>
+      <aside class="directory"><header><h2>功能分区</h2><small>9 个区域</small></header><div id="zone-list"></div></aside>
+    </div>
+  </section>
+  <noscript>互动讲解需要浏览器启用 JavaScript。可直接查看 <a href="assets/schematic.pdf">完整原理图</a> 和 <a href="assets/component-reference.svg">元件定位图</a>。</noscript>
+  <section id="lesson" aria-labelledby="lesson-title" tabindex="-1">
+    <div class="sectionbar"><span class="kicker">分区讲解</span><label class="selectbox"><span class="sr">选择功能区</span><select id="zone-switch"></select></label></div>
+    <div id="reader"></div>
+  </section>
+  <section id="library" aria-labelledby="library-title">
+    <div class="sectionbar"><span class="kicker">查阅</span><a class="quietlink" href="assets/schematic.pdf" target="_blank" rel="noopener">整板原理图 PDF</a></div>
+    <h2 id="library-title">元件索引</h2><p class="lead">点开位号，可对照板上位置、型号、额定参数和引脚连接。相同型号在不同位置可能承担不同工作。</p>
+    <div class="filters"><label class="search"><span class="lens" aria-hidden="true"></span><span class="sr">搜索位号、型号、规格或用途</span><input id="search" type="search" placeholder="搜索位号、型号、规格或用途"></label><label class="selectbox"><span class="sr">按功能区筛选</span><select id="zone-filter"><option value="">全部功能区</option></select></label></div>
+    <p id="count" class="count" aria-live="polite"></p><div class="tablewrap" id="library-table"></div>
+    <button class="plainbtn" id="more" type="button">显示全部元件</button>
+  </section>
+  <section class="appendix">
+    <h2>对照实板</h2>
+    <details><summary>测试焊盘和安装孔在哪里？</summary><div class="inside"><p>TP 是留给探针接触的裸露铜面。14 个测试点中，TP1（GPIO0）和 TP2（GND）在背面。TP3 是 3.3 V，TP10 是 12 V。TP9、TP12、TP5、TP14 分别观察主控复位、互锁使能、电机禁用、Q7 基极。其余标为 GND 的点可作测量参考。H1–H4 是直径 3.2 mm 的 M3 安装孔，中心距 62 × 42 mm，孔环与电路地隔离。</p><a href="assets/probe-map.svg" target="_blank" rel="noopener">打开双面测试点图</a></div></details>
+    <details><summary>为什么使用四层板？</summary><div class="inside"><p>板厚 1.6 mm。顶层 L1 放元件并走线，L2 提供连续的地平面，电流能就近返回。L3 分配 12 V、3.3 V 和局部地，L4 补充信号与电机走线。布线时还要照顾回流路径，例如 L4 的 USB 差分线下方在 L3 保留参考地。</p><a href="assets/L3-power.svg" target="_blank" rel="noopener">查看 L3 电源分布</a></div></details>
+    <details><summary>怎样读位号、单位和规格？</summary><div class="inside"><p>R 是电阻，C 是电容，L 是电感，D 是二极管或指示灯，Q 是晶体管，U 是芯片或模块，F 是保险丝，J 是接口，SW 是开关。后面的数字用来定位同一块板上的元件。Ω 衡量电阻，F 衡量电容，H 衡量电感。k 表示千，m 表示千分之一，µ 表示百万分之一，n 和 p 分别表示十亿分之一和万亿分之一。</p><p>0603、0805 是封装尺寸代号。电容的耐压、晶体管的绝对上限都描述器件能承受的条件。板上实际电压、固件设定值和首次样机的测量值各有不同含义。</p></div></details>
+  </section>
+</main>
+<footer><div class="wrap foot"><strong>PhysiClaw <span>/</span> PCW-MC-01</strong><span>硬件 v1.0 · 首件与台架验证待完成</span></div></footer>
+<dialog id="part-dialog" aria-labelledby="part-title"><div class="modal-head"><span class="kicker">元件详情</span><button id="close-part" class="close" type="button" aria-label="关闭元件详情">×</button></div><div id="part-body"></div></dialog>
+</body>
+</html>

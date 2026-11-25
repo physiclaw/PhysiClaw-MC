@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Route Y STEP and DIR with one turn each on the bottom. Continue both
+  status-light diagonals through their vias to R26 and R27, and take X_A2
+  directly off its via toward J3.
+
+- Straighten the reset-supervisor branch through TP9, the USB bridge reset
+  controls, the buck bootstrap branch and the solenoid drain bus on L1.
+  Give X STEP and DIR one bend each on L4 and carry STEP diagonally through
+  R31. Align the Y driver's charge-pump capacitors below U6.
+
 - Enable CoreXY in the PCW-MC-01 FluidNC profile. J3 (X MOTOR) drives right motor B
   and J4 (Y MOTOR) drives left motor A. Set gantry travel to 110 × 200 mm,
   maximum speed to 10000 mm/min and acceleration to 1000 mm/s² on both axes.
@@ -14,9 +23,9 @@
   Littelfuse SMBJ13A at D2 and qualify C2 peaks and both drivers’ supply
   slopes with the production adapter.
 
-- Add a green output indicator across the J5 solenoid terminals. The SOL
-  label, D9 and R46 share one row below J5. The yellow SOL CMD indicator
-  shows the command.
+- Add a blue output indicator across the J5 solenoid terminals. A single
+  bend feeds R46 from pin 1. D9 returns directly to pin 2, with SOL
+  printed above the LED. The yellow SOL CMD indicator shows the command.
 - Center the front crab and PHYSICLAW wordmark between the motor drivers.
 - Move the rear crab to the former board ID position and center PHYSICLAW
   and PCW-MC-01 beneath it.

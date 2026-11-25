@@ -52,6 +52,107 @@ schematic parity reported zero violations, unconnected items or parity
 issues. All 21 repository tests passed. The IC pin assignments in the
 exported netlist agree with the manufacturer pinouts cited above.
 
+### IC datasheet review, 25 November 2026
+
+This review covers the working tree based on `b0c2198`, including the routed
+PCB with SHA-256 prefix `8d6e89f8535b`. A fresh KiCad 10.0.8 build passed
+ERC, zone-refilled DRC, schematic parity, and the assembly checks for 105
+fitted references and 47 MPNs. All 42 repository tests passed. The exported
+netlist and PCB agree with the package pinouts for all ten fitted U-designators
+in the IC implementation table. The findings below concern operation of the
+assembled circuits and the stock firmware. First-article measurements are pending.
+
+Datasheet editions reviewed were TPS54302 rev. C, ESP32-WROOM-32UE v2.1,
+USBLC6-2 rev. 7, CH340 v3C, TMC2209 rev. 1.09, TS3USB221A rev. C,
+SN74LVC2G125 rev. Q, SN74LVC1G132 rev. E and TLV803E rev. J.
+Firmware findings use the tagged source and the project's cited TMCStepper
+v0.7.3. FluidNC's build accepts a range of library versions. A UART capture
+on the shipped image can establish the actual register sequence.
+[Manufacturer links](#ic-implementation) · [FluidNC dependency range](https://github.com/bdring/FluidNC/blob/v4.1.1/platformio.ini)
+
+**USB host removal can leave the data switch on.** With 12 V still applied
+after enumeration, U4's full-speed D+ pull-up can feed J2 VBUS through the
+enabled U7 and U3's upper steering diode. VBUS then supplies Q5 base current
+through R29 (10 kΩ). Q5 only needs to sink about 33 µA through R30 (100 kΩ)
+to keep U7 enabled. This feedback path exists in the exported netlist.
+For scale, a DC estimate with a 3.3 V pull-up through 1.5 kΩ, a 0.6 V
+steering-diode drop, 0.7 V at Q5's base and the USB-IF fixture's three
+15 kΩ loads gives about 2.03 V on VBUS and 2.63 V on D+. That supplies
+135 µA to the fixture's VBUS resistor and 133 µA to Q5's base. Even an
+illustrative weaker pull-up (3.0 V through 3 kΩ) and a 1.0 V steering-diode
+drop give 1.18 V on fixture VBUS. These steady-state estimates assume U7
+was enabled and the CH340C pull-up remains active. With the cable physically
+removed, current into the host is zero. With the cable attached and host
+port power switched off, the outcome depends on how strongly the host
+discharges VBUS and loads the data lines. A host that pulls VBUS low enough
+turns Q5 off. Re-enumeration failures and host damage have not been
+demonstrated. For first-article qualification, keep J1 powered, measure J2
+VBUS, D+, D− and U7 pin 6 before enumeration and after transferring the
+enumerated device to the fixture. The Appendix F limit is 0.4 V on each
+of the three USB lines. Check port power cycling separately on the intended
+host or hub. [USB schematic](../pcb/kicad/schematics/03-usb.kicad_sch) · [ST USBLC6-2 rev. 7, §2.2](https://www.st.com/resource/en/datasheet/usblc6-2.pdf#page=4) · [WCH CH340, §5.1](https://www.wch-ic.com/downloads/CH340DS1_PDF.html) · [TI switch function][TS3USB221A datasheet] · [USB-IF back-voltage test, Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
+
+**Both TMC2209s use the single-node UART reply delay.** The board connects
+both PDN_UART pins to one bus at addresses 0 and 1. ADI specifies
+`NODECONF.SENDDELAY ≥ 2` on every node so that a reply to one driver does
+not look like a transmission error to the other. The FluidNC v4.1.1 and
+TMCStepper v0.7.3 initialization paths reviewed here leave the reset value
+of 0. At 115200 baud that gives 8 bit times (69 µs) before a reply instead
+of the recommended minimum setting's 24 bit times (208 µs). Initialize
+both addresses before the first diagnostic read, then capture alternating
+reads on the production image and check each node's write counter.
+[ADI TMC2209 rev. 1.09, §§4.1.2 and 5.1](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=19) · [FluidNC initialization](https://github.com/bdring/FluidNC/blob/v4.1.1/FluidNC/src/Motors/TMC2209Driver.cpp) · [TMCStepper initialization](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMC2208Stepper.cpp#L46-L53)
+
+**Motor enable can follow a failed driver setup.** FluidNC records a failed
+driver communication test and skips that driver's current and microstep setup.
+If boot reaches Idle, the board's `after_reset` macro releases U9. A later
+move drives the shared ENN low independently of either driver's error flag.
+For a driver that received no setup writes and has standard factory OTP,
+open VREF and the fitted 0.100 Ω shunts give about 1.40 A RMS at full run
+scale versus 0.796 A configured. The straps also select 8 microsteps on X
+and 32 on Y versus 16 commanded on both. The result can be incorrect CoreXY
+travel as well as excess motor current. A local driver reset can also
+restore defaults while the ESP32 remains powered. Qualify with the motors
+disconnected and one UART branch open at boot. On a jog request, check
+TP12 (inhibit) and TP5 (ENN). A release implementation should keep the
+drivers disabled until both addresses accept configuration and should
+repeat that check after a driver reset. The boot-time IFCNT test precedes
+the current-setting writes. ADI provides IFCNT for verifying accepted writes
+to write-only registers such as IHOLD_IRUN. [Board configuration](../firmware/config.yaml) · [FluidNC driver error handling](https://github.com/bdring/FluidNC/blob/v4.1.1/FluidNC/src/Motors/TrinamicBase.cpp) · [Shared enable logic](https://github.com/bdring/FluidNC/blob/v4.1.1/FluidNC/src/Machine/Axes.cpp) · [ADI §§2, 4, 8–9 and 17][TMC2209 datasheet]
+
+**Two motor-driver acceptance criteria need tighter limits.** U5/U6 use
+their internal 5 V regulators. ADI §20.1 specifies 5.5–29 V on VS in that
+circuit. The first-article guide currently accepts motion down to 4.75 V.
+Measure at pins 22 and 28 of each driver under combined load and require
+at least 5.5 V during operation. For the enclosure soak, the operating
+junction limit is 125 °C, while the nominal 120 °C prewarning can trip as
+high as 140 °C. Clear OTPW and OT flags alone cannot establish junction
+temperature margin. Record a thermally justified upper bound on junction
+temperature at the specified 50 °C enclosure condition. [First-article guide](../manufacturing/process.md#first-article-acceptance) · [ADI §§20.1–20.3](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=75)
+
+**The first move has no guaranteed StealthChop tuning interval.** ADI's
+initial offset calibration needs an enabled, stationary motor at run current
+for up to about 130 ms. The startup macro disables both drivers, and
+`disable_delay_us` is zero. On the first move FluidNC enables the drivers
+and starts the step timer. The 500 ms idle timeout applies after motion.
+Capture ENN, STEP and phase current from cold start. Verify the first move
+on each motor and allow the initial standstill and subsequent constant-speed
+tuning segment when qualifying the motion profile. [ADI §6.1, Figure 6.2](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=38) · [FluidNC stepper wake-up](https://github.com/bdring/FluidNC/blob/v4.1.1/FluidNC/src/Stepper.cpp)
+
+The other static checks support the nominal 12 V design. U1's divider gives
+3.257–3.437 V at the specified 12 V feedback-voltage corners, leaving 68 mV
+at the low corner above U11's maximum calculated release threshold. On L1
+the VIN-to-C2 trace measures 2.50 mm and the 100 nF U2 bypass connects in
+1.95 mm. U2's boot straps, 10 kΩ / 1 µF EN network, and U4's tied V3/VCC
+supply match their application circuits. U9 and U10 implement the specified
+enable polarities, including the physical ENN pull-up when U9 is disabled.
+Each motor driver has a local 100 nF capacitor on each VS pin with 2.40–2.95 mm
+top-layer paths, the specified charge-pump connections, and 16 grounded
+thermal vias. Q6's source, drain, and gate drive agree with the fitted UMW
+part. Rail load steps, driver VS slew at hot-plug, motor temperature, and
+Q6 switching at the 10 µs PWM endpoints still require the assembled board.
+[IC implementation and datasheets](#ic-implementation) · [Operating margins](#operating-margins) · [First-article measurements](../manufacturing/process.md#first-article-acceptance)
+
 ### Operating margins
 
 | Circuit | Fit and operating margin |
@@ -63,9 +164,9 @@ exported netlist agree with the manufacturer pinouts cited above.
 
 ### Q6 switching margins
 
-D6 (yellow, SOL CMD) follows GPIO32 before the hardware interlock. D9 (green,
+D6 (yellow, SOL CMD) follows GPIO32 before the hardware interlock. D9 (blue,
 SOL) and R46 (5.1 kΩ) form a separate branch across the J5 terminals.
-At 12 V the branch draws about 2 mA. D9 follows the output PWM and can
+At 12 V the branch draws about 1.8 mA. D9 follows the output PWM and can
 light with the coil unplugged.
 
 At 12 V, allowing 0.2 V across saturated Q7 gives 3.69 mA through R33 and R45
@@ -138,6 +239,21 @@ the same orientation, looking through the board from the component side.
 J1 and J2 are on the right, J3 and J4 are along the lower edge, and J5 is
 on the left. Use `component-reference.svg` to locate components by designator.
 
+### Follow the outer-layer routes
+
+| Board area | Top copper (L1) | Bottom copper (L4) |
+| --- | --- | --- |
+| 12 V input and buck | From J1 on the right, follow F1 and Q1 to the 12 V plane. Pick up the supply at C2 beside U1 in the upper left. U1 feeds the inductor, then C4 and C5. | Power distribution uses the inner planes. |
+| USB-C and serial | Start at J2. The data pair returns to the top at U3, passes through U7 and ends at U4. DTR and RTS leave U4 together for the reset transistors. | Only the short data-pair escape between J2 and U3 uses L4. |
+| Reset and interlock | In the upper left, follow U11 through R40 and down between the pads of C33 and R2. The diagonal meets the switch trace, passes through TP9 and heads east toward the ESP32. From the ESP32 EN trace, a branch runs south to U10. | BOOT_N has a short spur to the rear IO0 probe, TP1. |
+| Status lights | Start at U2 pins 30 and 31. At the far vias, keep following the same diagonals to R26 (IDLE) and R27 (ALARM). Turn east along each resistor row to D7 and D8. | Two parallel diagonals connect the ESP32 side to the indicator rows. |
+| Solenoid | Follow U2 pin 8 through the interlock at U9, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. From pin 1, the indicator trace angles down and right, then runs straight into R46. It continues left to D9 and straight up to J5 pin 2. | The command and switched output stay on L1. |
+| Shared motor controls | From R10/R11, the UART runs to U6 on the right. From U9 pin 6, the disable line branches left to U5 and right past R9 and TP5 to U6. | The UART branch to U5 crosses the board horizontally and returns to L1 in line with pin 14. |
+| X driver and J3 | From the two control vias, follow STEP through R31 to U5 pin 16 and DIR to pin 19. X_B2 runs from the driver to J3 pin 4 on top. | STEP and DIR each run south, then diagonally toward U5. Three winding traces run to J3 pins 1–3. |
+| Y driver and J4 | DIR leaves U2 pin 36 toward the module center. STEP leaves pin 33 toward the board edge. At U6, STEP passes through R32 to pin 16 and DIR enters pin 19. | Both controls run south and turn once toward U6. DIR passes just west of the rear IO0 probe. All four winding traces reach J4 in pin order. |
+
+### Copper details
+
 - **Power input and buck.** The input runs from J1 through F1 and Q1 on L1.
   F1 provides overcurrent protection, Q1 blocks reverse polarity, and
   D1 clamps Q1's gate-to-source voltage. Its cathode shares the L1 feed
@@ -147,7 +263,8 @@ on the left. Use `component-reference.svg` to locate components by designator.
   L3 12 V plane, and two vias tie its anode to L2 ground. At U1, C2's
   positive pad feeds VIN directly. C2 ground and U1 ground each have two
   vias to L2. From U1 pin 2, a straight 2.18 mm trace, 0.55 mm wide, reaches
-  L1. C3 branches from the switch-side land. On the other side of L1,
+  L1. From the inductor's switch-side land, the C3 branch turns once
+  onto a 45° diagonal to the capacitor. On the other side of L1,
   a wide 3.3 V trace feeds C4 and C5. Two vias at
   C5 feed the 3.3 V plane. A separate sense trace runs from C5 to R43 and
   C35. Below U1, a straight trace joins the feedback ends of R44, R43 and
@@ -167,7 +284,7 @@ on the left. Use `component-reference.svg` to locate components by designator.
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  L3 ground covers the full width of all 42 L4 digital and motor winding segments
+  L3 ground covers the full width of all 39 L4 digital and motor winding segments
   outside their via and connector-pad clearances. Each via or winding
   connector pin on these routes is within 1.89 mm of a plated
   connection from the same L3 ground region to L2, measured centre to centre.
@@ -188,11 +305,12 @@ on the left. Use `component-reference.svg` to locate components by designator.
   the left, the reset supervisor U11 connects through R40 to the same
   trace as SW1 and TP9. The rear recovery pads TP1 (IO0) and TP2 (GND)
   are 2.50 mm apart.
-- **Indicators.** From U2 pins 30 (IDLE) and 31 (ALARM), two parallel
-  9.50 mm diagonals on L4 end beside R27. Both layer changes share the
-  ground return at R27's ground pad. On L1, IDLE heads north to R26 and
-  R24 on the upper row. ALARM reaches R27's signal pad and continues
-  east to R25. The rows end at D7 (IDLE) and D8 (ALARM).
+- **Indicators.** From the vias beside U2 pins 30 and 31, follow the
+  parallel diagonals northeast on L4. IDLE runs 8.64 mm to its far via
+  and ALARM runs 8.15 mm. Both continue on the same heading on L1 until
+  they reach their pull-downs. From R26, follow the upper row through R24
+  to D7. From R27, follow the lower row through R25 to D8. The ground
+  stitch beside R27 serves both layer changes.
 - **Interlock.** On L1, follow ACTUATOR_ARM from U2 pin 12 through the
   R35 pull-down junction to U10 pin 1. ESP_EN runs beside it into pin 2.
   From U10 pin 4, follow the diagonal through TP12 to both U9 enable pins.
@@ -218,19 +336,22 @@ on the left. Use `component-reference.svg` to locate components by designator.
   trace below the drivers. Left leads to U5 pin 2. Right passes the R9
   pull-up and TP5 on the way to U6 pin 2.
 - **X motor.** STEP and DIR leave U2 pins 10 and 11 toward the left and
-  drop to L4. Follow the two diagonals toward U5. On L1, STEP runs
-  straight through the R31 pull-down pad to pin 16. DIR goes straight
+  drop to L4. Each turns once toward U5. STEP continues diagonally across
+  its via and through the R31 pull-down pad, then turns into pin 16. DIR goes straight
   from its via to pin 19. U5 and U6 both use a 90° footprint rotation.
-  X_A2 leaves pin 21 to the left and changes to L4 beside the driver.
+  X_A2 leaves pin 21 to the left and launches diagonally from its via
+  toward J3. The adjacent X_A1 via has copper lands on L1 and L4.
+  The inner planes clear its drill, leaving ground beneath the X_A2 trace.
   X_B2 runs directly to J3 pin 4 on L1 over L2 ground.
   X_B1 runs between shunts R17 and R18
   before joining X_A1 and X_A2 on L4. The three parallel diagonals terminate
   at J3 pins 1 (A1), 2 (A2) and 3 (B1). R17 and R18 face each other.
   Follow the matching sense traces from U5 pins 23 and 27 to their inner
   pads. Each outer pad has two ground vias.
-- **Y motor.** Y STEP runs south from its ESP32 via on L4 and makes one
-  45° turn toward U6. The diagonal continues across its via onto L1,
-  passes through R32's pull-down pad and enters U6 pin 16. The L3
+- **Y motor.** STEP and DIR each run south on L4 and turn 45° toward U6.
+  Both diagonals continue across their driver-side vias onto L1. Follow
+  STEP through R32 to pin 16 and DIR to pin 19. Below U6, pins 4 and 5
+  fan out symmetrically to C25, with C26 on the same row. The L3
   3.3 V branch feeds the 1.72 mm L1 trace between C23 and VCC_IO
   (pin 15), then continues to the via beside MS2 (pin 9).
   C23 has a local ground via. All four Y motor

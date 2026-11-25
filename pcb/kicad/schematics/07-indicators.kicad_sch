@@ -1770,7 +1770,7 @@
         )
       )
     )
-    (property "Value" "GREEN / SOL"
+    (property "Value" "BLUE / SOL"
       (at 274.32 97.78999999999999 90)
       (effects
         (font
@@ -1787,7 +1787,7 @@
         (hide yes)
       )
     )
-    (property "MPN" "LTST-C190KGKT"
+    (property "MPN" "LTST-C190TBKT"
       (at 233.68 76.2 0)
       (effects
         (font
@@ -1796,7 +1796,7 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C125094"
+    (property "LCSC" "C125096"
       (at 233.68 76.2 0)
       (effects
         (font
@@ -1805,7 +1805,7 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS22-2000-074/LTST-C190KGKT.PDF"
+    (property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS-22-99-0224/LTST-C190TBKT.PDF"
       (at 233.68 76.2 0)
       (effects
         (font
@@ -1929,7 +1929,7 @@
     )
     (uuid "04abe138-50b4-5f87-8ee5-b476e8d0e352")
   )
-  (text "J5 OUTPUT / GREEN"
+  (text "J5 OUTPUT / BLUE"
     (at 246.38 39.37 0)
     (effects
       (font

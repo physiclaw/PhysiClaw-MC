@@ -282,7 +282,7 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   SMBJ13A, the specified clamp at the TVS is 21.5 V at 28 A (10/1000 µs,
   25 °C). [TMC2209 datasheet, §3.1](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf)
 - **Solenoid PWM.** Use the intended harness, rated 12 V / 0.8 A coil and a
-  current-limited supply. Verify J5 and green SOL (D9) stay off at
+  current-limited supply. Verify J5 and blue SOL (D9) stay off at
   power-up and during reset. Compare D9 with the voltage across J5 at
   zero and full duty. Repeat with the coil unplugged. Yellow SOL CMD (D6)
   follows the command before the interlock.

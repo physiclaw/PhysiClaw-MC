@@ -500,8 +500,31 @@ class PlacementGeometryTests(unittest.TestCase):
                 to_driver = planar_trace_length(self.board, net, junction, end, top_only=True)
                 self.assertAlmostEqual(direct, to_junction + to_driver)
 
-    def test_status_lights_use_one_direct_diagonal_each_on_the_bottom(self):
-        for net in ("STATUS_IDLE", "STATUS_ALARM"):
+    def test_motor_controls_turn_once_on_l4_and_step_continues_through_its_via(self):
+        for net, x_direction in (("X_STEP", -1), ("X_DIR", -1), ("Y_STEP", 1), ("Y_DIR", 1)):
+            with self.subTest(net=net):
+                vias = self.through_via_positions(net)
+                self.assertEqual(len(vias), 2)
+                source, driver = sorted(vias, key=lambda at: at[1])
+                tracks = self.segments["B.Cu", net]
+                self.assertEqual(len(tracks), 2)
+                ends = [{tuple(values(s, k)) for k in ("start", "end")} for s in tracks]
+                corner, = ends[0] & ends[1]
+                self.assertEqual(ends[0] ^ ends[1], vias)
+                self.assertEqual(corner[0], source[0])
+                self.assertGreater(corner[1], source[1])
+                self.assertGreater(driver[1], corner[1])
+                self.assertAlmostEqual(x_direction * (driver[0] - corner[0]), driver[1] - corner[1])
+                if net.endswith("_STEP"):
+                    resistor = "R31" if net == "X_STEP" else "R32"
+                    pad = pad_center(self.footprints[resistor], "1")
+                    length = planar_trace_length(
+                        self.board, net, ("B.Cu", corner), ("F.Cu", pad),
+                    )
+                    self.assertAlmostEqual(length, math.dist(corner, pad))
+
+    def test_status_diagonals_continue_through_the_vias_to_the_pulldowns(self):
+        for net, resistor in (("STATUS_IDLE", "R26"), ("STATUS_ALARM", "R27")):
             with self.subTest(net=net):
                 vias = self.through_via_positions(net)
                 self.assertEqual(len(vias), 2)
@@ -510,6 +533,9 @@ class PlacementGeometryTests(unittest.TestCase):
                 length = sum(math.dist(values(track, "start"), values(track, "end"))
                              for track in self.segments["B.Cu", net])
                 self.assertAlmostEqual(length, math.dist(a, b))
+                pad = pad_center(self.footprints[resistor], "1")
+                to_pad = planar_trace_length(self.board, net, ("B.Cu", a), ("F.Cu", pad))
+                self.assertAlmostEqual(to_pad, math.dist(a, pad))
 
     def test_solenoid_switch_polarity_and_default_off_paths(self):
         assignments = self.project["net_settings"]["netclass_assignments"]
@@ -549,6 +575,29 @@ class PlacementGeometryTests(unittest.TestCase):
                 )
                 self.assertAlmostEqual(length, math.dist(start, end))
                 self.assertFalse(self.through_via_positions(net))
+
+    def test_solenoid_indicator_routing_and_silkscreen(self):
+        output, ground = (pad_center(self.footprints["J5"], pin) for pin in ("1", "2"))
+        feed, series = (pad_center(self.footprints["R46"], pin) for pin in ("1", "2"))
+        cathode, anode = (pad_center(self.footprints["D9"], pin) for pin in ("1", "2"))
+        # A 45-degree exit clears J5 pin 2 before the vertical run into R46.
+        bend = (feed[0], round(output[1] + feed[0] - output[0], 6))
+        for net, start, end in (
+            ("SOL_POS", output, bend), ("SOL_POS", bend, feed),
+            ("SOL_OUT_LED_A", series, anode), ("GND", cathode, ground),
+        ):
+            with self.subTest(net=net, start=start, end=end):
+                self.assertIn({start, end}, [
+                    {tuple(values(s, "start")), tuple(values(s, "end"))}
+                    for s in self.segments["F.Cu", net]
+                ])
+        self.assertEqual(series[1], anode[1])
+        self.assertEqual(cathode[0], ground[0])
+        legend, = (t for t in children(self.board.tree, "gr_text")
+                   if t[1] == "SOL" and values(t, "layer") == ["F.SilkS"])
+        x, y, _ = values(legend, "at")
+        self.assertEqual(x, self.footprints["D9"].xy[0])
+        self.assertLess(y, self.footprints["D9"].xy[1])
 
     def test_interlock_signals_stay_on_top(self):
         for net in INTERLOCK_SIGNALS:
