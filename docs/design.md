@@ -64,9 +64,15 @@ on the shipped image can establish the actual register sequence.
 
 **USB host detection and power sequencing.** J2 VBUS reaches U4 pin 8 through R29 (22.1 kΩ) with R30 (47.5 kΩ) to ground. At 5.0 V the nominal sense voltage is 3.41 V. At 4.4 V and opposing 1% tolerances the lower bound is 2.98 V before leakage. The board’s 3.437 V high supply corner gives a 2.837 V input-high requirement. Silicon Labs explicitly permits the divider to limit input current while VIO is off. U3 has separate ground clamps for D+, D− and VBUS. The previous external data-line-to-VBUS feedback path has been removed. [Silicon Labs, §2.3 and tables 3.7, 3.10](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=9) · [Littelfuse diode topology](https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756)
 
-**Bridge supply, UART and package.** Pins 5, 6 and 7 share 3.3 V. The installed bypass network has three 100 nF and three 4.7 µF capacitors. Pin 2 and the exposed pad return to ground. TXD (21) drives ESP_RX and RXD (20) receives ESP_TX through R28. DTR (23) and RTS (19) drive the existing auto-download circuit. The QFN24 copper lands, mask expansion and four paste windows follow §7.2. The factory USB descriptor advertises bus power and 100 mA. Set the power descriptor for the fitted self-powered board and verify it on the production unit. [Silicon Labs, §§2.1, 4.5, 5.2 and 7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf)
+**Bridge supply and UART.** VIO (5), VDD (6) and VREGIN (7) share 3.3 V. Figure 2.3 calls for 100 nF and 4.7 µF close to each power pin. The top-layer paths from pins 5, 6 and 7 to C10, C11 and C29 (100 nF) measure 1.57, 2.31 and 2.32 mm respectively. The three 4.7 µF capacitors share parallel 3.3 V and ground traces beside U4. Top-layer paths from pin 7 to C36, C37 and C38 measure 4.17, 5.72 and 7.27 mm respectively. Check VDD at C11 under load against the 3.0–3.6 V operating range. Pin 2 and the exposed pad return to ground. TXD (21) drives ESP_RX and RXD (20) receives ESP_TX through R28. DTR (23) and RTS (19) drive the auto-download circuit. [Silicon Labs, figure 2.3 and §5.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf)
+
+**QFN24 land pattern.** The Gerbers match the land dimensions in table 7.2, the 0.060 mm mask expansion and the four 0.90 mm square center paste windows. Figure 7.2 shows rounded inner ends on the peripheral lands and a 0.25 mm chamfer on the exposed land at the pin 1 corner. The Gerbers use rectangular peripheral lands and a square exposed land. [Silicon Labs, figure and table 7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=39)
+
+**USB cold start and production configuration.** A02 erratum E110 documents undefined D+ and D− levels around power-on reset, typically for 15 ms. Some hosts may miss attachment. During the first-article 12 V power-cycle test with USB already connected, verify enumeration on the intended host and hub. Check that VDD takes at least 10 µs to rise past 2.2 V. The factory descriptor advertises bus power and 100 mA. Program the self-powered descriptor and read it back after cycling power. [Silicon Labs, tables 3.3 and 4.5](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf) · [A02 erratum E110](https://www.silabs.com/documents/public/errata/cp2102n-errata.pdf#page=3)
 
 With 12 V retained, transfer the enumerated board from the host to the Appendix F fixture and measure VBUS, D+ and D− against the 0.4 V limit. Exercise host power removal and re-enumeration separately in both plug orientations. [USB-IF test procedure, Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
+
+If the host leaves VBUS open, C12 (100 nF) discharges through R29 and R30 in series (69.6 kΩ). With board capacitance alone the nominal time constant is 6.96 ms. Cable and host capacitance can extend it. R30 pulls U4 pin 8 to ground once VBUS discharges. If the host keeps VBUS powered through sleep, U4 supports host-initiated USB resume or bus reset. [Silicon Labs, figure 2.6 and §4.1](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf)
 
 **Both TMC2209s use the single-node UART reply delay.** The board connects
 both PDN_UART pins to one bus at addresses 0 and 1. ADI specifies
@@ -186,6 +192,12 @@ of D2. [R17–R20](https://www.jlc-smt.com/lcsc/detail/C859927.html) ·
 J1 (C3095964), J3/J4 (C144395), J5 (C5188434) and C1/C15/C22 (C5111097)
 are purchased for manual installation. Upload only the SMT BOM for placement.
 
+The minimum chip resistor and capacitor size is **0402 imperial** (1005 metric,
+1.0 × 0.5 mm nominal). The six fitted parts of this size are the three 100 nF
+CP2102N bypass capacitors C10/C11/C29, the UART series resistor R28,
+the CP2102N reset pull-up R47 and the supervisor output resistor R40.
+All other fitted chip resistors and capacitors are 0603 or larger.
+
 ### International IC availability
 
 JLCPCB’s public international parts catalog reported the quantities below on
@@ -217,9 +229,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
 | Board area | Top copper (L1) | Bottom copper (L4) |
 | --- | --- | --- |
 | 12 V input and buck | From J1 on the right, follow F1 and Q1 to the 12 V plane. Pick up the supply at C2 beside U1 in the upper left. U1 feeds the inductor, then C4 and C5. | Power distribution uses the inner planes. |
-| USB-C and serial | Follow J2 D+/D− past the U3 shunt pads to the south edge of U4. The two UART signals leave its west side toward the ESP32. | The short connector escape uses L4. From the U3 data pads to U4 both lanes stay on L1. |
-| Reset and interlock | In the upper left, follow U11 through R40 and down between the pads of C33 and R2. The diagonal meets the switch trace, passes through TP9 and heads east toward the ESP32. From the ESP32 EN trace, a branch runs south to U10. | BOOT_N has a short spur to the rear IO0 probe, TP1. |
-| Status lights | Start at U2 pins 30 and 31. At the far vias, keep following the same diagonals to R26 (IDLE) and R27 (ALARM). Turn east along each resistor row to D7 and D8. | Two parallel diagonals connect the ESP32 side to the indicator rows. |
+| USB-C and serial | Follow J2 D+/D− past the U3 shunt pads to the south edge of U4. The UART leaves the west side of U4. R28 sits beside the ESP32 TX pad. | TX and RX each make one 45° turn on L4 between their two vias. The USB connector escape also uses L4. |
+| Reset and interlock | In the upper left, follow U11 through R40 and down between the pads of C33 and R2. The diagonal meets the switch trace, passes through TP9 and heads east toward the ESP32. From the ESP32 EN trace, a branch runs south to U10. | BOOT_N crosses beneath the LED feeds between Q4 and GPIO0 and also reaches rear probe TP1. |
+| Status lights | U2 pin 30 runs to R26 and R24 for D7 (IDLE). Pin 31 runs to R27 and R25 for D8 (ALARM). Both rows sit below and to the left of U4. | Both LED signals use L1 throughout. |
 | Solenoid | Follow U2 pin 8 through the interlock at U9, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. From pin 1, the indicator trace angles down and right, then runs straight into R46. It continues left to D9 and straight up to J5 pin 2. | The command and switched output stay on L1. |
 | Shared motor controls | From R10/R11, the UART runs to U6 on the right. From U9 pin 6, the disable line branches left to U5 and right past R9 and TP5 to U6. | The UART branch to U5 crosses the board horizontally and returns to L1 in line with pin 14. |
 | X driver and J3 | From the two control vias, follow STEP through R31 to U5 pin 16 and DIR to pin 19. X_B2 runs from the driver to J3 pin 4 on top. | STEP and DIR each run south, then diagonally toward U5. Three winding traces run to J3 pins 1–3. |
@@ -252,27 +264,32 @@ on the left. Use `component-reference.svg` to locate components by designator.
   The western ground boundary follows X STEP and DIR toward U5, then
   widens beneath the motor UART crossing. Along the north edge, a
   37 mm stretch of 3.3 V copper links the ESP32 side to the USB side.
-  It is at least 3.34 mm wide throughout and 4.04 mm wide at its
-  narrowest point above the indicator routes. In the east, a rounded 3.3 V
+  In the east, a rounded 3.3 V
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  L3 ground covers the full width of all 39 L4 digital and motor winding segments
-  outside their via and connector-pad clearances. Each via or winding
-  connector pin on these routes is within 1.89 mm of a plated
-  connection from the same L3 ground region to L2, measured centre to centre.
-- **USB and reset.** J2’s paired data traces reach U4 pins 3 and 4 past U3. J2 VBUS branches to U3 pin 2 and the R29/R30 detection divider. U4 pin 8 senses the divided voltage. The UART leaves U4 pins 20 and 21 toward the ESP32. DTR and RTS each use one short L3 crossing between two vias to reach the auto-download transistors.
+  The production Gerbers show continuous L3 ground under all 43 L4 digital
+  and motor winding segments outside their own via and connector-pad clearances.
+  All 28 routed vias and seven motor connector pins have a plated connection
+  from the local L3 ground region to L2 within 2.0 mm, measured centre to
+  centre. The largest spacing is 1.913 mm at the ESP32 end of ESP_RX.
+- **USB and reset.** J2’s paired data traces reach U4 pins 3 and 4 past U3. C12 sits on the VBUS trace 1.62 mm from U3 pin 2. U4 pin 8 senses VBUS through R29/R30. R5 and R6 sit directly below Q3. DTR and RTS connect to both transistor branches on L1. The DTR path from U4 to Q4 has two bends. R8 sits directly below the DTR branch point, 3.07 mm of top copper from pin 23. The RTS path from U4 to R6 has one bend. The ESP32 UART crosses this area on L4 with 0.22 mm traces. TX uses 5.01 mm of L4 after R28 and RX uses 6.23 mm. U4 pin 7 feeds C11 and C29 horizontally on L1. A 45° segment from C29 reaches C36 at the near end of the 4.7 µF bank. Pin 5 feeds C10 with one bend. The ground ends of C10, C11 and C29 share a local via to L2. Two parallel 0.40 mm top traces run down the power and ground pads of C36–C38. R8 uses a separate 1.03 mm connection to its L3 supply via.
+
+  On the connector side of U4, the VBUS sense trace runs north to R30 and
+  continues horizontally to R29. The top-layer sense path from pin 8 to R29
+  measures 8.46 mm. Pin 9 reaches its reset
+  pull-up R47 in 1.54 mm on the top layer.
 
   From Q3, follow ESP_EN across the upper end of U2 to its EN pin. On
   the left, the reset supervisor U11 connects through R40 to the same
   trace as SW1 and TP9. The rear recovery pads TP1 (IO0) and TP2 (GND)
   are 2.50 mm apart.
-- **Indicators.** From the vias beside U2 pins 30 and 31, follow the
-  parallel diagonals northeast on L4. IDLE runs 8.64 mm to its far via
-  and ALARM runs 8.15 mm. Both continue on the same heading on L1 until
-  they reach their pull-downs. From R26, follow the upper row through R24
-  to D7. From R27, follow the lower row through R25 to D8. The ground
-  stitch beside R27 serves both layer changes.
+- **Indicators.** The two GPIO signals leave U2 on L1 and turn south
+  toward the rows below U4. The upper row runs from the R27 pull-down
+  through R25 to D8 (ALARM). The lower row runs from R26 through R24
+  to D7 (IDLE). From the GPIO pad to the series-resistor input the
+  paths measure about 7.0 mm and 9.0 mm, respectively. Each series
+  resistor's output pad connects horizontally to its LED anode in 1.56 mm.
 - **Interlock.** On L1, follow ACTUATOR_ARM from U2 pin 12 through the
   R35 pull-down junction to U10 pin 1. ESP_EN runs beside it into pin 2.
   From U10 pin 4, follow the diagonal through TP12 to both U9 enable pins.
@@ -388,7 +405,24 @@ over L2 and measure 3.132 mm between contact centres. The USB Type-C
 recommendation is at most 3.5 mm. CC1 and CC2 each have a 5.1 kΩ
 pull-down. [USB Type-C Rev 2.4, Table 3-5, note 2]
 
-Both lanes use one short L4 escape between J2 and U3 with a nearby ground return at each transition. From the U3 data pads the pair continues on L1 into U4. The routed lengths differ by 0.48 mm for either plug orientation, excluding via barrels and package internals. The nominal differential sections use 0.28 mm traces with 0.18 mm edge spacing, with local changes at pads and via launches. Request 90 Ω ±10% coupons on both outer layers and check the full-speed waveform on the assembled board. [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
+Both lanes use one short L4 escape between J2 and U3 with a nearby ground return at each transition. From the U3 data pads the pair continues on L1 into U4. The routed lengths differ by 0.50 mm for either plug orientation, excluding via barrels and package internals.
+
+The straight portions on both outer layers use 0.26 mm wide traces with a 0.20 mm edge gap. L1 references L2 GND and L4 references the local L3 GND region. Between the U3 shunt pads the traces use 0.22 mm width and 0.16 mm gap. They widen as they separate to meet the data pads. At the bridge, the 45° section uses 0.27 mm traces with a 0.19 mm edge gap. The final QFN approach uses 0.28 mm traces on the 0.50 mm pin pitch.
+
+| Cross-section | PCB sample location in mm | Estimated differential impedance, JLC China process |
+| --- | --- | ---: |
+| L1 straight pair | X = 154.35, 154.72, 155.07, 155.67, 156.10, 156.29, 156.54 and 156.67, centred at Y = 63.80 | 90.5–91.9 Ω |
+| L4 straight pair | X = 160.18 and 160.42, centred at Y = 62.88 | 90.9–91.2 Ω |
+| L1 between U3 pads | X = 157.65, centred at Y = 63.80 | 89.7–92.0 Ω |
+| L1 diagonal and QFN approach | Normal to the pair at (153.30, 63.025) and (152.40, 61.94) | 89.4–91.0 Ω |
+
+At X = 154.11 on L1, the Y-directed slice crosses D+ after its bend and D− obliquely before its bend. This cut gives 85.6–85.8 Ω in 2D. The bend itself requires a 3D model or a measurement.
+
+At X = 160.64 on L4 the section crosses the D+ via land. Its wider copper gives a local 2D estimate of about 81.6 Ω. The complete via transition also includes the barrel and reference-plane openings.
+
+The 2D quasi-static estimates use the routed copper and refilled ground. For the specified JLC04161H-7628 stackup, both outer layers have 0.2104 mm of 7628 prepreg (Dk 4.4) to their reference plane. The JLC China calculation uses 40.64 µm finished outer copper and a trace top 12.70 µm narrower than the base. The solder mask has Dk 3.8 and is 15.24 µm over copper and 25.40 µm over the laminate and between traces. [JLC stackup] · [JLC China calculation parameters](https://www.jlc.com/portal/q7i37381.html)
+
+The ranges cover the sampled locations and two assumptions for nearby VBUS and 3.3 V copper, omitted or treated as AC ground. Fabrication tolerances and the three-dimensional effects at pads, bends and vias require separate validation. Request an L1 and an L4 differential TDR coupon, each with an 81–99 Ω acceptance window, and verify the assembled USB channel with the full-speed waveform test. [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication)
 
 [USB Type-C Rev 2.4, Table 3-5, note 2]:
   https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/USB-Type_2D00_C-Spec-R2.4-_2D00_-October-2024.pdf

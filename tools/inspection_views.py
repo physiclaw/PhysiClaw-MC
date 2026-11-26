@@ -379,7 +379,7 @@ def component_reference(out, board, bounds, fab, board_name, version):
 
     place_labels(panel, component_anchors(board, bounds),
                  (.35, .35, width-.7, height-.7),
-                 size=1.04, clearance=.19, spacing=.12,
+                 size=1.00, clearance=.19, spacing=.12,
                  artwork=list(artwork_boxes(panel)))
     save(svg, out/"component-reference.svg")
 

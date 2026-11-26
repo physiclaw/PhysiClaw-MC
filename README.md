@@ -54,7 +54,7 @@ illustrations after a build, run `uv run --locked python tools/guide_illustratio
 The views are in `build/view/`.
 
 - **Copper.** The `L1-*` through `L4-*` SVGs show filled copper in top-view
-  alignment. `L3-power.svg` distinguishes 12 V, 3.3 V, and ground pours, plus the two short DTR/RTS crossings.
+  alignment. `L3-power.svg` distinguishes the 12 V, 3.3 V and ground pours.
 - **Routing.** `top-routing.svg`, `bottom-routing.svg`, and
   `top-bottom-routing.svg` show traces, pads, and vias with pours hidden.
   `usb-routing.svg` is the D+/D− close-up.

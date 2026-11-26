@@ -11,15 +11,20 @@ CSV and `PHYSICLAW-JLC.d356` from `dist/fabrication/`. Use the D-356 file for
 bare-board electrical testing.
 
 - **Construction.** 70 × 50 mm, 1.6 mm, four-layer FR-4. Nominal copper is
-  1 oz on L1/L4 and 0.5 oz on L2/L3. L2 is GND. L3 carries power and GND.
-- **Stackup.** JLC04161H-7628, 0.2104 mm nominal outer dielectric. Confirm
-  laminate, dielectric tolerances, finished copper and barrel plating with
-  CAM. Specify **90 Ω differential ±10%** on L1 over L2 GND and L4 over
-  L3 GND. Request TDR results for coupons on both layers. Use 0.28 mm
-  traces, a 0.18 mm edge gap and production copper, mask and reference
-  planes. Preserve the local necks at U3 and the L4 via fanouts. Recheck
-  routing for stackup changes.
-  [JLC stackups] · [JLC impedance control]
+  1 oz on L1/L4 and 0.5 oz on L2/L3. L2 is GND. L3 carries 12 V, 3.3 V and GND.
+- **Stackup.** Select JLC04161H-7628 and Nan Ya NP-155F for the quoted
+  build. The 7628 prepreg is 0.2104 mm thick after pressing on both sides.
+  Confirm the material, dielectric tolerances, finished copper and barrel plating
+  with CAM. Order **90 Ω differential ±10%** for USB_DP_CONN and USB_DM_CONN
+  on L1 over L2 GND and L4 over
+  L3 GND beneath the USB pair. Use 0.26 mm nominal traces, a 0.20 mm edge
+  gap and 0.20 mm nominal clearance to adjacent same-layer ground on
+  the straight runs. Match both coupons to the production mask, copper
+  and coplanar geometry. Request separate L1 and L4 differential TDR
+  results, each within 81–99 Ω. Preserve the U3 neck (0.22/0.16 mm),
+  QFN approach and connector/via fanouts. Confirm any CAM adjustments
+  to trace width, spacing or stackup before fabrication.
+  [JLC stackups] · [JLC China impedance order and calculation guide]
 - **Drills and slots.** Use the separate metric PTH/NPTH files and retain G85
   plated slots. J1 has three 1.00 × 2.05 mm slots with PJ-102BH terminal
   centres and 0.275 mm nominal copper at the ends. J2 has two
@@ -28,8 +33,9 @@ bare-board electrical testing.
   dimensions with CAM and connector samples. Preserve the isolated plated
   M3 rings.
   [Jack drawing] · [JLC China process limits]
-- **Via clearances.** Allow 0.25 mm from drill edge to other-net copper on the
-  outer layers and 0.30 mm on the inner layers.
+- **Via clearances.** Keep at least 0.15 mm from the edge of a via land to
+  other-net copper on the same layer. From the drill edge, allow at least
+  0.25 mm on the outer layers and 0.30 mm on the inner layers.
   Tent both faces of the four 0.30 mm USB signal vias beside J2 and U3.
   Their 0.60 mm lands have 0.15 mm nominal rings. Keep the USB via drills clear of the connector and clamp pad openings.
   [JLC PCB capabilities]
@@ -298,6 +304,22 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   during motor and solenoid operation, and after the assembled enclosure's
   ESD test.
   Program the CP2102N self-powered configuration and set Max Power for the actual VBUS draw. Read back the USB configuration descriptor after a power cycle. With J1 still powered, transfer the enumerated board to the back-voltage fixture and record VBUS, D+ and D− (each ≤0.4 V). Then reconnect and check automatic download using DTR/RTS. [CP2102N, §4.5](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=26) · [USB-IF Appendix F](https://www.usb.org/sites/default/files/USB-IFTestProc1_3.pdf)
+- **USB sleep and wake.** Keep J1 powered and the data cable connected. On the
+  intended host or hub, record the board's USB serial number and confirm that
+  a `?` sent at 115200 baud returns a FluidNC status report before sleep.
+  Measure VBUS at J2 during sleep. Cover retained 5 V, a discharged port,
+  and a port that leaves VBUS open. Use an inline VBUS switch if needed
+  to reproduce the last two cases. Keep data and ground connected. For the
+  discharged case, isolate host power before discharging board-side VBUS.
+  For the open case, leave board-side VBUS unloaded except for a high-impedance
+  probe. In both power-loss cases verify U4 pin 8 falls to ≤0.6 V before
+  restoring VBUS at wake. With USB power still off, verify FluidNC answers
+  a status query over Wi-Fi. Monitor ESP_EN across sleep and wake for an
+  unintended reset.
+  After each wake, require the same USB device to be available automatically.
+  Reopen its serial port if needed and verify a fresh `?` response without
+  unplugging the cable, pressing reset or cycling J1. Record the host, VBUS
+  condition and result for each case.
 - **Thermal and communications.** Run both axes at the qualified current to
   thermal equilibrium at 40 °C in still air and at 50 °C enclosure air
   temperature. Check J1, F1, Q1, U1/L1, U5/U6, R17–R20, J3/J4, the motor
@@ -318,8 +340,8 @@ and functional test result with the [board and source identifiers](../CONTRIBUTI
 [JST XH datasheet]: https://www.jst-mfg.com/product/pdf/eng/eXH.pdf
 [JST PH datasheet]: https://www.jst-mfg.com/product/pdf/eng/ePH.pdf
 [JLC stackups]: https://jlcpcb.com/impedance
+[JLC China impedance order and calculation guide]: https://www.jlc.com/portal/q7i37381.html
 [JLC PCB capabilities]: https://jlcpcb.com/capabilities/pcb-capabilities
-[JLC impedance control]: https://jlcpcb.com/blog/impedance-controlled-routing
 [JLC China process limits]: https://www.jlc.com/portal/vtechnology.html
 [JLC order instructions]: https://jlcpcb.com/help/article/instructions-for-ordering
 [JLC SMT component spacing]: https://jlcpcb.com/help/article/minimum-spacing-for-smd-components
