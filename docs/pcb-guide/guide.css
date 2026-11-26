@@ -72,6 +72,9 @@ dialog{width:min(720px,calc(100% - 24px));max-height:88vh;overflow:auto;border:1
 .route-flows p, .zone-specs dd { color: var(--soft); font-size: .94rem; }
 .zone-specs > div { display: grid; grid-template-columns: 3.6rem 1fr; gap: 8px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--line); }
 .zone-specs dd { margin: 0; }
+.appendix table { margin: 10px 0; }
+.appendix th[scope="row"] { background: transparent; white-space: nowrap; }
+.appendix th small { display: block; font: normal .74rem var(--mono); }
 @media (max-width: 760px) {
   .routing-pair, .route-flows, .zone-specs { grid-template-columns: 1fr; }
   .route-toolbar > a { margin-left: 0; }

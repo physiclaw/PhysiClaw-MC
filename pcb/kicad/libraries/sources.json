@@ -122,9 +122,14 @@
       "note": "Installed KiCad 10.0.8 symbol, pins checked against the manufacturer pin table."
     },
     {
-      "local_symbol": "Power_Protection_SP0503BAHT",
-      "source": "Power_Protection:SP0503BAHT",
-      "note": "Installed KiCad 10.0.8 symbol, pins checked against the manufacturer pin table."
+      "local_symbol": "Power_Protection_TPD4E05U06DQA",
+      "source": "Power_Protection:TPD4E05U06DQA",
+      "note": "KiCad 10.0.8 symbol with the inherited TPD4EUSB30 definition expanded. Pin numbers verified against TI SLVSBO7O, Table 4-2."
+    },
+    {
+      "local_symbol": "Logic_74LVC1G125",
+      "source": "74xGxx:74LVC1G125",
+      "note": "KiCad 10.0.8 single tri-state buffer with the project SOT-23-5 footprint. DBV pins verified against TI SCES223U, section 4."
     }
   ],
   "footprints": {
@@ -162,7 +167,8 @@
     "Physiclaw:Bourns_SRP5050FA": "Bourns SRP5050FA recommended layout, https://www.bourns.com/docs/product-datasheets/srp5050fa.pdf",
     "Physiclaw:Package_TO_SOT_SMD_SOT-143": "Package_TO_SOT_SMD:SOT-143",
     "Physiclaw:Capacitor_SMD_C_0402_1005Metric": "Capacitor_SMD:C_0402_1005Metric",
-    "Physiclaw:SiliconLabs_CP2102N_QFN24": "Silicon Labs CP2102N Rev. 1.5, §7.2, figure and table 7.2. Body and courtyard from KiCad Package_DFN_QFN_QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm"
+    "Physiclaw:SiliconLabs_CP2102N_QFN24": "Silicon Labs CP2102N Rev. 1.5, §7.2, figure and table 7.2. Body and courtyard from KiCad Package_DFN_QFN_QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm",
+    "Physiclaw:Texas_DQA0010_USON-10": "TI SLVSBO7O, DQA0010A land and stencil examples, pages 29–30. Body and outlines from KiCad Package_SON:USON-10_2.5x1.0mm_P0.5mm. https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf"
   },
   "modifications": {
     "Physiclaw:TestPoint_Pad_D1.0mm_Compact": "Derived from the vendored KiCad TestPoint:TestPoint_Pad_D1.0mm. The courtyard diameter is reduced to 1.5 mm. The 1.0 mm copper and mask pad is retained.",
@@ -209,6 +215,7 @@
     "SRP5050FA-envelope.wrl": "Project body and terminal envelope from Bourns SRP5050FA dimensions. The fitted Cjiang FEXL0550A has the same 5.5 × 5.3 × 4.8 mm nominal body and 4.3 × 1.1 mm terminal faces. Cjiang FEXL series specification, mechanical dimensions: https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf",
     "QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step": "KiCad 10.0.8 Package_DFN_QFN.3dshapes/QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step",
     "SOT-143.step": "KiCad 10.0.8 Package_TO_SOT_SMD.3dshapes/SOT-143.step",
-    "C_0402_1005Metric.step": "KiCad 10.0.8 Capacitor_SMD.3dshapes/C_0402_1005Metric.step"
+    "C_0402_1005Metric.step": "KiCad 10.0.8 Capacitor_SMD.3dshapes/C_0402_1005Metric.step",
+    "USON-10_2.5x1.0mm_P0.5mm.step": "KiCad 10.0.8 Package_SON.3dshapes/USON-10_2.5x1.0mm_P0.5mm.step"
   }
 }

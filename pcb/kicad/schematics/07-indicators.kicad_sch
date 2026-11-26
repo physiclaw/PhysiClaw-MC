@@ -1656,7 +1656,7 @@
     )
     (uuid "6fa94481-b86e-5b7e-a653-4981f80fefc2")
   )
-  (text "D6 follows the GPIO32 command before U9. D9 indicates voltage across the J5 load terminals."
+  (text "D6 follows the GPIO32 command before U12. D9 indicates voltage across the J5 load terminals."
     (at 20.32 174.625 0)
     (effects
       (font

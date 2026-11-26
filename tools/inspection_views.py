@@ -446,9 +446,8 @@ def usb_review(out, board, bounds, fab):
     anchors = []
     for footprint in board.footprints:
         if footprint.ref in usb_refs:
-            # The shunt array straddles both lanes. Point to its common pad
-            # so the component callout can leave the footprint above the pair.
-            xy = (next(p.xy for p in footprint.pads if p.net == "GND")
+            # Use the upper signal pad to keep the U3 callout above the pair.
+            xy = (next(p.xy for p in footprint.pads if p.number == "1")
                   if footprint.ref == "U3" else footprint.xy)
             anchors.append((*xy, footprint.ref))
     coords = ([values(s, k) for s in segments for k in ("start","end")]

@@ -1296,51 +1296,37 @@
       )
       (embedded_fonts no)
     )
-    (symbol "Physiclaw:Power_Protection_SP0503BAHT"
+    (symbol "Physiclaw:Power_Protection_TPD4E05U06DQA"
       (pin_names
-        (hide yes)
+        (offset 0)
       )
       (exclude_from_sim no)
       (in_bom yes)
       (on_board yes)
       (in_pos_files yes)
       (duplicate_pin_numbers_are_jumpers no)
-      (property "Reference" "D"
-        (at 5.715 2.54 0)
+      (property "Reference" "U"
+        (at -0.635 8.89 0)
         (show_name no)
         (do_not_autoplace no)
         (effects
           (font
             (size 1.27 1.27)
           )
-          (justify left)
         )
       )
-      (property "Value" "SP0503BAHT"
-        (at 5.715 0.635 0)
+      (property "Value" "TPD4E05U06DQA"
+        (at 8.89 -10.16 0)
         (show_name no)
         (do_not_autoplace no)
         (effects
           (font
             (size 1.27 1.27)
           )
-          (justify left)
         )
       )
-      (property "Footprint" "Physiclaw:Package_TO_SOT_SMD_SOT-143"
-        (at 5.715 -1.27 0)
-        (show_name no)
-        (do_not_autoplace no)
-        (hide yes)
-        (effects
-          (font
-            (size 1.27 1.27)
-          )
-          (justify left)
-        )
-      )
-      (property "Datasheet" "http://www.littelfuse.com/~/media/files/littelfuse/technical%20resources/documents/data%20sheets/sp05xxba.pdf"
-        (at 3.175 3.175 0)
+      (property "Footprint" "Physiclaw:Texas_DQA0010_USON-10"
+        (at -24.13 -10.16 0)
         (show_name no)
         (do_not_autoplace no)
         (hide yes)
@@ -1350,7 +1336,7 @@
           )
         )
       )
-      (property "Description" "TVS Diode Array, 5.5V Standoff, 3 Channels, SOT-143 package"
+      (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf"
         (at 0 0 0)
         (show_name no)
         (do_not_autoplace no)
@@ -1361,7 +1347,7 @@
           )
         )
       )
-      (property "ki_keywords" "usb esd protection suppression transient"
+      (property "Description" "4-Channel ESD Protection for Super-Speed USB 3.0 Interface, USON-10"
         (at 0 0 0)
         (show_name no)
         (do_not_autoplace no)
@@ -1372,7 +1358,7 @@
           )
         )
       )
-      (property "ki_fp_filters" "SOT?143*"
+      (property "ki_keywords" "ESD protection USB 3.0"
         (at 0 0 0)
         (show_name no)
         (do_not_autoplace no)
@@ -1383,11 +1369,540 @@
           )
         )
       )
-      (symbol "Power_Protection_SP0503BAHT_0_0"
+      (property "ki_fp_filters" "USON*2.5x1.0mm*P0.5mm*"
+        (at 0 0 0)
+        (show_name no)
+        (do_not_autoplace no)
+        (hide yes)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (symbol "Power_Protection_TPD4E05U06DQA_0_0"
+        (rectangle
+          (start -5.715 6.477)
+          (end 5.715 -6.604)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -3.175 -6.604)
+            (xy -3.175 6.477)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0 6.477)
+            (xy 0 -6.604)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.175 6.477)
+            (xy 3.175 -6.604)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Power_Protection_TPD4E05U06DQA_0_1"
+        (polyline
+          (pts
+            (xy -7.747 2.54)
+            (xy -3.175 2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (rectangle
+          (start -7.62 7.62)
+          (end 7.62 -7.62)
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type background)
+          )
+        )
+        (polyline
+          (pts
+            (xy -7.62 -2.54)
+            (xy -5.715 -2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center -5.715 -2.54)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy -5.08 5.08)
+            (xy -6.35 5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -5.08 3.81)
+            (xy -6.35 3.81)
+            (xy -5.715 5.08)
+            (xy -5.08 3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -5.08 -3.81)
+            (xy -6.35 -3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -5.08 -5.08)
+            (xy -6.35 -5.08)
+            (xy -5.715 -3.81)
+            (xy -5.08 -5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center -3.175 6.477)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center -3.175 2.54)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center -3.175 -6.604)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.54 5.08)
+            (xy -3.81 5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.54 3.81)
+            (xy -3.81 3.81)
+            (xy -3.175 5.08)
+            (xy -2.54 3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.54 -3.81)
+            (xy -3.81 -3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -2.54 -5.08)
+            (xy -3.81 -5.08)
+            (xy -3.175 -3.81)
+            (xy -2.54 -5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -0.635 0.889)
+            (xy -1.016 0.635)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 0 6.477)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0 -6.604)
+            (xy 0 -7.62)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 0 -6.604)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.635 0.889)
+            (xy -0.635 0.889)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.635 0.889)
+            (xy 1.016 1.143)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 0.635 -0.381)
+            (xy -0.635 -0.381)
+            (xy 0 0.889)
+            (xy 0.635 -0.381)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 3.175 6.477)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 3.175 -2.54)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (circle
+          (center 3.175 -6.604)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.81 5.08)
+            (xy 2.54 5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.81 3.81)
+            (xy 2.54 3.81)
+            (xy 3.175 5.08)
+            (xy 3.81 3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.81 -3.81)
+            (xy 2.54 -3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 3.81 -5.08)
+            (xy 2.54 -5.08)
+            (xy 3.175 -3.81)
+            (xy 3.81 -5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (circle
+          (center 5.715 2.54)
+          (radius 0.2794)
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type outline)
+          )
+        )
+        (polyline
+          (pts
+            (xy 6.35 5.08)
+            (xy 5.08 5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 6.35 3.81)
+            (xy 5.08 3.81)
+            (xy 5.715 5.08)
+            (xy 6.35 3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 6.35 -3.81)
+            (xy 5.08 -3.81)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 6.35 -5.08)
+            (xy 5.08 -5.08)
+            (xy 5.715 -3.81)
+            (xy 6.35 -5.08)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 7.62 2.54)
+            (xy 5.715 2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 7.62 -2.54)
+            (xy 3.175 -2.54)
+          )
+          (stroke
+            (width 0)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "Power_Protection_TPD4E05U06DQA_1_1"
         (pin passive line
-          (at 0 -5.08 90)
-          (length 2.54)
-          (name "A"
+          (at -12.7 2.54 0)
+          (length 5.08)
+          (name "D1+"
             (effects
               (font
                 (size 1.27 1.27)
@@ -1402,218 +1917,10 @@
             )
           )
         )
-      )
-      (symbol "Power_Protection_SP0503BAHT_0_1"
-        (rectangle
-          (start -4.445 2.54)
-          (end 4.445 -2.54)
-          (stroke
-            (width 0.254)
-            (type default)
-          )
-          (fill
-            (type background)
-          )
-        )
-        (polyline
-          (pts
-            (xy -3.302 1.016)
-            (xy -3.302 1.27)
-            (xy -1.905 1.27)
-            (xy -1.778 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy -2.54 2.54)
-            (xy -2.54 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy -2.54 1.27)
-            (xy -2.54 -1.27)
-            (xy 2.54 -1.27)
-            (xy 2.54 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy -2.54 1.27)
-            (xy -1.905 0)
-            (xy -3.175 0)
-            (xy -2.54 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0 2.54)
-            (xy 0 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0 -1.27)
-            (xy 0 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0 -1.27)
-            (xy 0 -2.54)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (circle
-          (center 0 -1.27)
-          (radius 0.254)
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type outline)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0.635 1.27)
-            (xy 0.762 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0.635 1.27)
-            (xy -0.762 1.27)
-            (xy -0.762 1.016)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 0.635 0)
-            (xy -0.635 0)
-            (xy 0 1.27)
-            (xy 0.635 0)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 1.778 1.016)
-            (xy 1.778 1.27)
-            (xy 3.175 1.27)
-            (xy 3.302 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 2.54 2.54)
-            (xy 2.54 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 2.54 1.27)
-            (xy 1.905 0)
-            (xy 3.175 0)
-            (xy 2.54 1.27)
-          )
-          (stroke
-            (width 0)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-      )
-      (symbol "Power_Protection_SP0503BAHT_1_1"
         (pin passive line
-          (at -2.54 5.08 270)
-          (length 2.54)
-          (name "K"
+          (at -12.7 -2.54 0)
+          (length 5.08)
+          (name "D1-"
             (effects
               (font
                 (size 1.27 1.27)
@@ -1628,10 +1935,10 @@
             )
           )
         )
-        (pin passive line
-          (at 0 5.08 270)
-          (length 2.54)
-          (name "K"
+        (pin power_in line
+          (at 0 -12.7 90)
+          (length 5.08)
+          (name "GND"
             (effects
               (font
                 (size 1.27 1.27)
@@ -1647,9 +1954,9 @@
           )
         )
         (pin passive line
-          (at 2.54 5.08 270)
-          (length 2.54)
-          (name "K"
+          (at 12.7 2.54 180)
+          (length 5.08)
+          (name "D2+"
             (effects
               (font
                 (size 1.27 1.27)
@@ -1657,6 +1964,115 @@
             )
           )
           (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 12.7 -2.54 180)
+          (length 5.08)
+          (name "D2-"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin free line
+          (at 12.7 -7.62 180)
+          (length 5.08)
+          (name "NC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "6"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin free line
+          (at 12.7 7.62 180)
+          (length 5.08)
+          (name "NC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "7"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -12.7 90)
+          (length 5.08)
+          (hide yes)
+          (name "GND"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "8"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin free line
+          (at -12.7 -7.62 0)
+          (length 5.08)
+          (name "NC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "9"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin free line
+          (at -12.7 7.62 0)
+          (length 5.08)
+          (name "NC"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "10"
             (effects
               (font
                 (size 1.27 1.27)
@@ -3136,15 +3552,15 @@
     )
   )
   (symbol
-    (lib_id "Physiclaw:Power_Protection_SP0503BAHT")
-    (at 121.92 96.52 0)
+    (lib_id "Physiclaw:Power_Protection_TPD4E05U06DQA")
+    (at 139.7 95.25 0)
     (unit 1)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (uuid "170e8d30-692d-5d3b-891b-feda1b6294ac")
     (property "Reference" "U3"
-      (at 129.54 97.79 0)
+      (at 130.81 79.375 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3152,8 +3568,8 @@
         (justify left)
       )
     )
-    (property "Value" "SP0503BAHTG"
-      (at 129.54 101.6 0)
+    (property "Value" "TPD4E05U06DQAR"
+      (at 130.81 82.55 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3161,8 +3577,8 @@
         (justify left)
       )
     )
-    (property "Footprint" "Physiclaw:Package_TO_SOT_SMD_SOT-143"
-      (at 129.54 101.6 0)
+    (property "Footprint" "Physiclaw:Texas_DQA0010_USON-10"
+      (at 130.81 82.55 0)
       (effects
         (font
           (size 1.0 1.0)
@@ -3170,8 +3586,8 @@
         (hide yes)
       )
     )
-    (property "MPN" "SP0503BAHTG"
-      (at 129.54 101.6 0)
+    (property "MPN" "TPD4E05U06DQAR"
+      (at 130.81 82.55 0)
       (effects
         (font
           (size 1.0 1.0)
@@ -3179,8 +3595,8 @@
         (hide yes)
       )
     )
-    (property "LCSC" "C7074"
-      (at 129.54 101.6 0)
+    (property "LCSC" "C138714"
+      (at 130.81 82.55 0)
       (effects
         (font
           (size 1.0 1.0)
@@ -3188,8 +3604,8 @@
         (hide yes)
       )
     )
-    (property "Datasheet" "https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756"
-      (at 129.54 101.6 0)
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf"
+      (at 130.81 82.55 0)
       (effects
         (font
           (size 1.0 1.0)
@@ -3217,6 +3633,24 @@
     (pin "4"
       (uuid "eb9c323b-a8fb-5e01-a8a1-e7ecdeadc701")
     )
+    (pin "5"
+      (uuid "bb78c9aa-c356-52d6-a208-9bbfcf5b6461")
+    )
+    (pin "6"
+      (uuid "9b87b6a4-cda8-5c0c-bdcf-7afef241e382")
+    )
+    (pin "7"
+      (uuid "8d1dfb9d-25ba-5d7a-ba79-62568f1efa1a")
+    )
+    (pin "8"
+      (uuid "bdb13a40-b66e-5bdb-ab4a-19607f9f4f4f")
+    )
+    (pin "9"
+      (uuid "81efdc9a-2776-5e43-8483-b4ca74b299e5")
+    )
+    (pin "10"
+      (uuid "4c6974e6-5da7-5050-9ab6-31c2feb929c2")
+    )
   )
   (junction
     (at 124.46 71.12)
@@ -3224,87 +3658,37 @@
     (color 0 0 0 0)
     (uuid "ea27c02a-7553-5a63-b23b-2469515a0f24")
   )
-  (wire
-    (pts
-      (xy 124.46 71.12)
-      (xy 124.46 91.44)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "9717fdf5-5879-588f-83f2-5e8d4953786b")
-  )
+
   (junction
     (at 121.92 73.66)
     (diameter 0)
     (color 0 0 0 0)
     (uuid "6182cf57-b77c-5a71-97ce-fb619dd2907f")
   )
-  (wire
-    (pts
-      (xy 121.92 73.66)
-      (xy 121.92 91.44)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "39c19340-3b02-5128-8d4d-a3b6aa120c11")
-  )
-  (wire
-    (pts
-      (xy 119.38 91.44)
-      (xy 119.38 86.36)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "10186003-8a02-5b6b-b5ac-c903bbbd389b")
-  )
-  (wire
-    (pts
-      (xy 119.38 86.36)
-      (xy 111.76 86.36)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "e9a06b91-83c3-5432-af78-b11664e73d18")
-  )
+
+
+
   (global_label "USB_VBUS"
-    (at 111.76 86.36 180)
+    (at 156.21 97.79 0)
     (effects
       (font
         (size 1.27 1.27)
       )
-      (justify right)
+      (justify left)
     )
     (uuid "03b3a446-8652-5778-806b-c97e35685b05")
   )
-  (wire
-    (pts
-      (xy 121.92 101.6)
-      (xy 121.92 106.68)
-    )
-    (stroke
-      (width 0)
-      (type default)
-    )
-    (uuid "7ea5d322-5e56-5fdd-ae2c-a47d379592ad")
-  )
+
   (symbol
     (lib_id "Physiclaw:DrawingPower_GND")
-    (at 121.92 106.68 0)
+    (at 139.7 110.49 0)
     (unit 1)
     (in_bom no)
     (on_board no)
     (dnp no)
     (uuid "349f5ae6-a5b4-5600-b22e-f953900434fd")
     (property "Reference" "#PWR1343"
-      (at 121.92 110.49 0)
+      (at 139.7 114.3 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -3313,7 +3697,7 @@
       )
     )
     (property "Value" "GND"
-      (at 121.92 110.49 0)
+      (at 139.7 114.3 0)
       (effects
         (font
           (size 1.15 1.15)
@@ -5320,6 +5704,14 @@
     )
     (uuid "d440d13c-26b9-5c1d-8e56-65e7b418f4b2")
   )
+  (text "U3 protection channels are interchangeable. PCB copper joins pins 1–10 for D− and 2–9 for D+."
+    (at 20.32 171.45 0)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+    (uuid "fb4b08d1-afd3-57e0-bd51-c27c145a11c2")
+  )
   (text "Main 12 V powers the bridge. VBUS is sensed through R29/R30. DTR and RTS drive the ESP32 auto-download circuit."
     (at 20.32 165.1 0)
     (effects
@@ -5330,5 +5722,140 @@
       (justify left)
     )
     (uuid "cc58ebb0-bf44-5b89-af44-41042672b507")
+  )
+
+  (wire
+    (pts
+      (xy 124.46 71.12)
+      (xy 124.46 87.63)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "8390d738-ffed-5255-981d-845715848e3c")
+  )
+  (wire
+    (pts
+      (xy 124.46 87.63)
+      (xy 124.46 92.71)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "f7410c99-5ee2-53ba-af55-fbe64d71bea1")
+  )
+  (wire
+    (pts
+      (xy 124.46 92.71)
+      (xy 127 92.71)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "40874ec3-52b0-58c1-91dc-0a1ee0b5e8fd")
+  )
+  (wire
+    (pts
+      (xy 124.46 87.63)
+      (xy 127 87.63)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "485d593c-38f1-584e-aecf-5f99caccb52a")
+  )
+  (wire
+    (pts
+      (xy 121.92 73.66)
+      (xy 121.92 97.79)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "7418807a-be28-5cd9-a650-a19bad0f7114")
+  )
+  (wire
+    (pts
+      (xy 121.92 97.79)
+      (xy 121.92 102.87)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "7bf1a339-7f17-596d-8ff9-9d0b4ba6859e")
+  )
+  (wire
+    (pts
+      (xy 121.92 102.87)
+      (xy 127 102.87)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "f541d50f-0b4b-59f4-9233-70b1216a8435")
+  )
+  (wire
+    (pts
+      (xy 121.92 97.79)
+      (xy 127 97.79)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "f8a84e96-6963-59e5-9fed-22d4fac0edec")
+  )
+  (wire
+    (pts
+      (xy 152.4 97.79)
+      (xy 156.21 97.79)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "7d7e4ddd-f428-5d57-b19b-c946b2bba27a")
+  )
+  (wire
+    (pts
+      (xy 139.7 107.95)
+      (xy 139.7 110.49)
+    )
+    (stroke
+      (width 0)
+      (type default)
+    )
+    (uuid "865314b7-4c35-538d-9206-2d456b9b8f93")
+  )
+  (junction
+    (at 124.46 87.63)
+    (diameter 0)
+    (color 0 0 0 0)
+    (uuid "63e3b4d5-3dd9-541c-a77f-d6a6a337d8f4")
+  )
+  (junction
+    (at 121.92 97.79)
+    (diameter 0)
+    (color 0 0 0 0)
+    (uuid "19c05766-f810-5c31-abfe-54dcbed2c3a5")
+  )
+  (no_connect
+    (at 152.4 87.63)
+    (uuid "29d27641-4d89-5017-8685-d59ffee49554")
+  )
+  (no_connect
+    (at 152.4 92.71)
+    (uuid "568f8fd5-b827-5320-8d68-e765181ec7b3")
+  )
+  (no_connect
+    (at 152.4 102.87)
+    (uuid "da88abbf-cde1-5565-b0f0-a7f47077b96c")
   )
 )

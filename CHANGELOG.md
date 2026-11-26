@@ -2,9 +2,39 @@
 
 ## Unreleased
 
+- Rotate U3 and route the J2 data pair through its clamp pads to U4 on L1.
+  Tie A6 to B6 on the right with 3.01 mm of top copper. On the left, run
+  A7 and B7 directly to two vias joined by 1.20 mm of bottom copper.
+  The complete D− tie measures 3.45 mm in-plane and 6.65 mm with barrels.
+  Two ground stitches connect L2 and L3 within 0.91 mm of each signal via.
+  Give the U4 VIO bypass its own ground via.
+
+- Remove 18 bends across the nine PCB areas. Align TP10 with the input
+  TVS, R29 with the USB VBUS feed, and R37 with U9 pin 2. Straighten the
+  buck feedback return, ESP32 boot escape, both status LED feeds, motor
+  bypass returns, and the solenoid flyback and pull-down returns.
+
+- Correct seven off-angle top-layer traces in the USB and reset circuits.
+  Check all routed layers for horizontal, vertical and 45° segments.
+
+- Split the actuator buffer into two SN74LVC1G125DBVR devices (C23654).
+  U9 gates motor disable and U12 gates solenoid PWM. Both enables share
+  ACT_OE_N and each device has its own 100 nF bypass capacitor. Route
+  the motor command through R37 directly into U9 beside the ESP32.
+  Orient U12 like U9. Put the command LED branch beside GPIO32 and run
+  PWM straight from that branch to U12, with the R38 pull-down at the
+  input. U12 drives R21 over 1.65 mm of top copper. R21, TP14 and the
+  Q7 base line up. Rotate U10 to match both buffers and exchange its
+  two NAND inputs. The enable runs straight from U10 through TP12 to
+  U12, with R36 on the trace from U10 to U9.
+
 - Replace the CH340C and USB data switch with a self-powered CP2102N-A02
-  and SP0503BAHTG ground clamps. Route the USB pair from the clamp pads
-  to the bridge, the UART on L4, and the DTR/RTS branches on L1. Place
+  and TI TPD4E05U06DQAR ground clamps on D−, D+ and VBUS. Move U3 and
+  U4 north by 0.40 mm to align the connector and clamp data pads. Route
+  the bottom D− crossover straight between its vias and the top
+  pair horizontally through U3. Route J2 VBUS between the R12 pads to
+  the U3/C12 branch and connect U4 directly to reset pull-up R47.
+  Route the UART on L4 and the DTR/RTS branches on L1. Place
   the IDLE and ALARM LEDs below the bridge with top-layer GPIO feeds. Group
   the three 4.7 µF bridge capacitors on parallel L1 power and ground traces.
 
@@ -46,7 +76,7 @@
 
 - Reserve the 0.32 mm drill for the 44 filled and capped thermal holes at
   U2, U5 and U6. Use 0.62 mm lands for a 0.15 mm annular ring.
-  Tent both faces of the four 0.30 mm USB data vias beside J2 and U3.
+  Tent both faces of the two 0.30 mm D− vias beside J2.
 - Increase inner-layer hole clearance to 0.30 mm and open the same-net
   gaps at the VBUS-detect and interlock-enable branches.
 

@@ -2,6 +2,7 @@
 
 const byId = id => document.getElementById(id);
 const partByRef = new Map(parts.map(part => [part.ref, part]));
+const modelCount = new Set(parts.map(part => part.mpn)).size;
 const byZone = new Map(lessons.map((lesson, i) => [lesson.id, {...lesson, number:String(i + 1).padStart(2, '0')}]));
 const dialog = byId('part-dialog');
 const boardImage = 'assets/3d-top.png';
@@ -270,9 +271,11 @@ function renderLesson(id) {
   });
   zoneParts.append(el('h3','','本区元件规格 · ' + inZone.length + ' 个位号'),specs);
   const sources = el('div','sources');
-  sources.append(link('原理图 · 第 ' + lesson.sheet + ' 页','assets/schematic.pdf#page=' + lesson.sheet));
+  for (const page of new Set([lesson.sheet, ...inZone.map(p => p.page)])) {
+    const refs = page === lesson.sheet ? '原理图' : inZone.filter(p => p.page === page).map(p => p.ref).join('、');
+    sources.append(link(refs + ' · 第 ' + page + ' 页','assets/schematic.pdf#page=' + page));
+  }
   lesson.sources.forEach(([label,href]) => sources.append(link(label,href)));
-  if (id === 'led') sources.append(link('D3 · 电源页','assets/schematic.pdf#page=2'));
   const footer = el('div','readerfoot');
   footer.append(el('a','quietlink','回到整板地图'));
   footer.firstChild.href = '#overview';
@@ -334,7 +337,8 @@ const search = byId('search'), filter = byId('zone-filter');
 function renderIndex() {
   const query = search.value.trim().toLowerCase();
   const result = parts.filter(p => (!filter.value || p.zone === filter.value) &&
-    [p.ref,p.mpn,p.code,p.pkg,p.role,p.spec,byZone.get(p.zone).name].some(v => v.toLowerCase().includes(query)));
+    [p.ref,p.mpn,p.code,p.pkg,p.role,p.spec,byZone.get(p.zone).name,...p.pins.map(([,net]) => net)]
+      .some(v => v.toLowerCase().includes(query)));
   if (query) result.sort((a,b) => Number(b.ref.toLowerCase()===query)-Number(a.ref.toLowerCase()===query));
   const rows = showAll || query || filter.value ? result : result.slice(0,10);
   const table = el('table'), thead = table.createTHead().insertRow(), tbody = table.createTBody();
@@ -349,12 +353,15 @@ function renderIndex() {
     row.insertCell().textContent=p.spec;
   }
   byId('library-table').replaceChildren(result.length ? table : el('p','empty','没有匹配的元件。试试 U1、0.100 Ω 或取消分区筛选。'));
-  byId('count').textContent='显示 '+rows.length+' / '+result.length+' 个位号 · 整板 47 种型号';
+  byId('count').textContent='显示 '+rows.length+' / '+result.length+' 个位号 · 整板 '+modelCount+' 种型号';
   byId('more').hidden = Boolean(query || filter.value || !result.length || result.length<=10);
   byId('more').textContent = showAll ? '收起元件列表' : '显示全部 '+parts.length+' 个位号';
 }
 byId('more').addEventListener('click',() => {showAll=!showAll;renderIndex();if (!showAll) byId('library').scrollIntoView();});
 for (const control of [search,filter]) control.addEventListener(control===search?'input':'change',() => {showAll=false;renderIndex();});
+const fittedCount = byId('fitted-count');
+fittedCount.textContent = parts.length;
+fittedCount.parentElement.hidden = false;
 renderLesson('input');
 renderIndex();
 navigateHash();

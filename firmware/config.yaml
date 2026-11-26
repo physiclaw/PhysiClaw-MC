@@ -20,7 +20,7 @@ start:
   must_home: false
   check_limits: false
 
-# GPIO27 releases U9 after startup with the solenoid off and motors disabled.
+# GPIO27 releases U9 and U12 after startup with the solenoid off and motors disabled.
 user_outputs:
   digital0_pin: gpio.27
 

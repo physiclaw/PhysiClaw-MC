@@ -1,6 +1,5 @@
-"""Regenerate the standalone routing illustrations after make build."""
+"""Refresh the PCB guide's illustrations and review assets after make build."""
 import csv
-import hashlib
 import heapq
 import json
 import math
@@ -14,7 +13,7 @@ from collections import defaultdict
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from build import kicad_environment
+from build import digest, kicad_environment
 from guide_zones import SCHEMATICS, ZONES
 from inspection_views import SVG, board_bounds, board_edges, draw, save
 from kicad_board import Board, children, loads, rotate, values
@@ -28,6 +27,9 @@ INK, SOFT, LINE = "#183c39", "#4b6666", "#cbd8d5"
 PALETTE = ["#0b6782", "#ad531b", "#7244a2", "#326a37", "#973e68"]
 FONT = "'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif"
 MONO = "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
+# Offset crowded labels in drawing units. Zoom views stay centred on the footprints.
+LABEL_OFFSETS = {"C7": (20, 0), "R3": (-20, 0), "R28": (-20, -8), "R11": (20, 0),
+                 "C11": (-24, 0), "R13": (20, 5)}
 XLINK = "{http://www.w3.org/1999/xlink}"
 ET.register_namespace("", SVG[1:-1])
 ET.register_namespace("xlink", XLINK[1:-1])
@@ -318,6 +320,8 @@ def draw_schematic(svg, crops, pages, parts, h):
             ref = part["ref"]
             pt = pages[page][1].get(ref)
             if pt and hit(crop, pt):
+                if part["page"] != page:
+                    raise ValueError(f"{ref}: guide links to page {part['page']}, symbol is on page {page}")
                 seen.add(ref)
                 # On large ICs the plotted reference can sit well above the body.
                 # Include the symbol, reference and nearby wiring in the same zoom.
@@ -359,8 +363,12 @@ def draw_inset(svg, index, box, crop, caption, refs, coords, flows):
     for ref in refs:
         px, py = project(coords[ref])
         focus_view(svg, "pcb-"+ref, (px, py), min(260, 16*scale), (x, y, w, h))
+        dx, dy = LABEL_OFFSETS.get(ref, (0, 0))
+        if dx or dy:
+            line(svg, px, py, px+dx, py+dy, SOFT, 1.2)
+            draw(svg, "circle", cx=px, cy=py, r=2, fill=SOFT)
         group = draw(svg, "g", data_ref=ref, data_board_xy="%g %g" % coords[ref],
-                     transform=f"translate({px:.3f} {py:.3f})")
+                     transform=f"translate({px+dx:.3f} {py+dy:.3f})")
         label(group, 0, 0, ref, 15, "#10302f", text_anchor="middle", dy=".35em",
               font_family=MONO, font_weight=700, stroke="white", stroke_width=3.5,
               paint_order="stroke fill", stroke_linejoin="round")
@@ -452,20 +460,31 @@ def illustration(zone, number, parts, copper, source, pages):
 def main():
     pcb = ROOT / "pcb/kicad/PCW-MC-01.kicad_pcb"
     base = BUILD / "view/top-bottom-routing.svg"
+    review_assets = ("view/top-bottom-routing.svg", "view/usb-routing.svg", "view/component-reference.svg",
+                     "view/probe-map.svg", "view/L3-power.svg", "view/3d-top.png", "schematic.pdf")
     manifest = json.loads((BUILD / "manifest.json").read_text())
-    for path, expected in ((pcb, manifest["source_sha256"][pcb.relative_to(ROOT).as_posix()]),
-                           (base, manifest["review_sha256"][base.relative_to(BUILD).as_posix()])):
-        if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+    inputs = [(ROOT / name, sha) for name, sha in manifest["source_sha256"].items()
+              if name.startswith("pcb/kicad/")]
+    inputs.extend((BUILD / name, manifest["review_sha256"][name])
+                  for name in (*review_assets, "assembly/assembly.csv"))
+    for path, expected in inputs:
+        if digest(path) != expected:
             raise ValueError(f"{path.name} differs from the build manifest. Run make build first.")
     copper = Copper(Board(pcb))
     raw = (GUIDE / "parts.js").read_text().split("const parts = ", 1)[1]
     parts = json.loads(raw.strip().removesuffix(";"))
     with (BUILD / "assembly/assembly.csv").open() as f:
         bom = {row["Reference"]: row for row in csv.DictReader(f)}
-    if {p["ref"]: (p["mpn"], p["code"]) for p in parts} != {
-        ref: (row["MPN"], row["LCSC"]) for ref, row in bom.items()
+    if len(parts) != len(bom) or {p["ref"]: (p["mpn"], p["code"], p["process"]) for p in parts} != {
+        ref: (row["MPN"], row["LCSC"], row["Process"]) for ref, row in bom.items()
     }:
         raise ValueError("Guide parts differ from the fitted assembly BOM")
+    for part in parts:
+        footprint = copper.parts[part["ref"]]
+        pins = {(pad.number, pad.net) for pad in footprint.pads
+                if pad.number and pad.net and not pad.net.startswith("unconnected-")}
+        if set(map(tuple, part["pins"])) != pins or tuple(part["xy"]) != copper.local(footprint.xy):
+            raise ValueError(f"{footprint.ref}: guide pin map or footprint position differs from the PCB")
     if {p["zone"] for p in parts} != {z.id for z in ZONES}:
         raise ValueError("Guide parts and illustration zones differ")
     pages = schematic_sources()
@@ -485,7 +504,8 @@ def main():
             [flow.title, re.sub(r"[a-z]+:", "", flow.stages), flow.note] for flow in zone.flows]}
     (GUIDE / "routing.js").write_text("// Generated by tools/guide_illustrations.py\nconst routing = "
                                      + json.dumps(atlas, ensure_ascii=False, indent=2) + ";\n", encoding="utf-8")
-    shutil.copyfile(base, ASSETS / base.name)
+    for name in review_assets:
+        shutil.copyfile(BUILD / name, ASSETS / Path(name).name)
 
 
 if __name__ == "__main__":

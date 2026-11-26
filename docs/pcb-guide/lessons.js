@@ -1,7 +1,7 @@
 // Teaching order follows the path from the adapter to a moving load.
 // A state contains a label, a path of [signal or reference, plain-language action], and its explanation.
-const revision = 'b0c21981bf63295ff8f5b1bf50121b8a24a3cb04';
-const repo = 'https://github.com/physiclaw/PhysiClaw-MC/blob/' + revision + '/';
+const configFile = '../../firmware/config.yaml';
+const designNotes = '../design.md';
 const motorDoc = 'https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf';
 function motorLesson(isX) {
   const u = isX ? 'U5' : 'U6';
@@ -14,7 +14,7 @@ function motorLesson(isX) {
     id: isX ? 'x' : 'y', name: isX ? 'X 电机驱动' : 'Y 电机驱动', group:'执行', pin:u,
     short: isX ? '右电机 B · 上层皮带' : '左电机 A · 下层皮带', sheet:isX ? 5 : 6,
     headline:isX ? '一个 STEP 脉冲，怎样变成一步？' : '为什么标着 Y 的电机也参与 X 移动？',
-    intro:isX ? 'ESP32 发出位置节拍，U5 决定两组线圈各通多少电。J3 连到机器右侧的电机 B，带动上层皮带。' : 'CoreXY 用两条皮带共同决定工具头的位置。J4 连到机器左侧的电机 A，这一路的带位移等于工具头的 X 位移减去 Y 位移。',
+    intro:isX ? 'J3 的丝印是 X MOTOR，接右侧电机 B。U5 用两组绕组带动上层皮带，带位移等于工具头的 X 位移加上 Y 位移。' : 'J4 的丝印是 Y MOTOR，接左侧电机 A。U6 驱动下层皮带，带位移等于工具头的 X 位移减去 Y 位移。沿单一坐标轴移动时，两台电机都要转。',
     states:[
       ['驱动一步',[[io,'步进和方向'],[u+' · TMC2209','调节两相电流'],[j+' · A / B','两组电机绕组'],[belt,'转子带动皮带']],
        'DIR 决定正反方向。每来一个 STEP，驱动器就把目标磁场转过一个微步。芯片内部两组 H 桥可以给绕组正向或反向通电，电流产生的磁场牵引转子。'],
@@ -29,7 +29,7 @@ function motorLesson(isX) {
       ['为什么小电容的尺寸也重要？',cap+' 稳定芯片内部的 5 V 输出。所选 4.7 µF、25 V、0805 陶瓷电容在 5 V 偏压时典型约剩 3.36 µF，仍处于驱动器要求的 2.2–4.7 µF 范围。'],
       ['怎样兼顾测量和散热？',sense+' 各自回地，采样线尽量短而对称，减少铜线本身造成的误差。每颗驱动器的裸露散热焊盘下有 16 个填孔封帽过孔，把热传入内层铜。']
     ],
-    sources:[['TMC2209 手册',motorDoc],['FluidNC 运动配置',repo+'firmware/config.yaml'],['电容偏压曲线','https://product.samsungsem.com/mlcc/CL21B475KAFNNN.do']]
+    sources:[['TMC2209 手册',motorDoc],['FluidNC 运动配置',configFile],['CoreXY 接线与点动','../../firmware/README.md'],['电容偏压曲线','https://product.samsungsem.com/mlcc/CL21B475KAFNNN.do']]
   };
 }
 const lessons=[
@@ -49,7 +49,7 @@ const lessons=[
       ['为什么用 3 A 适配器和 5 A 保险丝？','整板满载设计预算为 2.5 A，指定稳压 12 V / 3 A、中心正极适配器。插头外径 5.5 mm、内径 2.5 mm。F1 的 5 A 是保险丝额定值，实际熔断需满足时间和电流条件。'],
       ['短路时谁先保护？','如果适配器把故障电流限制在 3 A，F1 可能一直达不到熔断条件。板上实际故障表现也取决于适配器怎样限流、怎样恢复。'],
       ['大电容为什么放在入口？','C1 是 220 µF 储能电容。负载突然增加时，它先就地供一小段电流，减轻线缆与适配器来不及响应造成的电压下跌。']
-    ],sources:[['J1 尺寸与额定值','https://www.sameskydevices.com/product/resource/pj-102bh.pdf'],['D2 浪涌规格','https://www.littelfuse.com/products/overvoltage-protection/tvs-diodes/surface-mount/smbj/smbj13a'],['整板设计预算',repo+'docs/design.md']]
+    ],sources:[['J1 尺寸与额定值','https://www.sameskydevices.com/product/resource/pj-102bh.pdf'],['D2 浪涌规格','https://www.littelfuse.com/products/overvoltage-protection/tvs-diodes/surface-mount/smbj/smbj13a'],['整板设计预算',designNotes]]
   },
   {
     id:'buck',name:'3.3 V 降压',group:'电源',pin:'U1',short:'让主控得到稳定电压',sheet:2,
@@ -67,7 +67,7 @@ const lessons=[
       ['为什么同时看标称容量和偏压？','C2 标称 47 µF / 25 V，在 12 V 直流偏压下典型约为 15 µF。两只输出电容 C4、C5 标称各 47 µF；在 3.3 V 偏压下合计典型约为 44 µF。'],
       ['怎样给电感和纹波留余量？','按 12 V 输入、3.347 V 输出、0.60 A 负载和 400 kHz 典型频率计算，6.8 µH 电感的纹波约 0.89 A 峰峰值，峰值约 1.04 A。7.8 A 是电感典型饱和电流，3 A 是 U1 额定输出能力。'],
       ['为什么反馈线与开关节点分开走？','开关节点电压跳变快。反馈从输出电容附近单独取样，下分压电阻直接返回芯片地，减少大电流走线造成的采样误差。']
-    ],sources:[['TI 降压芯片','https://www.ti.com/lit/ds/symlink/tps54302.pdf'],['C2 电容资料','https://ds.yuden.co.jp/TYCOMPAS/or/detail?pn=MSAST32MAB5476MPNDT1&u=M'],['偏压与纹波计算',repo+'docs/design.md']]
+    ],sources:[['TI 降压芯片','https://www.ti.com/lit/ds/symlink/tps54302.pdf'],['C2 电容资料','https://ds.yuden.co.jp/TYCOMPAS/or/detail?pn=MSAST32MAB5476MPNDT1&u=M'],['偏压与纹波计算',designNotes]]
   },
   {
     id:'mcu',name:'主控与复位',group:'控制',pin:'U2',short:'运算、启动与程序下载',sheet:3,
@@ -84,40 +84,40 @@ const lessons=[
     notes:[
       ['为什么模块附近有一大一小两只电容？','C6 的 22 µF 缓冲较大的瞬时负载，C7 的 100 nF 让快速电流在芯片附近闭合。U2 用 3.3 V 供电，带 4 MB Flash，外接天线通过模块上的微型同轴座连接。'],
       ['两个串口各做什么？','USB 桥连到程序下载和日志串口。电机配置则使用另外的 UART1，R10 把发送脚经过 1 kΩ 接入共享线，R11 以 0 Ω 接入接收脚，驱动器回话时主控也能听到。']
-    ],sources:[['乐鑫模块资料','https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html'],['启动模式','https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html'],['板上引脚配置',repo+'firmware/config.yaml']]
+    ],sources:[['乐鑫模块资料','https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html'],['启动模式','https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html'],['板上引脚配置',configFile]]
   },
   {
     id:'usb',name:'USB-C 通信',group:'控制',pin:'J2',short:'电脑与串口之间的桥',sheet:4,
     headline:'为什么只插 USB，电脑还看不到这块板？',
-    intro:'J1 的 12 V 经降压给 ESP32 和 CP2102N 供电。J2 的 VBUS 告诉串口桥电脑是否接入。',
+    intro:'J1 的 12 V 经 U1 降为 3.3 V，给 ESP32 和串口桥 U4 供电。J2 的 D+、D− 传输 USB 全速数据，VBUS 经分压接到 U4 的主机检测脚。',
     states:[
       ['12 V 和 USB 都接入',[['J2','D+ / D−'],['U4 · CP2102N','USB 转串口'],['U2 · ESP32','启动日志和下载']], '数据线经过 U3 的对地保护点直接连到 U4。主机可以打开串口，DTR 和 RTS 经 Q3、Q4 控制自动下载。'],
       ['仅接 12 V',[['J1','板上 3.3 V 正常'],['R30','VBUS 检测脚拉低'],['U2','可独立运行']], '拔掉 USB 后，R30 把 U4 的 8 脚拉低，串口桥可以识别主机离开。'],
       ['只接 USB',[['J2','VBUS 到检测分压器'],['U4 / U2','未上电']], 'USB 插座不给主板供电。插入 USB 数据线后，还要接上 J1 才能枚举。']
     ],
     notes:[
-      ['插头翻面为什么还能通信？','两侧 D+ 触点在 J2 旁相连，D− 同样相连。CC1、CC2 各有一只 5.1 kΩ 对地下拉。'],
-      ['为什么 D+ 不会经过 U3 抬高 VBUS？','U3 对 D+、D−、VBUS 分别提供到地的保护，每条支路的公共端是地。'],
+      ['插头翻面为什么还能通信？','J2 的 A6 与 B6 相连（D+），A7 与 B7 相连（D−）。从元件面看，D+ 在焊盘右侧通过 3.01 mm 的顶层走线直接相连。D− 在两个焊盘的左端各有一颗过孔，两孔之间用 1.20 mm 的底层直线相连。CC1、CC2 各有一只 5.1 kΩ 对地下拉。'],
+      ['怎样沿走线找到静电保护点？','从 J2 向 U4 看，D− 先到 U3 的 1 脚，D+ 先到 2 脚。PCB 铜线分别接到对面的 10、9 号焊盘，再去 U4。U3 的 5 脚保护 VBUS，3、8 脚各自就近接入 L2 地平面。'],
       ['正常插入时检测脚是多少伏？','5 V 经 R29（22.1 kΩ）、R30（47.5 kΩ）分压，U4 的 8 脚约为 3.41 V。']
-    ],sources:[['Silicon Labs CP2102N','https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf'],['Littelfuse SP0503BAHTG','https://www.littelfuse.com/assetdocs/tvs-diode-array-spasp050xba-lead-freegreen-datasheet?assetguid=15a03de1-f0c6-457a-95f1-55d449fdd756']]
+    ],sources:[['USB 走线放大图','assets/usb-routing.svg'],['Silicon Labs CP2102N','https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf'],['TI TPD4E05U06','https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf']]
   },
   {
     id:'lock',name:'执行器互锁',group:'控制',pin:'U10',short:'上电时让负载保持关闭',sheet:9,
     headline:'主控还没准备好，谁保证负载先别动？',
-    intro:'电机禁用命令和电磁铁命令经过 U9。只有主控解除复位、固件也明确放行，U9 才把命令传给输出级。',
+    intro:'电机禁用命令经过 U9，电磁铁命令经过 U12。只有主控解除复位、固件也明确放行，两颗缓冲器才把命令传给输出级。',
     states:[
-      ['上电或欠压',[['U11','监测 3.3 V'],['ESP_EN 低','主控复位'],['U10 / U9','关闭命令通路'],['R9 / R22','禁用电机、关闭线圈']],
-       '电源跌过典型 3.08 V 时，U11 拉低复位线；恢复到释放阈值后还要等待典型 200 ms。U9 关闭时呈高阻，相当于暂时松开两根线。R9 将电机禁用脚拉高，R22 将电磁铁驱动输入拉低。'],
-      ['固件尚未放行',[['ESP_EN 高','复位已释放'],['GPIO27 · ARM 低','R35 默认下拉'],['ACT_OE_N 高','U9 仍保持关闭']],
+      ['上电或 3.3 V 欠压',[['U11','监测 3.3 V'],['ESP_EN 低','主控复位'],['U10 / U9 / U12','关闭命令通路'],['R9 / R22','禁用电机、关闭线圈']],
+       '电源跌过典型 3.08 V 时，U11 拉低复位线；恢复到释放阈值后还要等待典型 200 ms。U9 和 U12 关闭时都呈高阻，相当于暂时松开两根线。R9 将电机禁用脚拉高，R22 将电磁铁驱动输入拉低。'],
+      ['固件尚未放行',[['ESP_EN 高','复位已释放'],['GPIO27 · ARM 低','R35 默认下拉'],['ACT_OE_N 高','U9、U12 关闭']],
        '监控芯片松开复位线只允许主控启动。此时 GPIO27 还没拉高，执行器继续关闭，让固件有时间配置电流和输出状态。'],
-      ['正常启动完成',[['M5','关电磁铁'],['$MD','禁用电机'],['M64 P0','GPIO27 拉高'],['U9','开始传递命令']],
-       'ESP_EN 与 ARM 都为高时，与非门 U10 输出低，恰好让低有效的 U9 开通。刚放行时，传过去的仍是“电机禁用、线圈关闭”；收到动作命令后才会改变。']
+      ['正常启动进入 Idle',[['M5','关电磁铁'],['$MD','禁用电机'],['M64 P0','GPIO27 拉高'],['U9 / U12','开始传递命令']],
+       'ESP_EN 与 ARM 都为高时，与非门 U10 输出低，恰好让低有效的 U9 和 U12 开通。刚放行时，传过去的仍是“电机禁用、线圈关闭”；收到动作命令后才会改变。']
     ],
     notes:[
       ['高、低、高阻，分别代表什么？','在逻辑线上，高约为 3.3 V，低接近 0 V。高阻表示输出端暂时不驱动线路，外面的上拉或下拉电阻便能把它带到预定状态。'],
-      ['为什么既要监控电压又要看 ARM？','电压正常只能说明芯片可以工作。ARM 表达软件已完成准备，U10 的施密特输入也减少慢沿在阈值附近反复翻转的机会。'],
-      ['如何读出互锁的状态？','TP9 看 ESP_EN；TP12 为高时通路锁定，TP5 为高时两路电机禁用。这个互锁响应复位和 ARM。运行中若电脑断连或进给暂停，先前的线圈 PWM 仍可能持续。']
-    ],sources:[['TI 复位监控','https://www.ti.com/lit/ds/symlink/tlv803e.pdf'],['TI 双缓冲器','https://www.ti.com/lit/ds/symlink/sn74lvc2g125.pdf'],['TI 与非门','https://www.ti.com/lit/ds/symlink/sn74lvc1g132.pdf'],['开机宏',repo+'firmware/config.yaml']]
+      ['互锁放行后，电机配置一定成功了吗？','U10 只检查 ESP_EN 和 ARM。即使一颗 TMC2209 的 UART 配置失败，原版 FluidNC v4.1.1 进入 Idle 后仍可能放行，后续移动命令可使两路 ENN 同时变低。首次点动前要分别核对地址 0 和 1 的配置。'],
+      ['为什么还要检查驱动器的电源？','U11 监测逻辑电源。12 V 输入下跌时，3.3 V 可能仍正常，而电机驱动器的 VS 已低于 5.5 V。首件测试分别测量 U5、U6 的 VS，并在驱动器复位后复核配置。']
+    ],sources:[['TI 复位监控','https://www.ti.com/lit/ds/symlink/tlv803e.pdf'],['TI 单路三态缓冲器','https://www.ti.com/lit/ds/symlink/sn74lvc1g125.pdf'],['TI 与非门','https://www.ti.com/lit/ds/symlink/sn74lvc1g132.pdf'],['开机宏',configFile],['首件验证','../../manufacturing/process.md']]
   },
   motorLesson(true),motorLesson(false),
   {
@@ -126,7 +126,7 @@ const lessons=[
     intro:'GPIO32 指挥小晶体管 Q7，Q7 再驱动功率开关 Q6。Q6 装在线圈的正电源一侧，线圈的另一端始终接地。',
     states:[
       ['接通线圈',[['V12','提供能量'],['Q6 · 导通','接通正电源'],['J5-1 → 线圈','磁场开始建立'],['J5-2 · GND','电流返回电源']],
-       '互锁放行后，GPIO32 的高电平经 U9、R21 使 Q7 导通。Q7 通过 R45 拉低 Q6 栅极，Q6 的栅极低于源极，12 V 经它接到目标为 0.8 A 的外接线圈。'],
+       '互锁放行后，GPIO32 的高电平经 U12、R21 使 Q7 导通。Q7 通过 R45 拉低 Q6 栅极，Q6 的栅极低于源极，12 V 经它接到目标为 0.8 A 的外接线圈。'],
       ['关断续流',[['J5-2 · GND','电流从地端出发'],['D4 · 导通','流向开关输出'],['J5-1 → 线圈','磁场逐步衰减'],['J5-2','回到地端']],
        'Q7 关断，R33 把 Q6 栅极拉回 12 V。线圈储存的磁能使原方向电流继续流动，D4 正好为它提供局部回路，并限制 J5-1 上的负电压尖峰。'],
       ['一半占空比',[['GPIO32','1 kHz 的 PWM'],['Q7 / Q6','反复接通、关断'],['线圈 + D4','每周期励磁、续流']],
@@ -135,8 +135,8 @@ const lessons=[
     notes:[
       ['选多大的开关？','Q6 的漏源耐压为 −30 V。在 12 V、Q7 饱和压降取 0.2 V 时，R33 和 R45 使栅源电压约为 −8.1 V。按 25 °C、18.5 mΩ 的导通电阻上限估算，0.8 A 满占空比的导通损耗约为 12 mW。'],
       ['为什么输出灯亮，电磁铁仍可能不动？','D9 和 R46 跨 J5 两端，只要有输出电压就能亮，拔掉线圈也一样。这一路没有独立的线圈电流测量、限流或故障回报。'],
-      ['实际能多快释放？','D4 承接磁场的剩余能量，电流逐渐衰减。实际释放时间、极小占空比的有效性及温升，要用目标线圈和线缆测量。']
-    ],sources:[['UMW 功率开关','https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf'],['Q7 晶体管','https://www.jscj-elec.com/gallery/file/MMBT3904%20SOT-23V2.pdf'],['PWM 配置',repo+'firmware/config.yaml']]
+      ['发出 M5 后，线圈何时释放？','M5 随运动队列执行。Q6 关断后，线圈电流经 D4 逐渐衰减，实际释放时间取决于线圈和机构。进给暂停或电脑断连时，先前的 PWM 仍可能持续。']
+    ],sources:[['UMW 功率开关','https://www.umw-ic.com/static/pdf/5e7bac0574bc94a52e928614220994e9.pdf'],['Q7 晶体管','https://www.jscj-elec.com/gallery/file/MMBT3904%20SOT-23V2.pdf'],['PWM 配置',configFile]]
   },
   {
     id:'led',name:'指示灯',group:'观察',pin:'D7',short:'区分命令、输出和状态',sheet:8,
@@ -145,12 +145,12 @@ const lessons=[
     states:[
       ['电源与机器状态',[['D3 · 绿','PWR 有逻辑电压'],['D7 · 绿','IDLE 固件报告空闲'],['D8 · 红','ALARM 固件报告报警']],
        '这三个观察点相互独立。D3 由 3.3 V 电源直接供电；D7 和 D8 分别由 GPIO18、GPIO19 驱动，固件按 250 ms 间隔报告状态。运行中，两盏状态灯可以同时熄灭。'],
-      ['命令到实际输出',[['GPIO32 / D6 黄','主控发出命令'],['U9 → Q7 → Q6','互锁放行后驱动'],['J5 / D9 蓝','端子出现电压']],
+      ['命令到实际输出',[['GPIO32 / D6 黄','主控发出命令'],['U12 → Q7 → Q6','互锁放行后驱动'],['J5 / D9 蓝','端子出现电压']],
        'D6 接在互锁之前，D9 接在功率开关之后。前者能说明主控请求吸合，后者能说明输出端有电压；要确认机械动作，还要观察线圈和机构。']
     ],
     notes:[
       ['为什么五盏灯都有串联电阻？','电阻控制电流。若 3.3 V 电源点亮一只正向压降约 2 V 的灯，串 2.2 kΩ 时电流约为 (3.3 − 2) / 2200 ≈ 0.59 mA。D9 接 12 V，所以 R46 取 5.1 kΩ，电流约 1.8 mA。'],
       ['为什么状态灯旁还放了 100 kΩ？','R26、R27 把 IDLE 和 ALARM 默认拉低。ESP32 还没开始驱动引脚时，灯也有确定状态。D3 的原理图在电源页，另外四盏在指示灯页。']
-    ],sources:[['指示灯逻辑',repo+'firmware/config.yaml'],['供电与输出指示',repo+'docs/design.md']]
+    ],sources:[['指示灯逻辑',configFile],['供电与输出指示',designNotes]]
   }
 ];

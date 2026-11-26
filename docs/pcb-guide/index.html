@@ -23,9 +23,9 @@
     <div class="intro">
       <div><div class="model"><span></span> PCW-MC-01 <b>/</b> REV 1.0</div>
         <h1 id="main-title">运动控制板图解</h1>
-        <p>从一只 12 V 插座出发，看电和信号怎样让两条皮带、一只电磁铁动起来。</p>
+        <p>从 J1 的 12 V 输入出发，沿走线看 ESP32 怎样控制两台 CoreXY 步进电机和一只电磁铁。</p>
       </div>
-      <div class="metrics" aria-label="整板规格"><div><strong>70 × 50</strong><small>板尺寸 / mm</small></div><div><strong>4</strong><small>铜层</small></div><div><strong>105</strong><small>装配位号</small></div></div>
+      <div class="metrics" aria-label="整板规格"><div><strong>70 × 50</strong><small>板尺寸 / mm</small></div><div><strong>4</strong><small>铜层</small></div><div hidden><strong id="fitted-count"></strong><small>装配位号</small></div></div>
     </div>
     <div class="atlas">
       <figure class="map">
@@ -43,15 +43,41 @@
   </section>
   <section id="library" aria-labelledby="library-title">
     <div class="sectionbar"><span class="kicker">查阅</span><a class="quietlink" href="assets/schematic.pdf" target="_blank" rel="noopener">整板原理图 PDF</a></div>
-    <h2 id="library-title">元件索引</h2><p class="lead">点开位号，可对照板上位置、型号、额定参数和引脚连接。相同型号在不同位置可能承担不同工作。</p>
-    <div class="filters"><label class="search"><span class="lens" aria-hidden="true"></span><span class="sr">搜索位号、型号、规格或用途</span><input id="search" type="search" placeholder="搜索位号、型号、规格或用途"></label><label class="selectbox"><span class="sr">按功能区筛选</span><select id="zone-filter"><option value="">全部功能区</option></select></label></div>
+    <h2 id="library-title">元件索引</h2><p class="lead">点开位号，可查看板上位置、型号、额定参数和引脚连接。也可在<a href="assets/component-reference.svg" target="_blank" rel="noopener">整板位号图</a>上查找元件。</p>
+    <div class="filters"><label class="search"><span class="lens" aria-hidden="true"></span><span class="sr">搜索位号、型号、网络、规格或用途</span><input id="search" type="search" placeholder="搜索位号、型号、网络、规格或用途"></label><label class="selectbox"><span class="sr">按功能区筛选</span><select id="zone-filter"><option value="">全部功能区</option></select></label></div>
     <p id="count" class="count" aria-live="polite"></p><div class="tablewrap" id="library-table"></div>
     <button class="plainbtn" id="more" type="button">显示全部元件</button>
   </section>
   <section class="appendix">
     <h2>对照实板</h2>
-    <details><summary>测试焊盘和安装孔在哪里？</summary><div class="inside"><p>TP 是留给探针接触的裸露铜面。14 个测试点中，TP1（GPIO0）和 TP2（GND）在背面。TP3 是 3.3 V，TP10 是 12 V。TP9、TP12、TP5、TP14 分别观察主控复位、互锁使能、电机禁用、Q7 基极。其余标为 GND 的点可作测量参考。H1–H4 是直径 3.2 mm 的 M3 安装孔，中心距 62 × 42 mm，孔环与电路地隔离。</p><a href="assets/probe-map.svg" target="_blank" rel="noopener">打开双面测试点图</a></div></details>
-    <details><summary>为什么使用四层板？</summary><div class="inside"><p>板厚 1.6 mm。顶层 L1 放元件并走线，L2 提供连续的地平面，电流能就近返回。L3 分配 12 V、3.3 V 和局部地，L4 补充信号与电机走线。布线时还要照顾回流路径，例如 L4 的 USB 差分线下方在 L3 保留参考地。</p><a href="assets/L3-power.svg" target="_blank" rel="noopener">查看 L3 电源分布</a></div></details>
+    <details><summary>怎样辨认五个接口的方向？</summary><div class="inside">
+      <p>元件面朝上，USB-C 在右，两个电机插座在下。接电机或线圈前先断开 DC 和 USB。</p>
+      <table>
+        <thead><tr><th scope="col">接口</th><th scope="col">接线</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">J1</th><td>稳压 12 V / 3 A 适配器，5.5 × 2.5 mm 圆头，中心正极。</td></tr>
+          <tr><th scope="row">J2</th><td>USB-C 数据线，连接电脑与串口桥。主板由 J1 供电。</td></tr>
+          <tr><th scope="row">J3 · X MOTOR</th><td>右电机 B，上层皮带。最右为 1 脚，1–2 接 A 相绕组，3–4 接 B 相绕组。</td></tr>
+          <tr><th scope="row">J4 · Y MOTOR</th><td>左电机 A，下层皮带。针序和绕组配对与 J3 相同。</td></tr>
+          <tr><th scope="row">J5</th><td>12 V / 0.8 A 电磁铁。上方 1 脚为开关正端 SOL_POS，下方 2 脚为 GND。</td></tr>
+        </tbody>
+      </table>
+    </div></details>
+    <details><summary>怎样用测试点区分复位、放行和实际输出？</summary><div class="inside">
+      <p>以下信号均在元件面测量，以附近的 GND 焊盘为参考。TP10 测保护后的 12 V，TP3 测 3.3 V。</p>
+      <table>
+        <thead><tr><th scope="col">测试点 / 网络</th><th scope="col">读数含义</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">TP9<small>ESP_EN</small></th><td>低电平使 ESP32 复位，互锁关闭。</td></tr>
+          <tr><th scope="row">TP12<small>ACT_OE_N</small></th><td>低电平表示 U9、U12 均已放行。正常启动进入 Idle 后，此点应为低。</td></tr>
+          <tr><th scope="row">TP5<small>DRIVERS_DISABLE</small></th><td>高电平禁用两台电机。刚放行、尚未收到运动命令时应保持高电平。</td></tr>
+          <tr><th scope="row">TP14<small>SOL_ENABLE</small></th><td>接 Q7 基极。刚放行时应接近 0 V。有 PWM 命令时，在此观察基极驱动，在 J5 两端观察端子电压。</td></tr>
+        </tbody>
+      </table>
+      <p>全板共 14 个测试点。TP1（GPIO0）与 TP2（GND）位于背面，供手动进入下载模式。H1–H4 是直径 3.2 mm 的 M3 安装孔，中心距 62 × 42 mm，孔环与电路地隔离。</p>
+      <a href="assets/probe-map.svg" target="_blank" rel="noopener">打开双面测试点图</a>
+    </div></details>
+    <details><summary>为什么使用四层板？</summary><div class="inside"><p>板厚 1.6 mm。顶层 L1 放元件并走线，L2 提供连续的地平面，电流能就近返回。L3 分配 12 V、3.3 V 和局部地，L4 补充信号与电机走线。布线时还要照顾回流路径，例如 J2 的 D+、D− 主线沿顶层经过 U3 到 U4，以 L2 地平面为参考，A7 信号过孔处有局部避空。A6–B6 在焊盘右侧走顶层，下方是连续的 L2 地平面。A7–B7 在焊盘左侧走底层，以 L3 地铜为参考。每个换层点 0.91 mm 范围内都有两颗接地过孔连回 L2。</p><a href="assets/L3-power.svg" target="_blank" rel="noopener">查看 L3 电源分布</a></div></details>
     <details><summary>怎样读位号、单位和规格？</summary><div class="inside"><p>R 是电阻，C 是电容，L 是电感，D 是二极管或指示灯，Q 是晶体管，U 是芯片或模块，F 是保险丝，J 是接口，SW 是开关。后面的数字用来定位同一块板上的元件。Ω 衡量电阻，F 衡量电容，H 衡量电感。k 表示千，m 表示千分之一，µ 表示百万分之一，n 和 p 分别表示十亿分之一和万亿分之一。</p><p>0603、0805 是封装尺寸代号。电容的耐压、晶体管的绝对上限都描述器件能承受的条件。板上实际电压、固件设定值和首次样机的测量值各有不同含义。</p></div></details>
   </section>
 </main>

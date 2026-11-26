@@ -16,14 +16,17 @@ bare-board electrical testing.
   build. The 7628 prepreg is 0.2104 mm thick after pressing on both sides.
   Confirm the material, dielectric tolerances, finished copper and barrel plating
   with CAM. Order **90 Ω differential ±10%** for USB_DP_CONN and USB_DM_CONN
-  on L1 over L2 GND and L4 over
-  L3 GND beneath the USB pair. Use 0.26 mm nominal traces, a 0.20 mm edge
-  gap and 0.20 mm nominal clearance to adjacent same-layer ground on
-  the straight runs. Match both coupons to the production mask, copper
-  and coplanar geometry. Request separate L1 and L4 differential TDR
-  results, each within 81–99 Ω. Preserve the U3 neck (0.22/0.16 mm),
-  QFN approach and connector/via fanouts. Confirm any CAM adjustments
-  to trace width, spacing or stackup before fabrication.
+  on L1 over L2 GND. Match the coupon to the production mask, 0.28 mm
+  trace width, 0.22 mm edge gap and nominal 0.20 mm coplanar ground
+  clearance. Request the L1 differential TDR result within 81–99 Ω.
+  The A6–B6 tie uses L1 to the right of J2, with 0.30 mm leads at the pads
+  and a 0.39 mm outer section. The A7–B7 crossover uses L4 to the left
+  of J2, directly between the two signal vias. For its straight 1.20 mm section, request a **45 Ω single-ended
+  ±10%** coupon with a 0.364 mm trace, 0.20 mm clearance to coplanar
+  GND and L3 GND as the reference. Retain the local L3-to-L2 ground
+  vias at both transitions. Preserve the U3 flow-through traces, QFN
+  approach and connector fanout. Confirm
+  any CAM adjustments to trace width, spacing or stackup before fabrication.
   [JLC stackups] · [JLC China impedance order and calculation guide]
 - **Drills and slots.** Use the separate metric PTH/NPTH files and retain G85
   plated slots. J1 has three 1.00 × 2.05 mm slots with PJ-102BH terminal
@@ -36,7 +39,7 @@ bare-board electrical testing.
 - **Via clearances.** Keep at least 0.15 mm from the edge of a via land to
   other-net copper on the same layer. From the drill edge, allow at least
   0.25 mm on the outer layers and 0.30 mm on the inner layers.
-  Tent both faces of the four 0.30 mm USB signal vias beside J2 and U3.
+  Tent both faces of the two 0.30 mm D− vias to the left of J2.
   Their 0.60 mm lands have 0.15 mm nominal rings. Keep the USB via drills clear of the connector and clamp pad openings.
   [JLC PCB capabilities]
 - **Filled and capped vias.** Specify epoxy fill, planarization and copper
@@ -45,11 +48,13 @@ bare-board electrical testing.
   and a 0.62 mm land. There are 12 at U2, 16 each at U5 and U6.
   Confirm all locations, flush thermal-pad caps and the supplied mask in CAM.
   下单时请仅对 `sk.gbr` 标出的 44 个 Ø0.32 mm 散热孔做环氧树脂塞孔、磨平及双面电镀铜盖帽。
-  J2 和 U3 旁的 4 个 Ø0.30 mm USB 信号过孔仅做双面盖油。阻焊按原稿。
+  J2 左侧两个 Ø0.30 mm 的 D− 信号过孔做双面盖油。阻焊按原稿。
   [JLC Gerber preparation] · [JLC via treatment]
 - **Finish and mask.** Confirm a flat finish, mask registration and
-  fine-pitch dams. Preserve the paste and mask geometry. Put the
-  `sk.gbr` treatment and dam requirements in the order remarks.
+  fine-pitch dams. Preserve the paste and mask geometry. U3 uses the TI
+  DQA0010A land pattern. Its two ground lands are 0.565 × 0.40 mm with
+  separate 0.565 × 0.36 mm stencil apertures. Put the `sk.gbr` treatment
+  and dam requirements in the order remarks.
   [JLC order instructions]
 
 Keep the absolute origin across the Gerber, drill, via-list, and placement
@@ -70,7 +75,7 @@ board has a 0.50 mm copper setback. JLC's V-score minimum is 70 × 70 mm.
 [JLC panel guidelines]
 
 Upload `dist/PHYSICLAW-JLC-BOM.csv` and
-`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 98 top-side placements.
+`dist/PHYSICLAW-JLC-CPL-mm.csv` separately. Verify all 100 top-side placements.
 Confirm MPNs, LCSC codes and stock including feeder losses. Fit Littelfuse
 `0467005.NRHF` (5 A, LCSC `C151140`) at F1.
 
@@ -84,7 +89,19 @@ body temperatures on the first article and keep the profile with the lot.
 - **F1.** Littelfuse specifies a 245–250 °C lead-free peak in its recommended
   profile. [Littelfuse 467 datasheet]
 
-For U4, Silicon Labs recommends a 0.125 mm stencil. The front paste Gerber has four 0.90 × 0.90 mm centre openings on 1.20 mm pitch and 1:1 perimeter apertures. Confirm the stencil with assembly and inspect the centre joint on the first article. [CP2102N, §7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=39)
+For U4, Silicon Labs recommends a 0.125 mm stencil. The front paste Gerber
+has four 0.90 × 0.90 mm centre openings on 1.20 mm pitch and 1:1 perimeter
+apertures. [CP2102N, §7.2](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=39)
+
+TI's U3 stencil example uses 0.100 mm foil. The eight narrow apertures
+measure 0.565 × 0.200 mm with 0.050 mm corner radii. Their nominal area
+ratio (opening area divided by wall area) is 0.77 at 0.100 mm thickness
+and 0.61 at 0.125 mm. The latter falls below TI's 0.66 guideline for
+laser-cut foil. Have the assembler specify a local step-down or a
+qualified printing process for U3 and U4. Check the U3 paste deposits
+with solder-paste inspection and inspect the U4 centre joint after reflow.
+[TI DQA0010A stencil drawing](https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf#page=30) ·
+[TI stencil area-ratio guidance]
 
 Inspect both F1 terminations and the J2 contact row after reflow. Inspect R12,
 R13, R26 and R27 for skew or tombstoning. Their ground lands use 0.20 mm
@@ -109,7 +126,7 @@ preview with the lot.
 - **L1 and C2.** The CPL places L1 at 90° and C2 at 270°. From above,
   L1’s two wide terminations run left-to-right and C2’s long body axis
   runs top-to-bottom. Allow 5.0 mm height above the PCB for L1.
-- **ICs.** Check U3 pin 1 (common ground, 180° CPL) and the U4 QFN24 pin-1 mark (90° CPL) against the placement review. Check U5 and U6 at 0° and U9 at 90°.
+- **ICs.** Check the U3 USON pin-1 mark (D−, 270° CPL) and the U4 QFN24 pin-1 mark (90° CPL) against the placement review. Check U5 and U6 at 0°. Both C23654 buffers, U9 and U12, use 180° CPL.
 
 - **Q1 and Q6.** Fit UMW AO4407A (`C2841482`) at both positions. The
   alternate is AOS AO4407A (`C16072`). If using the alternate, select its
@@ -178,9 +195,12 @@ Leave PH positions 2 and 5 empty for this pinout. With the harness
 disconnected from the board, check the motor windings at the XH plug.
 Measure one winding across pins 1–2 and the other across pins 3–4.
 Any pair spanning the two windings should read open. With power off, plug
-in both harnesses and check continuity from each metal motor case and the
-conductive frame to board GND (J1 pin 2). This bond drains belt static.
-All four J3/J4 contacts are winding outputs. [TMC2209 datasheet, §3.7](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=17)
+in both harnesses. Identify the machine's bonding conductor and its
+termination in the assembly drawing. All four J3/J4 contacts are winding
+outputs and all four M3 rings are isolated. Verify continuity from each
+metal motor case and the conductive frame to board GND (J1 pin 2) with
+the USB cable and DC adapter unplugged. This bond drains belt static.
+[TMC2209 datasheet, §3.7](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=17)
 
 ## Programming
 
@@ -214,6 +234,10 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   ESP_EN (TP9), ACT_OE_N (TP12), DRIVERS_DISABLE (TP5), and SOL_ENABLE (TP14)
   against local ground. Verify the actuators stay off during cold start,
   a slow supply ramp, brownout, RESET, and bootloader entry.
+  Trigger a reset through U11 with USB detached, then with USB active and
+  both physical DTR and RTS outputs high. Probe U11 pin 2 and TP9 together
+  through the reset hold and supply recovery. Require TP9 ≤0.60 V for at
+  least 50 µs in both cases. [Reset path and limits](../docs/design.md#passive-component-review-26-november-2026)
 - **3.3 V buck.** At 12 V input, probe across C2 and simultaneously
   measure TP3 against TP4 using short probe grounds. Capture cold start,
   a logic-rail load step up to 0.60 A total and back down, and simultaneous
@@ -224,6 +248,12 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   continuously through the reset delay, RESET releases once and ESP_EN
   stays high through Wi-Fi transmission and dual-axis load changes. Probe
   U4 pins 5, 6 and 7 against local ground during USB traffic. Include ripple and transient excursions in the 3.0–3.6 V acceptance range. Verify enumeration and sustained serial traffic through the load steps. [Silicon Labs, table 3.1](https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf#page=10)
+
+  Repeat the warm load step at the 13 V steady adapter limit and record C2
+  body temperature. Check an isolated sample of the fitted C2 lot at 13 V
+  DC bias and that temperature, or obtain a supplier lower bound there.
+  Compare its effective capacitance with TI’s recommendation of more than
+  10 µF at VIN. [C2 bias and tolerance](../docs/design.md#passive-component-review-26-november-2026)
 
   With actuators disconnected, use a current-limited bench supply
   and a controlled output short. Verify recovery without a power cycle at
@@ -237,12 +267,22 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   at 5.0–5.25 V. Probe directly across each capacitor during startup and
   simultaneous acceleration with the solenoid switching. Using the production
   adapter and harness, capture the lowest VS and VCC_IO at each driver
-  during motion. Require VS to stay above 4.75 V and VCC_IO (C16/C23)
+  during motion. U5/U6 use their internal 5 V regulators. Require VS at
+  both supply pins (22 and 28) of each driver to stay at or above 5.5 V
+  during operation, and VCC_IO (C16/C23) to stay
   within the board's 3.1–3.6 V range. Record the 5VOUT level and ripple
   and check for dips or sustained oscillation. The datasheet's 4.80–5.25 V
   range applies at 24 V supply, 25 °C junction temperature and zero external
   5VOUT load.
-  [TMC2209 datasheet, §20.2]
+  [TMC2209 datasheet, §§20.1–20.2](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=75)
+- **Driver configuration fault.** Use an unloaded fixture with the motors
+  and solenoid disconnected. Isolate one driver's UART branch with power
+  off, boot, and request a jog. Capture the UART, TP12 and TP5. A low at
+  TP5 enables both drivers even though one setup failed. Repeat for the
+  other address. For release, verify TP5 stays high after a failed or
+  incomplete setup and that both drivers are reconfigured following a
+  driver reset. The stock firmware can enable the outputs in this test.
+  [PCB and firmware review](../docs/design.md#pcb-and-firmware-review-26-november-2026)
 - **Power-cycle operation and motor current.** With the motors connected and
   solenoid disconnected, cycle 12 V. Verify TP12 (ACT_OE_N) starts high and
   goes low automatically after normal boot. TP5 (DRIVERS_DISABLE) must stay
@@ -322,10 +362,19 @@ Use `build/assembly/probe-points.csv` for fixture coordinates.
   condition and result for each case.
 - **Thermal and communications.** Run both axes at the qualified current to
   thermal equilibrium at 40 °C in still air and at 50 °C enclosure air
-  temperature. Check J1, F1, Q1, U1/L1, U5/U6, R17–R20, J3/J4, the motor
+  temperature. Check ripple current in C1, C15 and C22 during combined motion,
+  braking and solenoid PWM against the Nichicon rating corrected for the
+  measured frequencies. [Bulk capacitor ratings](../docs/design.md#passive-component-review-26-november-2026)
+  Check J1, F1, Q1, U1/L1, U5/U6, R17–R20, J3/J4, the motor
   plugs and Q6/D4 during the combined-load test. Log both drivers' OTPW/OT
-  flags throughout the test and require both to stay clear. Check the shunt
-  loads against the manufacturer's temperature derating curve and motor
+  flags throughout the test and require both to stay clear. Establish an
+  upper bound of 125 °C or less on each driver junction using a thermal
+  measurement and a justified junction-to-measurement-point temperature
+  rise, including uncertainty. ADI's nominal 120 °C prewarning can trip
+  as high as 140 °C. Its junction-to-case thermal resistance refers to the
+  underside heat slug. [TMC2209 datasheet, §§20.1–20.3](https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=75)
+
+  Check the shunt loads against the manufacturer's temperature derating curve and motor
   winding temperatures against the motor rating. Qualify continuous
   dual-axis operation only at the load and ambient that pass. Verify
   external antenna performance and cable fit.
