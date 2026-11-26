@@ -32466,7 +32466,7 @@
 		)
 	)
 	(gr_text "ALARM"
-		(at 149.58 67.485 0)
+		(at 153.387 65.865 0)
 		(layer "F.SilkS")
 		(uuid "9f7994d9-3c8e-494a-a5f2-fde88018a8f2")
 		(effects
