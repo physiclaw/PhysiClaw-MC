@@ -383,16 +383,25 @@ class PlacementGeometryTests(unittest.TestCase):
             self.assertLess(x, row_x)
             self.assertGreater(pad.edge_distance((x, row_y)), 0)
         self.assertTrue(math.isinf(planar_trace_length(self.board, minus, a7, b7, top_only=True)))
-        self.assertLessEqual(planar_trace_length(self.board, minus, a7, b7), 3.5)
-        bottom, = self.segments["B.Cu", minus]
-        ends = [tuple(values(bottom, key)) for key in ("start", "end")]
-        self.assertEqual(set(ends), vias)
-        self.assertEqual(ends[0][0], ends[1][0])
-        self.assertLessEqual(math.dist(*ends), 1.25)
-        self.assertEqual(values(bottom, "width"), [0.364])
-        for pad_node, at in zip((a7, b7), sorted(ends, key=lambda xy: xy[1])):
-            lead = planar_trace_length(self.board, minus, pad_node, ("F.Cu", at), top_only=True)
-            self.assertAlmostEqual(lead, shortest_45_length(pad_node[1], at))
+        tie = planar_trace_length(self.board, minus, a7, b7)
+        self.assertLessEqual(round(tie, 2), 4.15)
+        upper, lower = sorted(vias, key=lambda xy: xy[1])
+        bottom = self.segments["B.Cu", minus]
+        self.assertEqual(len(bottom), 2)
+        for segment in bottom:
+            self.assertEqual(values(segment, "width"), [0.364])
+        crossing_length = planar_trace_length(
+            self.board, minus, ("B.Cu", upper), ("B.Cu", lower), segments=bottom,
+        )
+        self.assertAlmostEqual(crossing_length, shortest_45_length(upper, lower))
+        self.assertLessEqual(crossing_length, 1.50)
+
+        # A7 reaches its via by branching perpendicularly off the straight pair.
+        tap = (upper[0], row_y)
+        branch = planar_trace_length(self.board, minus, ("F.Cu", tap), ("F.Cu", upper), top_only=True)
+        self.assertAlmostEqual(branch, row_y - upper[1])
+        lead = planar_trace_length(self.board, minus, b7, ("F.Cu", lower), top_only=True)
+        self.assertAlmostEqual(lead, shortest_45_length(b7[1], lower))
 
     def test_usb_cc_contacts_reach_their_pulldowns_with_at_most_one_exposed_bend(self):
         for net, contact, resistor in (("USB_CC1", "A5", "R12"), ("USB_CC2", "B5", "R13")):
@@ -541,6 +550,8 @@ class PlacementGeometryTests(unittest.TestCase):
                 self.assertAlmostEqual(overlapping_track_pitch(*pair) - width, gap)
 
     def test_usb_main_pair_runs_on_top_over_l2_from_j2_through_u3_to_u4(self):
+        width = next(c["diff_pair_width"] for c in self.project["net_settings"]["classes"]
+                     if c["name"] == "USB data")
         for net, contact, entry, clamp, bridge in (
             ("USB_DP_CONN", "A6", "9", "2", "3"),
             ("USB_DM_CONN", "A7", "10", "1", "4"),
@@ -550,21 +561,22 @@ class PlacementGeometryTests(unittest.TestCase):
                     ("F.Cu", pad_center(self.footprints[ref], pin))
                     for ref, pin in (("J2", contact), ("U3", entry), ("U3", clamp), ("U4", bridge))
                 )
-                # A7 feeds the top pair at the near D− via. Only that via's own
-                # L2 opening can interrupt the ground directly under this path.
-                entry_nodes = [start]
+                # The A7 via branches off the straight pair. Its L2 opening
+                # can overlap the trace, but its drill must clear the full width.
                 openings = []
                 if contact == "A7":
                     at = min(self.through_via_positions(net), key=lambda p: math.dist(p, start[1]))
-                    entry_nodes.append(("F.Cu", at))
+                    drill, = values(self.vias[at], "drill")
+                    self.assertGreater(start[1][1] - at[1], (width + drill) / 2)
                     openings.append((at, via_plane_clearance_radius(self.vias[at], "In1.Cu") + 0.01))
                 grounded = [s for s in self.segments["F.Cu", net] if all(
                     in_ground_fill(p, self.ground_fills["In1.Cu"])
                     for p in samples_outside_antipads([s], openings))]
                 distance = 0
-                nodes = [*entry_nodes, pass_pad, active, end]
+                nodes = [start, pass_pad, active, end]
                 for a, b in zip(nodes, nodes[1:]):
-                    length = planar_trace_length(self.board, net, a, b, top_only=True, segments=grounded)
+                    tracks = [s for s in grounded if values(s, "width") == [width]] if a == start else grounded
+                    length = planar_trace_length(self.board, net, a, b, top_only=True, segments=tracks)
                     if b != end:
                         self.assertAlmostEqual(length, shortest_45_length(a[1], b[1]))
                     else:

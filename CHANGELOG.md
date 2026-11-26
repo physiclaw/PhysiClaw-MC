@@ -3,9 +3,10 @@
 ## Unreleased
 
 - Rotate U3 and route the J2 data pair through its clamp pads to U4 on L1.
-  Tie A6 to B6 on the right with 3.01 mm of top copper. On the left, run
-  A7 and B7 directly to two vias joined by 1.20 mm of bottom copper.
-  The complete D− tie measures 3.45 mm in-plane and 6.65 mm with barrels.
+  Tie A6 to B6 on the right with 3.01 mm of top copper. Branch the A7 via
+  off the straight 0.28 mm D− trace to keep its drill clear of the pair.
+  The A7–B7 tie uses 1.49 mm of bottom copper and measures 4.15 mm
+  in-plane and 7.35 mm with barrels.
   Two ground stitches connect L2 and L3 within 0.91 mm of each signal via.
   Give the U4 VIO bypass its own ground via.
 

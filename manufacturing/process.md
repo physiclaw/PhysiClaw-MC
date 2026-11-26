@@ -20,8 +20,9 @@ bare-board electrical testing.
   trace width, 0.22 mm edge gap and nominal 0.20 mm coplanar ground
   clearance. Request the L1 differential TDR result within 81–99 Ω.
   The A6–B6 tie uses L1 to the right of J2, with 0.30 mm leads at the pads
-  and a 0.39 mm outer section. The A7–B7 crossover uses L4 to the left
-  of J2, directly between the two signal vias. For its straight 1.20 mm section, request a **45 Ω single-ended
+  and a 0.39 mm outer section. A 0.35 mm L1 branch connects the A7 via
+  to the full-width D− trace. The 1.49 mm A7–B7 crossover runs on L4
+  to the left of J2. For its 1.35 mm straight section, request a **45 Ω single-ended
   ±10%** coupon with a 0.364 mm trace, 0.20 mm clearance to coplanar
   GND and L3 GND as the reference. Retain the local L3-to-L2 ground
   vias at both transitions. Preserve the U3 flow-through traces, QFN

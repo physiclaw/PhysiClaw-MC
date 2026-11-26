@@ -96,7 +96,7 @@ const lessons=[
       ['只接 USB',[['J2','VBUS 到检测分压器'],['U4 / U2','未上电']], 'USB 插座不给主板供电。插入 USB 数据线后，还要接上 J1 才能枚举。']
     ],
     notes:[
-      ['插头翻面为什么还能通信？','J2 的 A6 与 B6 相连（D+），A7 与 B7 相连（D−）。从元件面看，D+ 在焊盘右侧通过 3.01 mm 的顶层走线直接相连。D− 在两个焊盘的左端各有一颗过孔，两孔之间用 1.20 mm 的底层直线相连。CC1、CC2 各有一只 5.1 kΩ 对地下拉。'],
+      ['插头翻面为什么还能通信？','J2 的 A6 与 B6 相连（D+），A7 与 B7 相连（D−）。从元件面看，D+ 在焊盘右侧通过 3.01 mm 的顶层走线直接相连。D− 从 A7 直达 U3，途中向上分支接到过孔，再经 1.49 mm 的底层走线连到 B7 侧过孔。CC1、CC2 各有一只 5.1 kΩ 对地下拉。'],
       ['怎样沿走线找到静电保护点？','从 J2 向 U4 看，D− 先到 U3 的 1 脚，D+ 先到 2 脚。PCB 铜线分别接到对面的 10、9 号焊盘，再去 U4。U3 的 5 脚保护 VBUS，3、8 脚各自就近接入 L2 地平面。'],
       ['正常插入时检测脚是多少伏？','5 V 经 R29（22.1 kΩ）、R30（47.5 kΩ）分压，U4 的 8 脚约为 3.41 V。']
     ],sources:[['USB 走线放大图','assets/usb-routing.svg'],['Silicon Labs CP2102N','https://www.silabs.com/documents/public/data-sheets/cp2102n-datasheet.pdf'],['TI TPD4E05U06','https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf']]

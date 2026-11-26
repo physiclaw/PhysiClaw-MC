@@ -618,14 +618,14 @@ on the left. Use `component-reference.svg` to locate components by designator.
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  The production Gerbers show continuous L3 ground under all 31 L4 digital
+  The production Gerbers show continuous L3 ground under all 32 L4 digital
   and motor winding segments outside their own via and connector-pad clearances.
   All 26 routed vias and seven motor connector pins have a plated connection
   from the local L3 ground region to L2 within 2.0 mm, measured centre to
   centre. The largest spacing is 1.913 mm at the ESP32 end of ESP_RX.
 - **USB and reset.** The main pair runs from A6/A7 through U3 to U4 on L1.
-  The D+ contacts join on L1 to the right of J2. The 1.20 mm D− crossover
-  runs straight on L4 to the left of the contact row in component-side view.
+  The D+ contacts join on L1 to the right of J2. The 1.49 mm D− crossover
+  runs on L4 to the left of the contact row in component-side view.
   On the right, a 7.72 mm top-layer VBUS trace joins A9/B4 to A4/B9.
   Both ends approach the straight section at 45°. From A4/B9, VBUS passes
   between the R12 pads to U3 pin 5 in 4.77 mm. C12 is 1.25 mm from the clamp. U4 pin 8 reaches R30 and R29 on the
@@ -771,19 +771,19 @@ load in the intended enclosure.
 
 J2 A6 (D+) and A7 (D−) run side by side on L1 to U3 and then to the
 CP2102N at U4. In component-side view, the A6–B6 tie is to the right of
-the J2 pads on L1. The A7–B7 crossover runs straight on L4 to their left.
+the J2 pads on L1. The A7–B7 crossover runs on L4 to their left.
 Each CC pin has a 5.1 kΩ pull-down.
 
 | J2 contact tie | Bottom copper | Contact-centre planar length | Length including nominal via barrels |
 | --- | ---: | ---: | ---: |
 | A6–B6, D+ | None | 3.01 mm | 3.01 mm |
-| A7–B7, D− | 1.20 mm | 3.45 mm | 6.65 mm |
+| A7–B7, D− | 1.49 mm | 4.15 mm | 7.35 mm |
 
-Each D− contact runs directly to its own via. On L4 a single straight
-trace joins the two vias, following the topology visible on the Espressif
-layout. At the A7 via, D− continues on L1 alongside D+ to U3 and U4.
-Both pad-centre planar lengths are below 3.5 mm. Including the two
-1.6 mm barrels puts D− above the USB Type-C shorting-trace recommendation.
+A7 runs straight to U3 on L1 at the full 0.28 mm width. A 0.35 mm
+branch connects the trace to the via, leaving 0.06 mm between the nominal
+drill edge and the trace edge. On L4 the crossover takes one 45° turn
+to reach the B7 via. The D− tie exceeds the 3.5 mm USB Type-C
+shorting-trace recommendation even before adding its two 1.6 mm barrels.
 Qualification includes the device transmit waveform in both plug orientations
 and an enclosure ESD test during USB traffic.
 [Espressif ESP32-C6-DevKitC-1 PCB layout, pp. 1–2](https://dl.espressif.com/dl/schematics/esp32-c6-devkitc-1-pcb-layout_v1.2.pdf) ·
@@ -797,12 +797,12 @@ to plated ground vias. All four J2 shell slots connect to L2.
 
 | J2 contacts | D+ to active U3 pin 2 | D− to active U3 pin 1 | D+ to U4 pin 3 | D− to U4 pin 4 |
 | --- | ---: | ---: | ---: | ---: |
-| A6 / A7 | 4.04 mm | 4.13 mm | 11.21 mm | 10.49 mm |
-| B6 / B7 | 7.05 mm | 8.53 mm | 14.21 mm | 14.89 mm |
+| A6 / A7 | 4.04 mm | 4.04 mm | 11.21 mm | 10.41 mm |
+| B6 / B7 | 7.05 mm | 9.03 mm | 14.21 mm | 15.39 mm |
 
 Lengths follow track centrelines and include the two nominal 1.6 mm
-barrels on B7. The D+/D− length mismatch at U4 is 0.712 mm from A6/A7
-and 0.681 mm from B6/B7. The board regression uses a 1.27 mm limit. The values exclude
+barrels on B7. The D+/D− length mismatch at U4 is 0.795 mm from A6/A7
+and 1.181 mm from B6/B7. The board regression uses a 1.27 mm limit. The values exclude
 connector and package internals. The top pair uses 45° changes of direction
 over the L2 ground plane. TI recommends routing USB 2.0 D+/D−
 together, controlling differential impedance to 90 Ω and minimizing
@@ -814,14 +814,14 @@ The L2 Gerber covers the full width of D+ and the D− main trace through
 the U4 fanout, apart from the A7 signal via’s own clearance on D−.
 L3 ground covers the bottom crossover between its via clearances. Each
 signal via has two plated connections between the local L3 ground and L2.
-Their centre-to-centre distances are 0.79/0.90 mm at A7 and 0.79/0.86 mm at B7.
+Their centre-to-centre distances are 0.78/0.79 mm at A7 and 0.79/0.86 mm at B7.
 
 | Routed cross-section | PCB sample location in mm | Estimated differential impedance |
 | --- | --- | ---: |
 | L1 straight pair toward U4, 0.28 mm width / 0.22 mm gap | X = 154.10, 154.50, 154.90 at Y = 63.00 | 89.0–91.0 Ω |
 | L1 through U3 and toward J2, same width and gap | X = 157.55, 158.36, 159.14, 159.60 at Y = 63.00 | 89.1–89.5 Ω |
 | U3 data lands, including their mask openings | X = 157.9525, 158.7875 at Y = 63.00 | 89.0 Ω |
-| L1 approaching the D− junction, same width and gap | X = 159.95, 160.12 at Y = 63.00 | 89.2–89.3 Ω |
+| L1 approaching the D− junction, before the via move | X = 159.95, 160.12 at Y = 63.00 | 89.2–89.3 Ω |
 | U4 diagonal fanout | Normal to the pair at (153.10, 62.23) | 89.5–89.7 Ω |
 | U4 pad approach, including the QFN mask openings | Across the pads at (152.40, 61.26) | 89.9–91.1 Ω |
 
