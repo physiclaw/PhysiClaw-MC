@@ -618,7 +618,7 @@ on the left. Use `component-reference.svg` to locate components by designator.
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  The production Gerbers show continuous L3 ground under all 32 L4 digital
+  The production Gerbers show continuous L3 ground under all 31 L4 digital
   and motor winding segments outside their own via and connector-pad clearances.
   All 26 routed vias and seven motor connector pins have a plated connection
   from the local L3 ground region to L2 within 2.0 mm, measured centre to
@@ -641,7 +641,8 @@ on the left. Use `component-reference.svg` to locate components by designator.
   L1. DTR to Q4 has two bends. R8 sits below its branch point, 3.07 mm
   of top copper from pin 23. RTS to R6 has one bend. R8 has a 1.03 mm
   connection to its L3 supply via. The 0.22 mm ESP32 UART traces use
-  4.85 mm of L4 for TX after R28 and 6.06 mm for RX.
+  4.85 mm of L4 for TX after R28 and 6.15 mm for RX. The RX trace meets
+  U2 pin 34 horizontally on L1.
 
   From Q3, follow ESP_EN across the upper end of U2 to its EN pin. On
   the left, the reset supervisor U11 connects through R40 to the same
@@ -659,8 +660,10 @@ on the left. Use `component-reference.svg` to locate components by designator.
   runs straight through TP12 to U12 pin 1. East of U10, it passes through
   the R36 pull-up pad on its way to U9 pin 1. All three ICs face the
   same way. The motor command runs 7.41 mm from U2 pin 16 through
-  R37 pad 2 to U9 pin 2. The final 1.68 mm runs straight south from R37. The buffered output leaves the opposite side
-  of U9 toward the drivers’ shared ENN trace.
+  R37 pad 2 to U9 pin 2. The final 1.68 mm runs straight south from R37.
+  The upper-left pad of U9 is pin 3. Its 0.75 mm trace runs left to the
+  ground via that connects it to L2. The buffered output leaves pin 4
+  toward the drivers’ shared ENN trace.
 - **Solenoid.** On L1, SOL_CMD leaves U2 pin 8 (GPIO32) and angles toward
   R23. The LED branch runs straight west through R23 to D6. The main trace
   runs straight south past the R38 pull-down pad into U12 pin 2, a total
@@ -669,9 +672,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
   to the Q7 base, with a short branch west to R22. The ground end of R22
   runs 1.77 mm diagonally to its via. The Q7 collector runs
   straight up to R45, whose
-  other pad lines up with R33 pad 2 and Q6's gate. The four drain pads
-  join a wide top-layer bus to D4
-  and J5 pin 1. A separate via beside the Q6 source bank connects directly
+  other pad lines up with R33 pad 2 and Q6's gate. Between drain pins 7
+  and 8, a 1.00 mm wide trace runs straight left to D4. Follow the wider
+  trace down from D4 to J5 pin 1. A separate via beside the Q6 source bank connects directly
   to the continuous L3 12 V plane. C28 and C34 share a second local feed.
 - **Motor control.** The motor UART receive line leaves U2 pin 27 on a
   45° diagonal and turns once into R11. The shared bus runs from R10 and R11 between D2's
@@ -680,8 +683,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
   For U5, follow the L1 diagonal from R10 to its via. The branch then
   runs left across the interlock on L4 and continues on the same line
   on L1 into U5 pin 14.
-  On L1, follow DRIVERS_DISABLE down from U9 pin 4 to the horizontal
-  trace below the drivers. Left leads to U5 pin 2. Right passes the R9
+  On L1, DRIVERS_DISABLE leaves U9 pin 4 diagonally down and left, then
+  runs straight down to the horizontal trace below the drivers.
+  Left leads to U5 pin 2. Right passes the R9
   pull-up and TP5 on the way to U6 pin 2.
 - **X motor.** STEP and DIR leave U2 pins 10 and 11 toward the left and
   drop to L4. Each turns once toward U5. STEP continues diagonally across
@@ -706,8 +710,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
   outputs approach J4 in pin order on L4 over L3 ground. Y_A1 runs beside
   Y_A2, then turns once into J4 pin 1. Y_B1 passes
   between the two shunts on L1 before changing layers. Y_B2 leaves
-  U6 pin 1, passes below C20 and turns onto an L4 diagonal at its via.
-  It then runs straight to pin 4. Each shunt has two ground vias, and
+  U6 pin 1 and passes below C20 on L1. Its via sits directly above J4
+  pin 4, with a straight 7.42 mm run down to the connector on L4.
+  Each shunt has two ground vias, and
   the disable trace reaches U6 on L1.
 
 [TI PCB return-path guidance](https://www.ti.com/lit/an/slla414a/slla414a.pdf) ·

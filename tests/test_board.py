@@ -785,6 +785,16 @@ class PlacementGeometryTests(unittest.TestCase):
                     ("F.Cu", pad_center(cap, "1")), top_only=True,
                 ), 2.0)
 
+    def test_u9_ground_trace_reaches_its_via(self):
+        pad = pad_center(self.footprints["U9"], "3")
+        via = min(self.through_via_positions("GND"), key=lambda at: math.dist(pad, at))
+        self.assertTrue(in_ground_fill(via, self.ground_fills["In1.Cu"]))
+        self.assertEqual(pad[1], via[1])
+        self.assertAlmostEqual(
+            planar_trace_length(self.board, "GND", ("F.Cu", pad), ("F.Cu", via), top_only=True),
+            math.dist(pad, via),
+        )
+
     def test_interlock_signals_stay_on_top(self):
         for net in INTERLOCK_SIGNALS:
             with self.subTest(net=net):

@@ -606,11 +606,11 @@
 <circle cx="14.4500" cy="28.1000" r="0.3000" /> 
 <circle cx="49.2900" cy="28.6500" r="0.3000" /> 
 <circle cx="51.6500" cy="12.0700" r="0.3000" /> 
-<circle cx="60.7700" cy="11.7600" r="0.3000" /> 
+<circle cx="60.7700" cy="11.6200" r="0.3000" /> 
 <circle cx="61.8500" cy="5.7500" r="0.3000" /> 
 <circle cx="45.9000" cy="16.5400" r="0.3000" /> 
 <circle cx="37.0000" cy="22.2000" r="0.3000" /> 
-<circle cx="32.6500" cy="22.4500" r="0.3000" /> 
+<circle cx="32.6500" cy="22.9125" r="0.3000" /> 
 <circle cx="10.2300" cy="4.3600" r="0.3000" /> 
 <circle cx="39.8000" cy="25.7000" r="0.3000" /> 
 <circle cx="59.5250" cy="8.2750" r="0.3000" /> 
@@ -625,7 +625,7 @@
 <circle cx="44.9500" cy="20.0000" r="0.3000" /> 
 <circle cx="54.3250" cy="29.2200" r="0.3000" /> 
 <circle cx="15.0000" cy="26.8700" r="0.3000" /> 
-<circle cx="44.6500" cy="8.7400" r="0.3000" /> 
+<circle cx="44.6000" cy="8.5500" r="0.3000" /> 
 <circle cx="48.4000" cy="23.5500" r="0.3000" /> 
 <circle cx="59.4800" cy="13.8400" r="0.3000" /> 
 <circle cx="45.7000" cy="21.8000" r="0.3000" /> 
@@ -633,11 +633,11 @@
 <circle cx="50.2500" cy="26.0700" r="0.3000" /> 
 <circle cx="41.4400" cy="34.6800" r="0.3500" /> 
 <circle cx="24.3500" cy="24.0000" r="0.3000" /> 
-<circle cx="60.3300" cy="12.1200" r="0.3000" /> 
+<circle cx="60.0800" cy="12.1000" r="0.3000" /> 
 <circle cx="59.2000" cy="9.7000" r="0.3000" /> 
 <circle cx="55.9000" cy="19.6000" r="0.3000" /> 
 <circle cx="41.4400" cy="30.9800" r="0.3000" /> 
-<circle cx="17.1000" cy="7.3500" r="0.3000" /> 
+<circle cx="17.1000" cy="7.0000" r="0.3000" /> 
 <circle cx="39.5000" cy="25.1000" r="0.3000" /> 
 <circle cx="22.0000" cy="17.7500" r="0.3000" /> 
 <circle cx="60.0500" cy="13.8600" r="0.3000" /> 
@@ -649,10 +649,10 @@
 <circle cx="41.4400" cy="32.0200" r="0.3000" /> 
 <circle cx="32.3000" cy="38.1500" r="0.3000" /> 
 <circle cx="36.2000" cy="20.7000" r="0.3000" /> 
-<circle cx="31.1500" cy="29.9000" r="0.3000" /> 
+<circle cx="32.0000" cy="29.9000" r="0.3000" /> 
 <circle cx="14.3250" cy="23.3000" r="0.3000" /> 
 <circle cx="40.4200" cy="5.8800" r="0.3000" /> 
-<circle cx="56.6600" cy="11.8500" r="0.3000" /> 
+<circle cx="56.7900" cy="11.8500" r="0.3000" /> 
 <circle cx="24.1300" cy="1.6900" r="0.3000" /> 
 <circle cx="48.0500" cy="20.2000" r="0.3000" /> 
 <circle cx="14.9500" cy="21.1000" r="0.3000" /> 
@@ -671,18 +671,18 @@
 <circle cx="45.2200" cy="18.2000" r="0.3000" /> 
 <circle cx="43.8650" cy="8.4000" r="0.3000" /> 
 <circle cx="49.1800" cy="27.6000" r="0.3000" /> 
-<circle cx="43.9000" cy="6.9800" r="0.3000" /> 
+<circle cx="43.9000" cy="6.7700" r="0.3000" /> 
 <circle cx="49.2200" cy="8.7700" r="0.3000" /> 
 <circle cx="48.1000" cy="28.7000" r="0.3000" /> 
 <circle cx="41.3200" cy="5.2700" r="0.3000" /> 
 <circle cx="46.6400" cy="32.8000" r="0.3000" /> 
 <circle cx="47.4200" cy="30.8500" r="0.3000" /> 
 <circle cx="42.3000" cy="33.8000" r="0.3000" /> 
-<circle cx="41.4600" cy="38.1800" r="0.3000" /> 
+<circle cx="39.8000" cy="38.1800" r="0.3000" /> 
 <circle cx="45.0300" cy="7.0900" r="0.3000" /> 
 <circle cx="49.5000" cy="8.0000" r="0.3000" /> 
 <circle cx="60.9100" cy="13.8500" r="0.3000" /> 
-<circle cx="60.9100" cy="12.6500" r="0.3000" /> 
+<circle cx="60.8100" cy="12.4000" r="0.3000" /> 
 <circle cx="13.3350" cy="31.9000" r="0.3000" /> 
 <circle cx="14.2100" cy="29.9500" r="0.3000" /> 
 <circle cx="10.6000" cy="32.9000" r="0.3000" /> 
@@ -708,8 +708,8 @@
 <path d="M43.8650 22.2850 L49.1800 27.6000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2200; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M43.9000 6.9800 L45.6900 8.7700 " />
-<path d="M45.6900 8.7700 L49.2200 8.7700 " />
+<path d="M43.9000 6.7700 L45.9000 8.7700 " />
+<path d="M45.9000 8.7700 L49.2200 8.7700 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M41.3200 5.2700 L41.3200 21.9200 " />
@@ -721,15 +721,15 @@
 <path d="M44.8000 33.4700 L44.8000 45.6000 " />
 <path d="M47.4200 30.8500 L44.8000 33.4700 " />
 <path d="M42.3000 33.8000 L42.3000 45.6000 " />
-<path d="M39.8000 39.8400 L39.8000 45.6000 " />
-<path d="M41.4600 38.1800 L39.8000 39.8400 " />
+<path d="M39.8000 45.6000 L39.8000 38.1800 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2200; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M45.0300 7.0900 L45.9400 8.0000 " />
 <path d="M45.9400 8.0000 L49.5000 8.0000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3640; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M60.9100 12.6500 L60.9100 13.8500 " />
+<path d="M60.9100 12.5000 L60.9100 13.8500 " />
+<path d="M60.8100 12.4000 L60.9100 12.5000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.6000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M13.3350 31.9000 L13.3350 35.4350 " />
@@ -839,11 +839,11 @@
 <circle cx="14.4500" cy="28.1000" r="0.1500" /> 
 <circle cx="49.2900" cy="28.6500" r="0.1500" /> 
 <circle cx="51.6500" cy="12.0700" r="0.1500" /> 
-<circle cx="60.7700" cy="11.7600" r="0.1500" /> 
+<circle cx="60.7700" cy="11.6200" r="0.1500" /> 
 <circle cx="61.8500" cy="5.7500" r="0.1500" /> 
 <circle cx="45.9000" cy="16.5400" r="0.1500" /> 
 <circle cx="37.0000" cy="22.2000" r="0.1500" /> 
-<circle cx="32.6500" cy="22.4500" r="0.1500" /> 
+<circle cx="32.6500" cy="22.9125" r="0.1500" /> 
 <circle cx="10.2300" cy="4.3600" r="0.1500" /> 
 <circle cx="39.8000" cy="25.7000" r="0.1500" /> 
 <circle cx="59.5250" cy="8.2750" r="0.1500" /> 
@@ -858,7 +858,7 @@
 <circle cx="44.9500" cy="20.0000" r="0.1500" /> 
 <circle cx="54.3250" cy="29.2200" r="0.1500" /> 
 <circle cx="15.0000" cy="26.8700" r="0.1500" /> 
-<circle cx="44.6500" cy="8.7400" r="0.1500" /> 
+<circle cx="44.6000" cy="8.5500" r="0.1500" /> 
 <circle cx="48.4000" cy="23.5500" r="0.1500" /> 
 <circle cx="59.4800" cy="13.8400" r="0.1500" /> 
 <circle cx="45.7000" cy="21.8000" r="0.1500" /> 
@@ -866,11 +866,11 @@
 <circle cx="50.2500" cy="26.0700" r="0.1500" /> 
 <circle cx="41.4400" cy="34.6800" r="0.1500" /> 
 <circle cx="24.3500" cy="24.0000" r="0.1500" /> 
-<circle cx="60.3300" cy="12.1200" r="0.1500" /> 
+<circle cx="60.0800" cy="12.1000" r="0.1500" /> 
 <circle cx="59.2000" cy="9.7000" r="0.1500" /> 
 <circle cx="55.9000" cy="19.6000" r="0.1500" /> 
 <circle cx="41.4400" cy="30.9800" r="0.1500" /> 
-<circle cx="17.1000" cy="7.3500" r="0.1500" /> 
+<circle cx="17.1000" cy="7.0000" r="0.1500" /> 
 <circle cx="39.5000" cy="25.1000" r="0.1500" /> 
 <circle cx="22.0000" cy="17.7500" r="0.1500" /> 
 <circle cx="60.0500" cy="13.8600" r="0.1500" /> 
@@ -882,10 +882,10 @@
 <circle cx="41.4400" cy="32.0200" r="0.1500" /> 
 <circle cx="32.3000" cy="38.1500" r="0.1500" /> 
 <circle cx="36.2000" cy="20.7000" r="0.1500" /> 
-<circle cx="31.1500" cy="29.9000" r="0.1500" /> 
+<circle cx="32.0000" cy="29.9000" r="0.1500" /> 
 <circle cx="14.3250" cy="23.3000" r="0.1500" /> 
 <circle cx="40.4200" cy="5.8800" r="0.1500" /> 
-<circle cx="56.6600" cy="11.8500" r="0.1500" /> 
+<circle cx="56.7900" cy="11.8500" r="0.1500" /> 
 <circle cx="24.1300" cy="1.6900" r="0.1500" /> 
 <circle cx="48.0500" cy="20.2000" r="0.1500" /> 
 <circle cx="14.9500" cy="21.1000" r="0.1500" /> 
@@ -904,18 +904,18 @@
 <circle cx="45.2200" cy="18.2000" r="0.1500" /> 
 <circle cx="43.8650" cy="8.4000" r="0.1500" /> 
 <circle cx="49.1800" cy="27.6000" r="0.1500" /> 
-<circle cx="43.9000" cy="6.9800" r="0.1500" /> 
+<circle cx="43.9000" cy="6.7700" r="0.1500" /> 
 <circle cx="49.2200" cy="8.7700" r="0.1500" /> 
 <circle cx="48.1000" cy="28.7000" r="0.1500" /> 
 <circle cx="41.3200" cy="5.2700" r="0.1500" /> 
 <circle cx="46.6400" cy="32.8000" r="0.1500" /> 
 <circle cx="47.4200" cy="30.8500" r="0.1500" /> 
 <circle cx="42.3000" cy="33.8000" r="0.1500" /> 
-<circle cx="41.4600" cy="38.1800" r="0.1500" /> 
+<circle cx="39.8000" cy="38.1800" r="0.1500" /> 
 <circle cx="45.0300" cy="7.0900" r="0.1500" /> 
 <circle cx="49.5000" cy="8.0000" r="0.1500" /> 
 <circle cx="60.9100" cy="13.8500" r="0.1500" /> 
-<circle cx="60.9100" cy="12.6500" r="0.1500" /> 
+<circle cx="60.8100" cy="12.4000" r="0.1500" /> 
 <circle cx="13.3350" cy="31.9000" r="0.1500" /> 
 <circle cx="14.2100" cy="29.9500" r="0.1500" /> 
 <circle cx="10.6000" cy="32.9000" r="0.1500" /> 
@@ -1703,11 +1703,11 @@
 <circle cx="14.4500" cy="28.1000" r="0.3000" /> 
 <circle cx="49.2900" cy="28.6500" r="0.3000" /> 
 <circle cx="51.6500" cy="12.0700" r="0.3000" /> 
-<circle cx="60.7700" cy="11.7600" r="0.3000" /> 
+<circle cx="60.7700" cy="11.6200" r="0.3000" /> 
 <circle cx="61.8500" cy="5.7500" r="0.3000" /> 
 <circle cx="45.9000" cy="16.5400" r="0.3000" /> 
 <circle cx="37.0000" cy="22.2000" r="0.3000" /> 
-<circle cx="32.6500" cy="22.4500" r="0.3000" /> 
+<circle cx="32.6500" cy="22.9125" r="0.3000" /> 
 <circle cx="10.2300" cy="4.3600" r="0.3000" /> 
 <circle cx="39.8000" cy="25.7000" r="0.3000" /> 
 <circle cx="59.5250" cy="8.2750" r="0.3000" /> 
@@ -1722,7 +1722,7 @@
 <circle cx="44.9500" cy="20.0000" r="0.3000" /> 
 <circle cx="54.3250" cy="29.2200" r="0.3000" /> 
 <circle cx="15.0000" cy="26.8700" r="0.3000" /> 
-<circle cx="44.6500" cy="8.7400" r="0.3000" /> 
+<circle cx="44.6000" cy="8.5500" r="0.3000" /> 
 <circle cx="48.4000" cy="23.5500" r="0.3000" /> 
 <circle cx="59.4800" cy="13.8400" r="0.3000" /> 
 <circle cx="45.7000" cy="21.8000" r="0.3000" /> 
@@ -1730,11 +1730,11 @@
 <circle cx="50.2500" cy="26.0700" r="0.3000" /> 
 <circle cx="41.4400" cy="34.6800" r="0.3500" /> 
 <circle cx="24.3500" cy="24.0000" r="0.3000" /> 
-<circle cx="60.3300" cy="12.1200" r="0.3000" /> 
+<circle cx="60.0800" cy="12.1000" r="0.3000" /> 
 <circle cx="59.2000" cy="9.7000" r="0.3000" /> 
 <circle cx="55.9000" cy="19.6000" r="0.3000" /> 
 <circle cx="41.4400" cy="30.9800" r="0.3000" /> 
-<circle cx="17.1000" cy="7.3500" r="0.3000" /> 
+<circle cx="17.1000" cy="7.0000" r="0.3000" /> 
 <circle cx="39.5000" cy="25.1000" r="0.3000" /> 
 <circle cx="22.0000" cy="17.7500" r="0.3000" /> 
 <circle cx="60.0500" cy="13.8600" r="0.3000" /> 
@@ -1746,10 +1746,10 @@
 <circle cx="41.4400" cy="32.0200" r="0.3000" /> 
 <circle cx="32.3000" cy="38.1500" r="0.3000" /> 
 <circle cx="36.2000" cy="20.7000" r="0.3000" /> 
-<circle cx="31.1500" cy="29.9000" r="0.3000" /> 
+<circle cx="32.0000" cy="29.9000" r="0.3000" /> 
 <circle cx="14.3250" cy="23.3000" r="0.3000" /> 
 <circle cx="40.4200" cy="5.8800" r="0.3000" /> 
-<circle cx="56.6600" cy="11.8500" r="0.3000" /> 
+<circle cx="56.7900" cy="11.8500" r="0.3000" /> 
 <circle cx="24.1300" cy="1.6900" r="0.3000" /> 
 <circle cx="48.0500" cy="20.2000" r="0.3000" /> 
 <circle cx="14.9500" cy="21.1000" r="0.3000" /> 
@@ -1768,18 +1768,18 @@
 <circle cx="45.2200" cy="18.2000" r="0.3000" /> 
 <circle cx="43.8650" cy="8.4000" r="0.3000" /> 
 <circle cx="49.1800" cy="27.6000" r="0.3000" /> 
-<circle cx="43.9000" cy="6.9800" r="0.3000" /> 
+<circle cx="43.9000" cy="6.7700" r="0.3000" /> 
 <circle cx="49.2200" cy="8.7700" r="0.3000" /> 
 <circle cx="48.1000" cy="28.7000" r="0.3000" /> 
 <circle cx="41.3200" cy="5.2700" r="0.3000" /> 
 <circle cx="46.6400" cy="32.8000" r="0.3000" /> 
 <circle cx="47.4200" cy="30.8500" r="0.3000" /> 
 <circle cx="42.3000" cy="33.8000" r="0.3000" /> 
-<circle cx="41.4600" cy="38.1800" r="0.3000" /> 
+<circle cx="39.8000" cy="38.1800" r="0.3000" /> 
 <circle cx="45.0300" cy="7.0900" r="0.3000" /> 
 <circle cx="49.5000" cy="8.0000" r="0.3000" /> 
 <circle cx="60.9100" cy="13.8500" r="0.3000" /> 
-<circle cx="60.9100" cy="12.6500" r="0.3000" /> 
+<circle cx="60.8100" cy="12.4000" r="0.3000" /> 
 <circle cx="13.3350" cy="31.9000" r="0.3000" /> 
 <circle cx="14.2100" cy="29.9500" r="0.3000" /> 
 <circle cx="10.6000" cy="32.9000" r="0.3000" /> 
@@ -2086,7 +2086,7 @@
 <path d="M57.3100 13.7500 L57.9525 13.7500 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3200; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M56.7900 11.2300 L56.7900 11.7200 " />
+<path d="M56.7900 11.2300 L56.7900 11.8500 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.4000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M13.5500 27.2000 L14.4500 27.2000 " />
@@ -2119,7 +2119,7 @@
 <path d="M19.5500 3.4750 L19.5500 4.5800 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.4000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M16.4000 7.0000 L16.7500 7.3500 " />
+<path d="M16.4000 7.0000 L17.1000 7.0000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M23.3000 4.5100 L23.9700 3.8400 " />
@@ -2280,7 +2280,7 @@
 <path d="M9.5500 36.8125 L11.5000 36.8125 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M33.4000 22.9125 L32.7375 22.9125 " />
+<path d="M33.4000 22.9125 L32.6500 22.9125 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M20.2700 5.9050 L20.0500 6.1250 " />
@@ -2300,7 +2300,6 @@
 <path d="M29.6200 28.1250 L30.7000 28.1250 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.4000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M16.7500 7.3500 L17.1000 7.3500 " />
 <path d="M12.6800 38.4700 L13.5500 37.6000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.4500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
@@ -2317,9 +2316,6 @@
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.6000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M47.1500 21.8000 L45.7000 21.8000 " />
-</g>
-<g style="fill:none;  stroke:#ffffff; stroke-width:0.3200; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M56.7900 11.7200 L56.6600 11.8500 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M16.6000 22.5300 L17.8500 23.7800 " />
@@ -2477,8 +2473,7 @@
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2200; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M49.2200 8.7700 L50.4500 8.7700 " />
-<path d="M42.9600 6.9800 L43.9000 6.9800 " />
-<path d="M42.7500 6.7700 L42.9600 6.9800 " />
+<path d="M43.9000 6.7700 L42.7500 6.7700 " />
 <path d="M42.7500 5.5000 L44.7400 5.5000 " />
 <path d="M44.7400 5.5000 L45.0300 5.2100 " />
 </g>
@@ -2513,13 +2508,13 @@
 <path d="M46.1500 33.8000 L42.3000 33.8000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.6000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M47.3200 38.1800 L41.4600 38.1800 " />
+<path d="M39.8000 38.1800 L47.3200 38.1800 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M48.5000 35.7500 L48.5000 37.0000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.6000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M48.3000 37.2000 L47.3200 38.1800 " />
+<path d="M47.3200 38.1800 L48.3000 37.2000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M48.5000 37.0000 L48.3000 37.2000 " />
@@ -2588,14 +2583,13 @@
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.1800; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M49.0000 35.7500 L49.0000 37.2800 " />
 <path d="M15.6000 34.8500 L15.7300 34.9800 " />
-<path d="M16.9500 39.2000 L30.2000 39.2000 " />
-<path d="M33.4000 25.1875 L33.4000 26.7000 " />
-<path d="M30.2000 29.9000 L30.2000 39.2000 " />
+<path d="M16.9500 39.2000 L31.4000 39.2000 " />
+<path d="M31.4000 39.2000 L31.4000 27.1875 " />
 <path d="M15.7300 37.9800 L16.9500 39.2000 " />
 <path d="M15.7300 34.9800 L15.7300 37.9800 " />
 <path d="M36.8000 39.2000 L43.5500 39.2000 " />
-<path d="M33.4000 26.7000 L30.2000 29.9000 " />
-<path d="M30.2000 39.2000 L36.8000 39.2000 " />
+<path d="M31.4000 27.1875 L33.4000 25.1875 " />
+<path d="M31.4000 39.2000 L36.8000 39.2000 " />
 <path d="M47.0800 39.2000 L43.5500 39.2000 " />
 <path d="M49.0000 37.2800 L47.0800 39.2000 " />
 </g>
@@ -2629,17 +2623,17 @@
 <path d="M5.5500 20.6750 L5.5500 24.5000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.8500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M11.7750 18.0850 L11.7750 19.3550 " />
+<path d="M11.7750 18.0850 L11.7750 18.8250 " />
 <path d="M11.7750 15.5450 L11.7750 16.8150 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.4000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M5.5500 24.5000 L8.6500 27.6000 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:1.0000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
-<path d="M11.7750 18.0850 L8.1400 18.0850 " />
-<path d="M8.1400 18.0850 L7.4000 18.8250 " />
+<path d="M11.7750 18.8250 L7.4000 18.8250 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.8500; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
+<path d="M11.7750 18.8250 L11.7750 19.3550 " />
 <path d="M11.7750 16.8150 L11.7750 18.0850 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:1.2000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
@@ -2731,9 +2725,8 @@
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.2800; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
 <path d="M60.8100 12.7500 L58.7875 12.7500 " />
 <path d="M58.7875 12.7500 L57.9525 12.7500 " />
-<path d="M60.9100 12.6500 L60.8100 12.7500 " />
-<path d="M61.9950 12.7500 L61.0100 12.7500 " />
-<path d="M61.0100 12.7500 L60.9100 12.6500 " />
+<path d="M60.8100 12.4000 L60.8100 12.7500 " />
+<path d="M61.9950 12.7500 L60.8100 12.7500 " />
 <path d="M61.9950 13.7500 L61.0100 13.7500 " />
 </g>
 <g style="fill:none;  stroke:#ffffff; stroke-width:0.3000; stroke-opacity:1;  stroke-linecap:round; stroke-linejoin:round;">
@@ -2897,11 +2890,11 @@
 <circle cx="14.4500" cy="28.1000" r="0.1500" /> 
 <circle cx="49.2900" cy="28.6500" r="0.1500" /> 
 <circle cx="51.6500" cy="12.0700" r="0.1500" /> 
-<circle cx="60.7700" cy="11.7600" r="0.1500" /> 
+<circle cx="60.7700" cy="11.6200" r="0.1500" /> 
 <circle cx="61.8500" cy="5.7500" r="0.1500" /> 
 <circle cx="45.9000" cy="16.5400" r="0.1500" /> 
 <circle cx="37.0000" cy="22.2000" r="0.1500" /> 
-<circle cx="32.6500" cy="22.4500" r="0.1500" /> 
+<circle cx="32.6500" cy="22.9125" r="0.1500" /> 
 <circle cx="10.2300" cy="4.3600" r="0.1500" /> 
 <circle cx="39.8000" cy="25.7000" r="0.1500" /> 
 <circle cx="59.5250" cy="8.2750" r="0.1500" /> 
@@ -2916,7 +2909,7 @@
 <circle cx="44.9500" cy="20.0000" r="0.1500" /> 
 <circle cx="54.3250" cy="29.2200" r="0.1500" /> 
 <circle cx="15.0000" cy="26.8700" r="0.1500" /> 
-<circle cx="44.6500" cy="8.7400" r="0.1500" /> 
+<circle cx="44.6000" cy="8.5500" r="0.1500" /> 
 <circle cx="48.4000" cy="23.5500" r="0.1500" /> 
 <circle cx="59.4800" cy="13.8400" r="0.1500" /> 
 <circle cx="45.7000" cy="21.8000" r="0.1500" /> 
@@ -2924,11 +2917,11 @@
 <circle cx="50.2500" cy="26.0700" r="0.1500" /> 
 <circle cx="41.4400" cy="34.6800" r="0.1500" /> 
 <circle cx="24.3500" cy="24.0000" r="0.1500" /> 
-<circle cx="60.3300" cy="12.1200" r="0.1500" /> 
+<circle cx="60.0800" cy="12.1000" r="0.1500" /> 
 <circle cx="59.2000" cy="9.7000" r="0.1500" /> 
 <circle cx="55.9000" cy="19.6000" r="0.1500" /> 
 <circle cx="41.4400" cy="30.9800" r="0.1500" /> 
-<circle cx="17.1000" cy="7.3500" r="0.1500" /> 
+<circle cx="17.1000" cy="7.0000" r="0.1500" /> 
 <circle cx="39.5000" cy="25.1000" r="0.1500" /> 
 <circle cx="22.0000" cy="17.7500" r="0.1500" /> 
 <circle cx="60.0500" cy="13.8600" r="0.1500" /> 
@@ -2940,10 +2933,10 @@
 <circle cx="41.4400" cy="32.0200" r="0.1500" /> 
 <circle cx="32.3000" cy="38.1500" r="0.1500" /> 
 <circle cx="36.2000" cy="20.7000" r="0.1500" /> 
-<circle cx="31.1500" cy="29.9000" r="0.1500" /> 
+<circle cx="32.0000" cy="29.9000" r="0.1500" /> 
 <circle cx="14.3250" cy="23.3000" r="0.1500" /> 
 <circle cx="40.4200" cy="5.8800" r="0.1500" /> 
-<circle cx="56.6600" cy="11.8500" r="0.1500" /> 
+<circle cx="56.7900" cy="11.8500" r="0.1500" /> 
 <circle cx="24.1300" cy="1.6900" r="0.1500" /> 
 <circle cx="48.0500" cy="20.2000" r="0.1500" /> 
 <circle cx="14.9500" cy="21.1000" r="0.1500" /> 
@@ -2962,18 +2955,18 @@
 <circle cx="45.2200" cy="18.2000" r="0.1500" /> 
 <circle cx="43.8650" cy="8.4000" r="0.1500" /> 
 <circle cx="49.1800" cy="27.6000" r="0.1500" /> 
-<circle cx="43.9000" cy="6.9800" r="0.1500" /> 
+<circle cx="43.9000" cy="6.7700" r="0.1500" /> 
 <circle cx="49.2200" cy="8.7700" r="0.1500" /> 
 <circle cx="48.1000" cy="28.7000" r="0.1500" /> 
 <circle cx="41.3200" cy="5.2700" r="0.1500" /> 
 <circle cx="46.6400" cy="32.8000" r="0.1500" /> 
 <circle cx="47.4200" cy="30.8500" r="0.1500" /> 
 <circle cx="42.3000" cy="33.8000" r="0.1500" /> 
-<circle cx="41.4600" cy="38.1800" r="0.1500" /> 
+<circle cx="39.8000" cy="38.1800" r="0.1500" /> 
 <circle cx="45.0300" cy="7.0900" r="0.1500" /> 
 <circle cx="49.5000" cy="8.0000" r="0.1500" /> 
 <circle cx="60.9100" cy="13.8500" r="0.1500" /> 
-<circle cx="60.9100" cy="12.6500" r="0.1500" /> 
+<circle cx="60.8100" cy="12.4000" r="0.1500" /> 
 <circle cx="13.3350" cy="31.9000" r="0.1500" /> 
 <circle cx="14.2100" cy="29.9500" r="0.1500" /> 
 <circle cx="10.6000" cy="32.9000" r="0.1500" /> 
@@ -3505,4 +3498,4 @@
 <g style="fill:#009600; fill-opacity:1.0000; stroke:none;">
 <circle cx="134.6200" cy="50.8000" r="0.4572" /> 
 </g> 
-</g></defs><rect x="0" y="0" width="1360" height="1447" fill="#fcfdfb" stroke="none" rx="0" /><rect x="0" y="0" width="1360" height="108" fill="#173d39" stroke="none" rx="0" /><text x="37" y="29" font-size="15" fill="#c2dbd6" font-weight="600">PCW-MC-01   /   功能分区 08 · 09</text><text x="35" y="79" font-size="40" fill="white" font-weight="700">电磁铁输出</text><text x="36" y="137" font-size="19" fill="#183c39">GPIO32 的 PWM 经互锁驱动 Q7；Q7 拉低 Q6 栅极，将 12 V 接到 J5 的线圈正端。</text><text x="1194" y="60" font-size="14" fill="#c2dbd6" text-anchor="end">整板定位</text><rect x="1210" y="13" width="108.5" height="77.5" fill="#35554f" stroke="#94ada7" rx="3" /><rect x="1210.0" y="32.84" width="39.99" height="30.070000000000004" fill="#b7dabd" stroke="#e2f3cd" rx="1" /><text x="38" y="164" font-size="16" fill="#4b6666" font-weight="650">双层走线局部放大</text><text x="690" y="164" font-size="16" fill="#4b6666" font-weight="650">KiCad 电路原理图</text><rect x="38" y="175" width="628" height="446" fill="#f5f8f7" stroke="#cbd8d5" rx="8" /><text x="52" y="199" font-size="15" fill="#4b6666" font-weight="600">高侧开关、续流二极管与线圈端子</text><svg x="91.34020618556701" y="212.99999999999997" width="521.319587628866" height="392.00000000000006" viewBox="0 12.8 25.8 19.400000000000002" overflow="hidden"><use opacity=".63" xlink:href="#routing" /></svg><defs><clipPath id="crop-0"><rect x="91.34020618556701" y="212.99999999999997" width="521.319587628866" height="392.00000000000006" fill="white" stroke="none" rx="0" /></clipPath></defs><g clip-path="url(#crop-0)"><g data-net="SOL_SAFE"><line x1="530.8247422680413" y1="501.54432989690713" x2="497.4845360824742" y2="501.54432989690713" stroke="white" stroke-width="6.2" /><line x1="530.8247422680413" y1="501.54432989690713" x2="497.4845360824742" y2="501.54432989690713" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(513.49 501.54) rotate(180.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_ENABLE"><line x1="497.4845360824742" y1="468.2041237113401" x2="497.4845360824742" y2="419.5072164948453" stroke="white" stroke-width="6.2" /><line x1="497.4845360824742" y1="419.5072164948453" x2="497.4845360824742" y2="376.1649484536082" stroke="white" stroke-width="6.2" /><line x1="497.4845360824742" y1="468.2041237113401" x2="497.4845360824742" y2="419.5072164948453" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><line x1="497.4845360824742" y1="419.5072164948453" x2="497.4845360824742" y2="376.1649484536082" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(497.48 442.88) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_GATE_SINK"><line x1="516.680412371134" y1="338.2783505154639" x2="516.680412371134" y2="301.8061855670103" stroke="white" stroke-width="6.2" /><line x1="516.680412371134" y1="338.2783505154639" x2="516.680412371134" y2="301.8061855670103" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(516.68 319.31) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_GATE"><line x1="516.680412371134" y1="268.4659793814433" x2="471.21649484536084" y2="268.4659793814433" stroke="white" stroke-width="6.2" /><line x1="471.21649484536084" y1="268.4659793814433" x2="429.2886597938145" y2="268.4659793814433" stroke="white" stroke-width="6.2" /><line x1="516.680412371134" y1="268.4659793814433" x2="471.21649484536084" y2="268.4659793814433" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><line x1="471.21649484536084" y1="268.4659793814433" x2="429.2886597938145" y2="268.4659793814433" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(493.04 268.47) rotate(180.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_POS"><line x1="329.2680412371134" y1="268.4659793814433" x2="329.2680412371134" y2="294.12783505154636" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="294.12783505154636" x2="329.2680412371134" y2="319.78969072164944" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="319.78969072164944" x2="255.81855670103093" y2="319.78969072164944" stroke="white" stroke-width="6.2" /><line x1="255.81855670103093" y1="319.78969072164944" x2="240.8659793814433" y2="334.742268041237" stroke="white" stroke-width="6.2" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="268.4659793814433" x2="329.2680412371134" y2="294.12783505154636" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="329.2680412371134" y1="294.12783505154636" x2="329.2680412371134" y2="319.78969072164944" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="329.2680412371134" y1="319.78969072164944" x2="255.81855670103093" y2="319.78969072164944" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="255.81855670103093" y1="319.78969072164944" x2="240.8659793814433" y2="334.742268041237" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(203.48 412.31) rotate(90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#ad531b" stroke-width="2.4" /></g></g><g data-net="GND"><line x1="203.48453608247422" y1="550.4432989690721" x2="160.04123711340208" y2="507.0" stroke="white" stroke-width="6.2" /><line x1="160.04123711340208" y1="507.0" x2="160.04123711340208" y2="367.57731958762884" stroke="white" stroke-width="6.2" /><line x1="160.04123711340208" y1="367.57731958762884" x2="160.04123711340208" y2="334.742268041237" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="550.4432989690721" x2="160.04123711340208" y2="507.0" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="160.04123711340208" y1="507.0" x2="160.04123711340208" y2="367.57731958762884" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="160.04123711340208" y1="367.57731958762884" x2="160.04123711340208" y2="334.742268041237" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(160.04 434.50) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#7244a2" stroke-width="2.4" /></g></g><g data-net="SOL_POS"><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="white" stroke-width="6.2" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(203.48 412.31) rotate(90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#7244a2" stroke-width="2.4" /></g></g></g><view id="pcb-C28" viewBox="226.041 297.378 260.000 166.667" /><g data-ref="C28" data-board-xy="13.1 21.1" transform="translate(356.041 380.711)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">C28</text></g><view id="pcb-C34" viewBox="240.186 341.832 260.000 166.667" /><g data-ref="C34" data-board-xy="13.8 23.3" transform="translate(370.186 425.165)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">C34</text></g><view id="pcb-D4" viewBox="70.454 251.409 260.000 166.667" /><g data-ref="D4" data-board-xy="5.4 18.825" transform="translate(200.454 334.742)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">D4</text></g><view id="pcb-J5" viewBox="73.485 416.595 260.000 166.667" /><g data-ref="J5" data-board-xy="5.55 27" transform="translate(203.485 499.928)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">J5</text></g><view id="pcb-Q6" viewBox="249.278 223.625 260.000 166.667" /><g data-ref="Q6" data-board-xy="14.25 17.45" transform="translate(379.278 306.959)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">Q6</text></g><view id="pcb-Q7" viewBox="386.680 273.888 260.000 166.667" /><g data-ref="Q7" data-board-xy="21.05 19.9375" transform="translate(516.680 357.222)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">Q7</text></g><view id="pcb-R21" viewBox="367.485 401.541 260.000 166.667" /><g data-ref="R21" data-board-xy="20.1 26.255" transform="translate(497.485 484.874)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R21</text></g><view id="pcb-R22" viewBox="322.021 368.201 260.000 166.667" /><g data-ref="R22" data-board-xy="17.85 24.605" transform="translate(452.021 451.534)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R22</text></g><view id="pcb-R33" viewBox="341.216 201.803 260.000 166.667" /><g data-ref="R33" data-board-xy="18.8 16.37" transform="translate(471.216 285.136)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R33</text></g><view id="pcb-R45" viewBox="386.680 201.803 260.000 166.667" /><g data-ref="R45" data-board-xy="21.05 16.37" transform="translate(516.680 285.136)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R45</text></g><rect x="690" y="175" width="628" height="446" fill="white" stroke="#cbd8d5" rx="8" /><text x="702" y="198" font-size="15" fill="#4b6666">高侧驱动与续流回路  ·  原理图第 7 页</text><svg x="699.0" y="278.2924528301887" width="610.0" height="262.4150943396226" viewBox="16 35 265 114" overflow="hidden"><use xlink:href="#sheet-7" /></svg><view id="sch-C28" viewBox="774.882 305.587 101.283 64.925" /><view id="sch-C34" viewBox="848.634 305.587 101.283 64.925" /><view id="sch-D4" viewBox="1077.188 416.676 101.283 64.925" /><view id="sch-J5" viewBox="1190.361 367.398 101.283 64.925" /><view id="sch-Q6" viewBox="975.802 349.858 101.283 64.925" /><view id="sch-Q7" viewBox="834.167 423.254 101.283 64.925" /><view id="sch-R21" viewBox="743.081 417.096 101.283 64.925" /><view id="sch-R22" viewBox="780.464 460.527 101.283 64.925" /><view id="sch-R33" viewBox="913.789 308.510 101.283 64.925" /><view id="sch-R45" viewBox="874.634 346.934 101.283 64.925" /><line x1="40" y1="640" x2="62" y2="640" stroke="#a23443" stroke-width="4" /><text x="69" y="645" font-size="14" fill="#4b6666">L1 顶层</text><line x1="152" y1="640" x2="174" y2="640" stroke="#1b6b61" stroke-width="4" /><text x="181" y="645" font-size="14" fill="#4b6666">L4 底层</text><text x="275" y="645" font-size="14" fill="#4b6666">箭头与下方同色通路对应，虚线段在 L4。内层电源与地平面省略。</text><text x="38" y="695" font-size="24" fill="#183c39" font-weight="700">工作原理与流向</text><rect x="38" y="714" width="22" height="22" fill="#0b6782" stroke="#0b6782" rx="5" /><text x="49" y="730" font-size="14" fill="white" text-anchor="middle" font-weight="700">A</text><text x="70" y="731" font-size="19" fill="#183c39" font-weight="650">驱动栅极</text><use transform="translate(113.625 759)" stroke="#0b6782" xlink:href="#glyph-pulse" /><text x="113.625" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">U12 · SOL_SAFE</text><line x1="139.625" y1="759" x2="238.875" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M233.875 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(264.875 759)" stroke="#0b6782" xlink:href="#glyph-resistor" /><text x="264.875" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">R21</text><line x1="290.875" y1="759" x2="390.125" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M385.125 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(416.125 759)" stroke="#0b6782" xlink:href="#glyph-switch" /><text x="416.125" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q7</text><line x1="442.125" y1="759" x2="541.375" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M536.375 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(567.375 759)" stroke="#0b6782" xlink:href="#glyph-io" /><text x="567.375" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q6 栅极</text><text x="38" y="808" font-size="14" fill="#4b6666">Q7 导通，经 R45 拉低 Q6 栅极。Q7 关断时，R33 将栅极拉回源极，使 Q6 截止。</text><line x1="38" y1="851" x2="643" y2="851" stroke="#cbd8d5" stroke-width="1" /><rect x="690" y="714" width="22" height="22" fill="#ad531b" stroke="#ad531b" rx="5" /><text x="701" y="730" font-size="14" fill="white" text-anchor="middle" font-weight="700">B</text><text x="722" y="731" font-size="19" fill="#183c39" font-weight="650">线圈通电</text><use transform="translate(765.625 759)" stroke="#ad531b" xlink:href="#glyph-rail" /><text x="765.625" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">V12</text><line x1="791.625" y1="759" x2="890.875" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M885.875 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(916.875 759)" stroke="#ad531b" xlink:href="#glyph-switch" /><text x="916.875" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q6</text><line x1="942.875" y1="759" x2="1042.125" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M1037.125 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(1068.125 759)" stroke="#ad531b" xlink:href="#glyph-coil" /><text x="1068.125" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-1 至线圈</text><line x1="1094.125" y1="759" x2="1193.375" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M1188.375 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(1219.375 759)" stroke="#ad531b" xlink:href="#glyph-ground" /><text x="1219.375" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><text x="690" y="808" font-size="14" fill="#4b6666">Q6 源极接 V12，漏极接 J5-1。外接 12 V / 0.8 A 线圈经 J5-2 回地，通电时磁场逐</text><text x="690" y="828" font-size="14" fill="#4b6666">渐建立。</text><line x1="690" y1="851" x2="1295" y2="851" stroke="#cbd8d5" stroke-width="1" /><rect x="38" y="862" width="22" height="22" fill="#7244a2" stroke="#7244a2" rx="5" /><text x="49" y="878" font-size="14" fill="white" text-anchor="middle" font-weight="700">C</text><text x="70" y="879" font-size="19" fill="#183c39" font-weight="650">关断后续流</text><use transform="translate(113.625 907)" stroke="#7244a2" xlink:href="#glyph-ground" /><text x="113.625" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><line x1="139.625" y1="907" x2="238.875" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M233.875 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(264.875 907)" stroke="#7244a2" xlink:href="#glyph-diode" /><text x="264.875" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">D4</text><line x1="290.875" y1="907" x2="390.125" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M385.125 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(416.125 907)" stroke="#7244a2" xlink:href="#glyph-coil" /><text x="416.125" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-1 至线圈</text><line x1="442.125" y1="907" x2="541.375" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M536.375 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(567.375 907)" stroke="#7244a2" xlink:href="#glyph-ground" /><text x="567.375" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><text x="38" y="956" font-size="14" fill="#4b6666">Q6 关断后，电流由地经 D4 阳极流至阴极，再从 J5-1 穿过线圈回到 J5-2，直至磁场衰</text><text x="38" y="976" font-size="14" fill="#4b6666">减。</text><line x1="38" y1="999" x2="643" y2="999" stroke="#cbd8d5" stroke-width="1" /><text x="38" y="1038" font-size="24" fill="#183c39" font-weight="700">元件规格</text><text x="151" y="1037" font-size="15" fill="#4b6666">10 个装配位号</text><rect x="38" y="1052" width="1280" height="31" fill="#e5eeea" stroke="none" rx="0" /><text x="50" y="1073" font-size="14" fill="#4b6666" font-weight="650">位号</text><text x="155" y="1073" font-size="14" fill="#4b6666" font-weight="650">制造商型号 / MPN</text><text x="480" y="1073" font-size="14" fill="#4b6666" font-weight="650">封装</text><text x="687" y="1073" font-size="14" fill="#4b6666" font-weight="650">本板参数与器件额定值</text><rect x="38" y="1083" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1103" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">C28</text><text x="155" y="1103" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">CL10B104KB8NNNC</text><text x="480" y="1103" font-size="15" fill="#183c39">0603</text><text x="687" y="1103" font-size="15" fill="#183c39">100 nF · 50 V · ±10% · X7R</text><rect x="38" y="1113" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1133" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">C34</text><text x="155" y="1133" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">CL31B106KBHNNNE</text><text x="480" y="1133" font-size="15" fill="#183c39">1206</text><text x="687" y="1133" font-size="15" fill="#183c39">10 µF · 50 V · ±10% · X7R</text><rect x="38" y="1143" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1163" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">D4</text><text x="155" y="1163" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">SS34</text><text x="480" y="1163" font-size="15" fill="#183c39">SMA(DO-214AC)</text><text x="687" y="1163" font-size="15" fill="#183c39">肖特基 · 平均整流电流 3 A · 反向耐压 40 V</text><rect x="38" y="1173" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1193" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">J5</text><text x="155" y="1193" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">MX126-5.0-02P-GN01-Cu-S-A</text><text x="480" y="1193" font-size="15" fill="#183c39">Plugin,P=5mm</text><text x="687" y="1193" font-size="15" fill="#183c39">螺钉端子 · 2 位 · 间距 5.00 mm</text><rect x="38" y="1203" width="1280" height="50" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1223" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">Q6</text><text x="155" y="1223" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">AO4407A</text><text x="480" y="1223" font-size="15" fill="#183c39">SOP-8</text><text x="687" y="1223" font-size="15" fill="#183c39">P 沟道 · VDS −30 V · |VGS| 最大 25 V · RDS(on) ≤18.5 mΩ @ −4.5 V、25</text><text x="687" y="1243" font-size="15" fill="#183c39">°C</text><rect x="38" y="1253" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1273" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">Q7</text><text x="155" y="1273" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">MMBT3904</text><text x="480" y="1273" font-size="15" fill="#183c39">SOT-23</text><text x="687" y="1273" font-size="15" fill="#183c39">NPN · 集射耐压 40 V · 集电极电流上限 200 mA</text><rect x="38" y="1283" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1303" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R21</text><text x="155" y="1303" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF2201T5E</text><text x="480" y="1303" font-size="15" fill="#183c39">0603</text><text x="687" y="1303" font-size="15" fill="#183c39">2.2 kΩ · ±1% · 0.10 W</text><rect x="38" y="1313" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1333" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R22</text><text x="155" y="1333" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF4702T5E</text><text x="480" y="1333" font-size="15" fill="#183c39">0603</text><text x="687" y="1333" font-size="15" fill="#183c39">47 kΩ · ±1% · 0.10 W</text><rect x="38" y="1343" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1363" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R33</text><text x="155" y="1363" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF2201T5E</text><text x="480" y="1363" font-size="15" fill="#183c39">0603</text><text x="687" y="1363" font-size="15" fill="#183c39">2.2 kΩ · ±1% · 0.10 W</text><rect x="38" y="1373" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1393" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R45</text><text x="155" y="1393" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF1001T5E</text><text x="480" y="1393" font-size="15" fill="#183c39">0603</text><text x="687" y="1393" font-size="15" fill="#183c39">1 kΩ · ±1% · 0.10 W</text><text x="39" y="1430" font-size="14" fill="#4b6666">PhysiClaw  /  PCW-MC-01 v1.0</text><text x="1316" y="1430" font-size="14" fill="#4b6666" text-anchor="end">底图  top-bottom-routing.svg    ·    元件面俯视</text><view id="board" viewBox="38 175 628 446" /><view id="schematic" viewBox="690 175 628 446" /></svg>
+</g></defs><rect x="0" y="0" width="1360" height="1447" fill="#fcfdfb" stroke="none" rx="0" /><rect x="0" y="0" width="1360" height="108" fill="#173d39" stroke="none" rx="0" /><text x="37" y="29" font-size="15" fill="#c2dbd6" font-weight="600">PCW-MC-01   /   功能分区 08 · 09</text><text x="35" y="79" font-size="40" fill="white" font-weight="700">电磁铁输出</text><text x="36" y="137" font-size="19" fill="#183c39">GPIO32 的 PWM 经互锁驱动 Q7；Q7 拉低 Q6 栅极，将 12 V 接到 J5 的线圈正端。</text><text x="1194" y="60" font-size="14" fill="#c2dbd6" text-anchor="end">整板定位</text><rect x="1210" y="13" width="108.5" height="77.5" fill="#35554f" stroke="#94ada7" rx="3" /><rect x="1210.0" y="32.84" width="39.99" height="30.070000000000004" fill="#b7dabd" stroke="#e2f3cd" rx="1" /><text x="38" y="164" font-size="16" fill="#4b6666" font-weight="650">双层走线局部放大</text><text x="690" y="164" font-size="16" fill="#4b6666" font-weight="650">KiCad 电路原理图</text><rect x="38" y="175" width="628" height="446" fill="#f5f8f7" stroke="#cbd8d5" rx="8" /><text x="52" y="199" font-size="15" fill="#4b6666" font-weight="600">高侧开关、续流二极管与线圈端子</text><svg x="91.34020618556701" y="212.99999999999997" width="521.319587628866" height="392.00000000000006" viewBox="0 12.8 25.8 19.400000000000002" overflow="hidden"><use opacity=".63" xlink:href="#routing" /></svg><defs><clipPath id="crop-0"><rect x="91.34020618556701" y="212.99999999999997" width="521.319587628866" height="392.00000000000006" fill="white" stroke="none" rx="0" /></clipPath></defs><g clip-path="url(#crop-0)"><g data-net="SOL_SAFE"><line x1="530.8247422680413" y1="501.54432989690713" x2="497.4845360824742" y2="501.54432989690713" stroke="white" stroke-width="6.2" /><line x1="530.8247422680413" y1="501.54432989690713" x2="497.4845360824742" y2="501.54432989690713" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(513.49 501.54) rotate(180.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_ENABLE"><line x1="497.4845360824742" y1="468.2041237113401" x2="497.4845360824742" y2="419.5072164948453" stroke="white" stroke-width="6.2" /><line x1="497.4845360824742" y1="419.5072164948453" x2="497.4845360824742" y2="376.1649484536082" stroke="white" stroke-width="6.2" /><line x1="497.4845360824742" y1="468.2041237113401" x2="497.4845360824742" y2="419.5072164948453" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><line x1="497.4845360824742" y1="419.5072164948453" x2="497.4845360824742" y2="376.1649484536082" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(497.48 442.88) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_GATE_SINK"><line x1="516.680412371134" y1="338.2783505154639" x2="516.680412371134" y2="301.8061855670103" stroke="white" stroke-width="6.2" /><line x1="516.680412371134" y1="338.2783505154639" x2="516.680412371134" y2="301.8061855670103" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(516.68 319.31) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_GATE"><line x1="516.680412371134" y1="268.4659793814433" x2="471.21649484536084" y2="268.4659793814433" stroke="white" stroke-width="6.2" /><line x1="471.21649484536084" y1="268.4659793814433" x2="429.2886597938145" y2="268.4659793814433" stroke="white" stroke-width="6.2" /><line x1="516.680412371134" y1="268.4659793814433" x2="471.21649484536084" y2="268.4659793814433" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><line x1="471.21649484536084" y1="268.4659793814433" x2="429.2886597938145" y2="268.4659793814433" stroke="#0b6782" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(493.04 268.47) rotate(180.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#0b6782" stroke-width="2.4" /></g></g><g data-net="SOL_POS"><line x1="329.2680412371134" y1="268.4659793814433" x2="329.2680412371134" y2="294.12783505154636" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="294.12783505154636" x2="329.2680412371134" y2="319.78969072164944" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="319.78969072164944" x2="329.2680412371134" y2="334.742268041237" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="334.742268041237" x2="240.8659793814433" y2="334.742268041237" stroke="white" stroke-width="6.2" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="white" stroke-width="6.2" /><line x1="329.2680412371134" y1="268.4659793814433" x2="329.2680412371134" y2="294.12783505154636" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="329.2680412371134" y1="294.12783505154636" x2="329.2680412371134" y2="319.78969072164944" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="329.2680412371134" y1="319.78969072164944" x2="329.2680412371134" y2="334.742268041237" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="329.2680412371134" y1="334.742268041237" x2="240.8659793814433" y2="334.742268041237" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="#ad531b" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(283.30 334.74) rotate(180.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#ad531b" stroke-width="2.4" /></g></g><g data-net="GND"><line x1="203.48453608247422" y1="550.4432989690721" x2="160.04123711340208" y2="507.0" stroke="white" stroke-width="6.2" /><line x1="160.04123711340208" y1="507.0" x2="160.04123711340208" y2="367.57731958762884" stroke="white" stroke-width="6.2" /><line x1="160.04123711340208" y1="367.57731958762884" x2="160.04123711340208" y2="334.742268041237" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="550.4432989690721" x2="160.04123711340208" y2="507.0" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="160.04123711340208" y1="507.0" x2="160.04123711340208" y2="367.57731958762884" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="160.04123711340208" y1="367.57731958762884" x2="160.04123711340208" y2="334.742268041237" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(160.04 434.50) rotate(-90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#7244a2" stroke-width="2.4" /></g></g><g data-net="SOL_POS"><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="white" stroke-width="6.2" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="white" stroke-width="6.2" /><line x1="240.8659793814433" y1="334.742268041237" x2="203.48453608247422" y2="372.1237113402061" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><line x1="203.48453608247422" y1="372.1237113402061" x2="203.48453608247422" y2="449.41237113402053" stroke="#7244a2" stroke-width="3.8" stroke-linecap="round" /><g transform="translate(203.48 412.31) rotate(90.00)"><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="white" stroke-width="4.4" /><path d="M-4 -4L1.5 0L-4 4" fill="none" stroke="#7244a2" stroke-width="2.4" /></g></g></g><view id="pcb-C28" viewBox="226.041 297.378 260.000 166.667" /><g data-ref="C28" data-board-xy="13.1 21.1" transform="translate(356.041 380.711)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">C28</text></g><view id="pcb-C34" viewBox="240.186 341.832 260.000 166.667" /><g data-ref="C34" data-board-xy="13.8 23.3" transform="translate(370.186 425.165)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">C34</text></g><view id="pcb-D4" viewBox="70.454 251.409 260.000 166.667" /><g data-ref="D4" data-board-xy="5.4 18.825" transform="translate(200.454 334.742)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">D4</text></g><view id="pcb-J5" viewBox="73.485 416.595 260.000 166.667" /><g data-ref="J5" data-board-xy="5.55 27" transform="translate(203.485 499.928)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">J5</text></g><view id="pcb-Q6" viewBox="249.278 223.625 260.000 166.667" /><g data-ref="Q6" data-board-xy="14.25 17.45" transform="translate(379.278 306.959)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">Q6</text></g><view id="pcb-Q7" viewBox="386.680 273.888 260.000 166.667" /><g data-ref="Q7" data-board-xy="21.05 19.9375" transform="translate(516.680 357.222)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">Q7</text></g><view id="pcb-R21" viewBox="367.485 401.541 260.000 166.667" /><g data-ref="R21" data-board-xy="20.1 26.255" transform="translate(497.485 484.874)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R21</text></g><view id="pcb-R22" viewBox="322.021 368.201 260.000 166.667" /><g data-ref="R22" data-board-xy="17.85 24.605" transform="translate(452.021 451.534)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R22</text></g><view id="pcb-R33" viewBox="341.216 201.803 260.000 166.667" /><g data-ref="R33" data-board-xy="18.8 16.37" transform="translate(471.216 285.136)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R33</text></g><view id="pcb-R45" viewBox="386.680 201.803 260.000 166.667" /><g data-ref="R45" data-board-xy="21.05 16.37" transform="translate(516.680 285.136)"><text x="0" y="0" font-size="15" fill="#10302f" text-anchor="middle" dy=".35em" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-weight="700" stroke="white" stroke-width="3.5" paint-order="stroke fill" stroke-linejoin="round">R45</text></g><rect x="690" y="175" width="628" height="446" fill="white" stroke="#cbd8d5" rx="8" /><text x="702" y="198" font-size="15" fill="#4b6666">高侧驱动与续流回路  ·  原理图第 7 页</text><svg x="699.0" y="278.2924528301887" width="610.0" height="262.4150943396226" viewBox="16 35 265 114" overflow="hidden"><use xlink:href="#sheet-7" /></svg><view id="sch-C28" viewBox="774.882 305.587 101.283 64.925" /><view id="sch-C34" viewBox="848.634 305.587 101.283 64.925" /><view id="sch-D4" viewBox="1077.188 416.676 101.283 64.925" /><view id="sch-J5" viewBox="1190.361 367.398 101.283 64.925" /><view id="sch-Q6" viewBox="975.802 349.858 101.283 64.925" /><view id="sch-Q7" viewBox="834.167 423.254 101.283 64.925" /><view id="sch-R21" viewBox="743.081 417.096 101.283 64.925" /><view id="sch-R22" viewBox="780.464 460.527 101.283 64.925" /><view id="sch-R33" viewBox="913.789 308.510 101.283 64.925" /><view id="sch-R45" viewBox="874.634 346.934 101.283 64.925" /><line x1="40" y1="640" x2="62" y2="640" stroke="#a23443" stroke-width="4" /><text x="69" y="645" font-size="14" fill="#4b6666">L1 顶层</text><line x1="152" y1="640" x2="174" y2="640" stroke="#1b6b61" stroke-width="4" /><text x="181" y="645" font-size="14" fill="#4b6666">L4 底层</text><text x="275" y="645" font-size="14" fill="#4b6666">箭头与下方同色通路对应，虚线段在 L4。内层电源与地平面省略。</text><text x="38" y="695" font-size="24" fill="#183c39" font-weight="700">工作原理与流向</text><rect x="38" y="714" width="22" height="22" fill="#0b6782" stroke="#0b6782" rx="5" /><text x="49" y="730" font-size="14" fill="white" text-anchor="middle" font-weight="700">A</text><text x="70" y="731" font-size="19" fill="#183c39" font-weight="650">驱动栅极</text><use transform="translate(113.625 759)" stroke="#0b6782" xlink:href="#glyph-pulse" /><text x="113.625" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">U12 · SOL_SAFE</text><line x1="139.625" y1="759" x2="238.875" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M233.875 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(264.875 759)" stroke="#0b6782" xlink:href="#glyph-resistor" /><text x="264.875" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">R21</text><line x1="290.875" y1="759" x2="390.125" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M385.125 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(416.125 759)" stroke="#0b6782" xlink:href="#glyph-switch" /><text x="416.125" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q7</text><line x1="442.125" y1="759" x2="541.375" y2="759" stroke="#0b6782" stroke-width="1.65" /><path d="M536.375 755.5l5 3.5 -5 3.5" fill="none" stroke="#0b6782" stroke-width="1.65" /><use transform="translate(567.375 759)" stroke="#0b6782" xlink:href="#glyph-io" /><text x="567.375" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q6 栅极</text><text x="38" y="808" font-size="14" fill="#4b6666">Q7 导通，经 R45 拉低 Q6 栅极。Q7 关断时，R33 将栅极拉回源极，使 Q6 截止。</text><line x1="38" y1="851" x2="643" y2="851" stroke="#cbd8d5" stroke-width="1" /><rect x="690" y="714" width="22" height="22" fill="#ad531b" stroke="#ad531b" rx="5" /><text x="701" y="730" font-size="14" fill="white" text-anchor="middle" font-weight="700">B</text><text x="722" y="731" font-size="19" fill="#183c39" font-weight="650">线圈通电</text><use transform="translate(765.625 759)" stroke="#ad531b" xlink:href="#glyph-rail" /><text x="765.625" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">V12</text><line x1="791.625" y1="759" x2="890.875" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M885.875 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(916.875 759)" stroke="#ad531b" xlink:href="#glyph-switch" /><text x="916.875" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">Q6</text><line x1="942.875" y1="759" x2="1042.125" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M1037.125 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(1068.125 759)" stroke="#ad531b" xlink:href="#glyph-coil" /><text x="1068.125" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-1 至线圈</text><line x1="1094.125" y1="759" x2="1193.375" y2="759" stroke="#ad531b" stroke-width="1.65" /><path d="M1188.375 755.5l5 3.5 -5 3.5" fill="none" stroke="#ad531b" stroke-width="1.65" /><use transform="translate(1219.375 759)" stroke="#ad531b" xlink:href="#glyph-ground" /><text x="1219.375" y="784" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><text x="690" y="808" font-size="14" fill="#4b6666">Q6 源极接 V12，漏极接 J5-1。外接 12 V / 0.8 A 线圈经 J5-2 回地，通电时磁场逐</text><text x="690" y="828" font-size="14" fill="#4b6666">渐建立。</text><line x1="690" y1="851" x2="1295" y2="851" stroke="#cbd8d5" stroke-width="1" /><rect x="38" y="862" width="22" height="22" fill="#7244a2" stroke="#7244a2" rx="5" /><text x="49" y="878" font-size="14" fill="white" text-anchor="middle" font-weight="700">C</text><text x="70" y="879" font-size="19" fill="#183c39" font-weight="650">关断后续流</text><use transform="translate(113.625 907)" stroke="#7244a2" xlink:href="#glyph-ground" /><text x="113.625" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><line x1="139.625" y1="907" x2="238.875" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M233.875 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(264.875 907)" stroke="#7244a2" xlink:href="#glyph-diode" /><text x="264.875" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">D4</text><line x1="290.875" y1="907" x2="390.125" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M385.125 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(416.125 907)" stroke="#7244a2" xlink:href="#glyph-coil" /><text x="416.125" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-1 至线圈</text><line x1="442.125" y1="907" x2="541.375" y2="907" stroke="#7244a2" stroke-width="1.65" /><path d="M536.375 903.5l5 3.5 -5 3.5" fill="none" stroke="#7244a2" stroke-width="1.65" /><use transform="translate(567.375 907)" stroke="#7244a2" xlink:href="#glyph-ground" /><text x="567.375" y="932" font-size="15" fill="#183c39" text-anchor="middle" font-weight="600">J5-2 地</text><text x="38" y="956" font-size="14" fill="#4b6666">Q6 关断后，电流由地经 D4 阳极流至阴极，再从 J5-1 穿过线圈回到 J5-2，直至磁场衰</text><text x="38" y="976" font-size="14" fill="#4b6666">减。</text><line x1="38" y1="999" x2="643" y2="999" stroke="#cbd8d5" stroke-width="1" /><text x="38" y="1038" font-size="24" fill="#183c39" font-weight="700">元件规格</text><text x="151" y="1037" font-size="15" fill="#4b6666">10 个装配位号</text><rect x="38" y="1052" width="1280" height="31" fill="#e5eeea" stroke="none" rx="0" /><text x="50" y="1073" font-size="14" fill="#4b6666" font-weight="650">位号</text><text x="155" y="1073" font-size="14" fill="#4b6666" font-weight="650">制造商型号 / MPN</text><text x="480" y="1073" font-size="14" fill="#4b6666" font-weight="650">封装</text><text x="687" y="1073" font-size="14" fill="#4b6666" font-weight="650">本板参数与器件额定值</text><rect x="38" y="1083" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1103" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">C28</text><text x="155" y="1103" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">CL10B104KB8NNNC</text><text x="480" y="1103" font-size="15" fill="#183c39">0603</text><text x="687" y="1103" font-size="15" fill="#183c39">100 nF · 50 V · ±10% · X7R</text><rect x="38" y="1113" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1133" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">C34</text><text x="155" y="1133" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">CL31B106KBHNNNE</text><text x="480" y="1133" font-size="15" fill="#183c39">1206</text><text x="687" y="1133" font-size="15" fill="#183c39">10 µF · 50 V · ±10% · X7R</text><rect x="38" y="1143" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1163" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">D4</text><text x="155" y="1163" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">SS34</text><text x="480" y="1163" font-size="15" fill="#183c39">SMA(DO-214AC)</text><text x="687" y="1163" font-size="15" fill="#183c39">肖特基 · 平均整流电流 3 A · 反向耐压 40 V</text><rect x="38" y="1173" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1193" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">J5</text><text x="155" y="1193" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">MX126-5.0-02P-GN01-Cu-S-A</text><text x="480" y="1193" font-size="15" fill="#183c39">Plugin,P=5mm</text><text x="687" y="1193" font-size="15" fill="#183c39">螺钉端子 · 2 位 · 间距 5.00 mm</text><rect x="38" y="1203" width="1280" height="50" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1223" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">Q6</text><text x="155" y="1223" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">AO4407A</text><text x="480" y="1223" font-size="15" fill="#183c39">SOP-8</text><text x="687" y="1223" font-size="15" fill="#183c39">P 沟道 · VDS −30 V · |VGS| 最大 25 V · RDS(on) ≤18.5 mΩ @ −4.5 V、25</text><text x="687" y="1243" font-size="15" fill="#183c39">°C</text><rect x="38" y="1253" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1273" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">Q7</text><text x="155" y="1273" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">MMBT3904</text><text x="480" y="1273" font-size="15" fill="#183c39">SOT-23</text><text x="687" y="1273" font-size="15" fill="#183c39">NPN · 集射耐压 40 V · 集电极电流上限 200 mA</text><rect x="38" y="1283" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1303" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R21</text><text x="155" y="1303" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF2201T5E</text><text x="480" y="1303" font-size="15" fill="#183c39">0603</text><text x="687" y="1303" font-size="15" fill="#183c39">2.2 kΩ · ±1% · 0.10 W</text><rect x="38" y="1313" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1333" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R22</text><text x="155" y="1333" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF4702T5E</text><text x="480" y="1333" font-size="15" fill="#183c39">0603</text><text x="687" y="1333" font-size="15" fill="#183c39">47 kΩ · ±1% · 0.10 W</text><rect x="38" y="1343" width="1280" height="30" fill="#f5f8f6" stroke="none" rx="0" /><text x="50" y="1363" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R33</text><text x="155" y="1363" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF2201T5E</text><text x="480" y="1363" font-size="15" fill="#183c39">0603</text><text x="687" y="1363" font-size="15" fill="#183c39">2.2 kΩ · ±1% · 0.10 W</text><rect x="38" y="1373" width="1280" height="30" fill="white" stroke="none" rx="0" /><text x="50" y="1393" font-size="16" fill="#183c39" font-weight="700" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">R45</text><text x="155" y="1393" font-size="15" fill="#183c39" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace">0603WAF1001T5E</text><text x="480" y="1393" font-size="15" fill="#183c39">0603</text><text x="687" y="1393" font-size="15" fill="#183c39">1 kΩ · ±1% · 0.10 W</text><text x="39" y="1430" font-size="14" fill="#4b6666">PhysiClaw  /  PCW-MC-01 v1.0</text><text x="1316" y="1430" font-size="14" fill="#4b6666" text-anchor="end">底图  top-bottom-routing.svg    ·    元件面俯视</text><view id="board" viewBox="38 175 628 446" /><view id="schematic" viewBox="690 175 628 446" /></svg>

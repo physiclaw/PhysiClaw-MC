@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Straighten the U1 and C29 ground returns and the ESP32 UART RX escape.
+  Run the Q6 drain branch horizontally to D4 and take the motor-disable
+  line from U9 to the shared driver trace in one turn. Connect U9 pin 3
+  straight to its ground via. Align the Y_B2 via with J4 pin 4 for a
+  straight bottom-layer run.
+
 - Rotate U3 and route the J2 data pair through its clamp pads to U4 on L1.
   Tie A6 to B6 on the right with 3.01 mm of top copper. Branch the A7 via
   off the straight 0.28 mm D− trace to keep its drill clear of the pair.
