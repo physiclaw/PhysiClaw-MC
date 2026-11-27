@@ -41,6 +41,17 @@ dialog{width:min(720px,calc(100% - 24px));max-height:88vh;overflow:auto;border:1
 .peer{position:absolute;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;border:1px solid #edf6d8;background:#b6db94;box-shadow:0 0 0 1px #23392c}
 
 .overview-copper { display: block; width: 100%; height: 100%; background: #f8fafc; border-radius: 4px; }
+#ics { margin: 46px 0; }
+.ic-directory { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 26px; padding: 0; list-style: none; }
+.ic-directory a { display: grid; grid-template-columns: 3rem 1fr auto; gap: 8px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.ic-directory a:hover span { text-decoration: underline; }
+.ic-directory b, .ic-directory small { font-family: var(--mono); }
+.ic-directory small { color: var(--soft); }
+@media (max-width: 880px) { .ic-directory { grid-template-columns: 1fr; } }
+@media (max-width: 460px) {
+  .ic-directory a { grid-template-columns: 2.8rem 1fr; gap: 0 8px; }
+  .ic-directory small { grid-column: 2; }
+}
 .route-study { margin: 22px 0; }
 .route-toolbar, .route-picker, .pane-head, .route-info { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .route-toolbar { margin-bottom: 12px; }

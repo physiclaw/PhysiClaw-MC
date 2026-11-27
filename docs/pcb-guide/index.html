@@ -15,7 +15,7 @@
 <header class="mast">
   <div class="wrap topbar">
     <a href="#overview" class="brand" aria-label="PhysiClaw 整板总览"><span class="brandmark" aria-hidden="true"><i></i><i></i><i></i></span>PhysiClaw</a>
-    <nav aria-label="页内导航"><a href="#overview">整板地图</a><a href="#lesson">分区讲解</a><a href="#library">元件索引</a></nav>
+    <nav aria-label="页内导航"><a href="#overview">整板地图</a><a href="#lesson">分区讲解</a><a href="#ics">引脚图</a><a href="#library">元件索引</a></nav>
   </div>
 </header>
 <main class="wrap">
@@ -40,6 +40,28 @@
   <section id="lesson" aria-labelledby="lesson-title" tabindex="-1">
     <div class="sectionbar"><span class="kicker">分区讲解</span><label class="selectbox"><span class="sr">选择功能区</span><select id="zone-switch"></select></label></div>
     <div id="reader"></div>
+  </section>
+  <section id="ics" aria-labelledby="ic-title">
+    <h2 id="ic-title">芯片引脚图</h2>
+    <p class="lead">点开位号可放大实际焊盘，逐脚查看信号方向、网络名称和板上用途。</p>
+    <ul class="ic-directory">
+      <li><a href="assets/ic/U1.svg"><b>U1</b><span>12 V 转 3.3 V</span><small>TPS54302DDCR</small></a></li>
+      <li><a href="assets/ic/U11.svg"><b>U11</b><span>电源监测与复位</span><small>TLV803EA30DBZR</small></a></li>
+      <li><a href="assets/ic/U3.svg"><b>U3</b><span>USB 静电保护</span><small>TPD4E05U06DQAR</small></a></li>
+      <li><a href="assets/ic/U4.svg"><b>U4</b><span>USB 转串口</span><small>CP2102N-A02-GQFN24R</small></a></li>
+      <li><a href="assets/ic/U2.svg"><b>U2</b><span>运动控制主控</span><small>ESP32-WROOM-32UE-N4</small></a></li>
+      <li><a href="assets/ic/U10.svg"><b>U10</b><span>执行器放行条件</span><small>SN74LVC1G132DBVR</small></a></li>
+      <li><a href="assets/ic/U9.svg"><b>U9</b><span>电机使能缓冲</span><small>SN74LVC1G125DBVR</small></a></li>
+      <li><a href="assets/ic/U12.svg"><b>U12</b><span>电磁铁 PWM 缓冲</span><small>SN74LVC1G125DBVR</small></a></li>
+      <li><a href="assets/ic/U5.svg"><b>U5</b><span>J3 右电机 B</span><small>TMC2209-LA-T</small></a></li>
+      <li><a href="assets/ic/U6.svg"><b>U6</b><span>J4 左电机 A</span><small>TMC2209-LA-T</small></a></li>
+    </ul>
+    <h3>电磁铁开关管</h3>
+    <ul class="ic-directory">
+      <li><a href="assets/transistors/Q7.svg"><b>Q7</b><span>栅极驱动</span><small>MMBT3904</small></a></li>
+      <li><a href="assets/transistors/Q6.svg"><b>Q6</b><span>12 V 高侧开关</span><small>AO4407A</small></a></li>
+    </ul>
+    <a href="assets/zones/sol.svg">查看完整的电磁铁原理图和走线</a>
   </section>
   <section id="library" aria-labelledby="library-title">
     <div class="sectionbar"><span class="kicker">查阅</span><a class="quietlink" href="assets/schematic.pdf" target="_blank" rel="noopener">整板原理图 PDF</a></div>

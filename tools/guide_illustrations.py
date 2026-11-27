@@ -14,6 +14,8 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 from build import digest, kicad_environment
+from board_data import pad_center
+from guide_ic import CARDS, TRANSISTOR_CARDS
 from guide_zones import SCHEMATICS, ZONES
 from inspection_views import SVG, board_bounds, board_edges, draw, save
 from kicad_board import Board, children, loads, rotate, values
@@ -152,7 +154,7 @@ def hit(rect, point):
     return x <= point[0] <= r and y <= point[1] <= b
 
 
-def define_artwork(svg, source):
+def define_routing(svg, source):
     defs = draw(svg, "defs")
     copper = draw(defs, "g", id="routing")
     # Source masks and footprint outlines stay in their original KiCad coordinate space.
@@ -162,6 +164,11 @@ def define_artwork(svg, source):
         elif ((child.tag == SVG + "rect" and child.get("mask"))
               or (child.tag == SVG + "g" and child.get("opacity"))):
             copper.append(child)
+    return defs
+
+
+def define_artwork(svg, source):
+    defs = define_routing(svg, source)
     for shape, d in GLYPHS.items():
         draw(defs, "path", id="glyph-" + shape, d=d, fill="none", stroke_width=1.8,
              stroke_linecap="round", stroke_linejoin="round")
@@ -457,6 +464,138 @@ def illustration(zone, number, parts, copper, source, pages):
     return svg
 
 
+def ic_routing(svg, copper, footprint, rows):
+    """Crop the original plot in board coordinates and mark real, rotated pad centres."""
+    points = [copper.local(pad_center(footprint, str(n))) for n in range(1, len(rows)+1)]
+    cx, cy = copper.local(footprint.xy)
+    x, y, w, h = 36, 177, 549, 310
+    # Keep some surrounding routing, while reserving at least a pin pitch per label.
+    extent_x, extent_y = (max(abs(p[i]-c) for p in points) for i, c in enumerate((cx, cy)))
+    scale = min(w / (2*extent_x + 2.6), h / (2*extent_y + max(1.35, extent_y*.38)))
+    left, top = cx-w/(2*scale), cy-h/(2*scale)
+    panel(svg, x, y, w, h, "#f8fafc")
+    inset = draw(svg, "svg", x=x, y=y, width=w, height=h, overflow="hidden",
+                 viewBox=f"{left} {top} {w/scale} {h/scale}")
+    use(inset, "routing")
+    nearest = min(math.dist(a, b) for i, a in enumerate(points) for b in points[i+1:])
+    radius = min(13, nearest*scale*.465)
+    # On fine-pitch packages, name the motion and serial paths beside the pads.
+    # Other names remain in the numbered key so adjacent text never hides a land.
+    named_pins = {"U2": (8, 10, 11, 12, 27, 28, 33, 34, 35, 36),
+                  "U4": (3, 4, 8, 19, 20, 21, 23),
+                  "U5": (2, 14, 16, 19, 21, 23, 24, 26), "U6": (2, 14, 16, 19, 21, 23, 24, 26)}
+    for n, ((bx, by), (name, kind, net, _)) in enumerate(zip(points, rows, strict=True), 1):
+        px, py = x+(bx-left)*scale, y+(by-top)*scale
+        marker = draw(svg, "g", data_pad=n)
+        draw(marker, "title").text = f"{n} · {name} · {kind} · {net}"
+        draw(marker, "circle", cx=px, cy=py, r=radius, fill="#ffcd78" if n == 1 else "#16352e",
+             stroke="white", stroke_width=1)
+        label(marker, px, py+radius*.4, str(n), radius*1.17, "#192d26" if n == 1 else "white",
+              font_family=MONO, font_weight=700, text_anchor="middle")
+        if len(rows) <= 10 or n in named_pins.get(footprint.ref, ()):
+            # Print names outside the package, leaving copper between pads visible.
+            horizontal = footprint.ref in {"U3", "Q6"} or (len(rows) > 10 and math.isclose(abs(bx-cx), extent_x))
+            if horizontal:
+                side = -1 if px < x+w/2 else 1
+                tx, ty = px+side*(radius+13), py+5
+                anchor = "end" if side < 0 else "start"
+            else:
+                tx, ty = px, py+(-radius-9 if py < y+h/2 else radius+19)
+                anchor = "middle"
+            caption = net if footprint.ref == "U2" else name
+            label(marker, tx, ty, caption, 14, INK, text_anchor=anchor, font_family=MONO,
+                  font_weight=700, paint_order="stroke", stroke="white", stroke_width=4,
+                  stroke_linejoin="round")
+    for lx, colour, name in ((38, "#a23443", "L1 顶层"), (150, "#1b6b61", "L4 底层")):
+        line(svg, lx, 511, lx+23, 511, colour, 4)
+        label(svg, lx+31, 516, name, 14, SOFT)
+    label(svg, 260, 516, "橙色为 1 脚 · 省略覆铜与内层", 14, SOFT)
+    # A same-orientation board overview connects the close-up to the physical board.
+    mx, my, factor = 1044, 20, 1.72
+    panel(svg, mx, my, 70*factor, 50*factor, "#f4f7f2", "none", 3)
+    overview = draw(svg, "svg", x=mx, y=my, width=70*factor, height=50*factor, viewBox="0 0 70 50")
+    use(overview, "routing")
+    draw(overview, "circle", cx=cx, cy=cy, r=3.0, fill="#ffcd78", stroke="#19352c", stroke_width=1)
+
+
+def ic_pin_table(svg, rows, *, transistor=False):
+    dense = len(rows) > 10
+    y = 606
+    label(svg, 36, 566, "逐脚对照", 25, font_weight=700)
+    legend = "电流方向按板上的开关电路标注" if transistor else "输入、输出均以本颗器件为参照   ·   — 表示焊盘悬空"
+    label(svg, 1164, 565, legend, 15, SOFT, text_anchor="end")
+    count = (len(rows)+1)//2 if dense else len(rows)
+    width, step = (551, 54) if dense else (1128, 40)
+    for col in range(2 if dense else 1):
+        x = 36 + col*577
+        panel(svg, x, y-23, width, 31, "#e5eee8", "none")
+        for offset, heading in ((10, "脚号"), (58, "引脚" if transistor else "芯片引脚"), (224, "方向 / 类型")):
+            label(svg, x+offset, y-2, heading, 13, SOFT, font_weight=650)
+        net_x = width-10 if dense else 375
+        anchor = "end" if dense else "start"
+        label(svg, x+net_x, y-2, "PCB 网络", 13, SOFT, font_weight=650, text_anchor=anchor)
+        if not dense:
+            label(svg, x+567, y-2, "在本板上的连接与作用", 13, SOFT, font_weight=650)
+        for i, (name, kind, net, note) in enumerate(rows[col*count:(col+1)*count]):
+            n = col*count+i+1
+            baseline = y+31+i*step
+            group = draw(svg, "g", data_pin=n, data_net=net)
+            label(group, x+10, baseline, f"{n:02d}", 16, "#935412" if n == 1 else INK,
+                  font_family=MONO, font_weight=700)
+            label(group, x+58, baseline, name, 15, font_family=MONO, font_weight=700)
+            label(group, x+224, baseline, kind, 15, "#23614b")
+            label(group, x+net_x, baseline, net, 14, SOFT, font_family=MONO, text_anchor=anchor)
+            label(group, x+(58 if dense else 567), baseline+(20 if dense else 0), note, 15)
+            line(group, x, y+8+(i+1)*step, x+width, y+8+(i+1)*step, LINE)
+    return y+8+count*step
+
+
+def ic_illustration(part, card, copper, source):
+    ref = part["ref"]
+    footprint = copper.parts[ref]
+    rows = [tuple(raw.split("|")) for raw in card.pins.strip().splitlines()]
+    pins = {(int(p.number), "—" if p.net.startswith("unconnected-") or not p.net else p.net)
+            for p in footprint.pads if p.number and p.on_layer("F.Cu")}
+    expected = {(n, net) for n, (_, _, net, _) in enumerate(rows, 1)}
+    if pins != expected:
+        raise ValueError(f"{ref}: pin notes and copper disagree: {pins ^ expected}")
+    svg = ET.Element(SVG+"svg", {"font-family": FONT, "lang": "zh-CN", "role": "img",
+                                 "aria-labelledby": "title summary"})
+    draw(svg, "title", id="title").text = f"{ref} · {part['mpn']} · {card.title}"
+    draw(svg, "desc", id="summary").text = card.path + "。元件面俯视，数字与下方引脚表对应。"
+    define_routing(svg, source)
+    background = panel(svg, 0, 0, 1200, 1, "#fcfdf9", "none")
+    panel(svg, 0, 0, 1200, 126, "#173b32", "none")
+    label(svg, 36, 31, "PhysiClaw    /    PCW-MC-01   v1.0", 15, "#cbdfd2", font_weight=600)
+    label(svg, 34, 86, ref, 48, "#ffcd78", font_family=MONO, font_weight=700)
+    label(svg, 148, 82, card.title, 36, "#ffffff", font_weight=700)
+    label(svg, 150, 109, part["mpn"], 17, "#d3e3d9", font_family=MONO)
+    label(svg, 1028, 68, "板上位置", 14, "#d3e3d9", text_anchor="end")
+    label(svg, 36, 161, "焊盘与走线", 21, font_weight=700)
+    label(svg, 585, 161, "元件面俯视", 14, SOFT, text_anchor="end")
+    ic_routing(svg, copper, footprint, rows)
+    x = 618
+    label(svg, x, 161, "电路怎样工作", 21, font_weight=700)
+    panel(svg, x, 177, 546, 39, "#e5eee8", "none", 4)
+    label(svg, x+12, 203, card.path, 18, font_weight=650)
+    for i, (title, body) in enumerate(card.lessons):
+        y = 249+i*91
+        label(svg, x, y, title, 18, "#226348", font_weight=700)
+        for j, row in enumerate(wrap(body, 30)):
+            label(svg, x, y+26+j*23, row, 17)
+    end = ic_pin_table(svg, rows, transistor=ref in TRANSISTOR_CARDS)
+    label(svg, 36, end+36, f"PCW-MC-01 v1.0   /   KiCad 原理图第 {part['page']} 页   /   top-bottom-routing.svg", 14, SOFT)
+    link = draw(svg, "a", target="_blank")
+    link.set(XLINK+"href", part["datasheet"])
+    label(link, 1164, end+36, f"{part['mpn']}  ·  原厂数据手册 ↗", 14, "#226348", text_anchor="end")
+    height = end+55
+    svg.set("viewBox", f"0 0 1200 {height}")
+    svg.set("width", "1200")
+    svg.set("height", str(height))
+    background.set("height", str(height))
+    return svg
+
+
 def main():
     pcb = ROOT / "pcb/kicad/PCW-MC-01.kicad_pcb"
     base = BUILD / "view/top-bottom-routing.svg"
@@ -489,6 +628,14 @@ def main():
         raise ValueError("Guide parts and illustration zones differ")
     pages = schematic_sources()
     source = ET.parse(base).getroot()
+    by_ref = {p["ref"]: p for p in parts}
+    if {ref for ref in by_ref if ref.startswith("U")} != CARDS.keys():
+        raise ValueError("IC illustrations do not cover the fitted ICs")
+    for directory, cards in (("ic", CARDS), ("transistors", TRANSISTOR_CARDS)):
+        pin_folder = ASSETS / directory
+        pin_folder.mkdir(exist_ok=True)
+        for ref, card in cards.items():
+            save(ic_illustration(by_ref[ref], card, copper, source), pin_folder / f"{ref}.svg")
     folder = ASSETS / "zones"
     folder.mkdir(exist_ok=True)
     atlas = {}

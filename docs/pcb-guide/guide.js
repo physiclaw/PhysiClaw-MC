@@ -320,6 +320,8 @@ function openPart(ref) {
   part.pins.forEach(([pin,net]) => pinlist.append(el('span','',pin+' · '+net)));
   pins.append(pinlist);
   const sources=el('div','sources partlinks');
+  if (ref.startsWith('U')) sources.append(link('逐脚走线放大图','assets/ic/'+ref+'.svg'));
+  if (ref === 'Q6' || ref === 'Q7') sources.append(link('逐脚走线放大图','assets/transistors/'+ref+'.svg'));
   sources.append(link('器件资料',part.datasheet),link('原理图 · 第 '+part.page+' 页','assets/schematic.pdf#page='+part.page),
     btn('阅读本区讲解','plainbtn',() => {dialog.close();goZone(part.zone);}));
   byId('part-body').replaceChildren(head,description,el('p','partrole',part.role),pins,sources);
