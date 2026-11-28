@@ -128,7 +128,7 @@ the VIN-to-C2 trace measures 2.50 mm and the 100 nF U2 bypass connects in
 1.95 mm. U2's boot straps and 10 kΩ / 1 µF EN network match Espressif's
 application circuit. U9, U10 and U12 implement the specified
 enable polarities, including the physical ENN pull-up when U9 is disabled.
-Each motor driver has a local 100 nF capacitor on each VS pin with 2.40–2.95 mm
+Each motor driver has a local 100 nF capacitor on each VS pin with 2.62–3.13 mm
 top-layer paths, the specified charge-pump connections, and 16 grounded
 thermal vias. Q6's source, drain, and gate drive agree with the fitted UMW
 part. Rail load steps, driver VS slew at hot-plug, motor temperature, and
@@ -490,7 +490,7 @@ DC bias below are typical manufacturer data. [Board loads and first-article test
 | --- | --- |
 | 12 V input | J1 is rated 5 A at the 2.5 A design load. Q1 has its drains on the fused input and sources on V12. F1 is 5 A. A 3 A current-limited adapter can sustain a fault below F1's opening current, so fault recovery depends on the adapter's overload behavior. [J1 drawing](https://jp.sameskydevices.com/product/resource/pj-102bh.pdf) · [UMW Q1 datasheet][UMW AO4407A] · [F1 opening times](https://www.littelfuse.com/assetdocs/fuse-467-datasheet?assetguid=4a59f034-1cca-460e-a5ba-e1e66247c76d) |
 | 3.3 V buck | At 12 V in, 3.347 V out and 0.60 A load, 6.8 µH at 400 kHz gives 0.89 A peak-to-peak ripple and 1.04 A nominal peak in L1. With −20% inductance, the 290 kHz minimum center frequency and −6% dither, the continuous-conduction estimate is 1.41 A peak and 0.76 A RMS. U1 can skip pulses at light load. Cjiang lists 7.8 A typical saturation current for L1, above U1’s 6 A maximum high-side current-limit threshold. Its typical 20 °C-rise current is 4.8 A. The 0.1% divider and TI’s FB limits give 3.257–3.437 V static at 12 V, before divider temperature drift, distribution drop and transients. U11’s maximum rising threshold is 3.08 × 1.02 × 1.015 = 3.189 V, leaving 68 mV of static release margin. The high corner is 163 mV below the 3.6 V logic limit. C2 provides about 15 µF typical at 12 V bias, or about 12 µF with −20% initial tolerance applied to that curve. TI recommends over 10 µF local ceramic input capacitance. C1 adds 220 µF of bulk storage. At 3.3 V, C4/C5 contribute about 44 µF typical near U1 and C6 adds about 15 µF. With 59 µF, TI’s Equation 14 estimates 26 kHz crossover before feed-forward. Check transient response and hot fault recovery on the first article. [TI datasheet, §§5.5, 7.2 and 7.4](https://www.ti.com/lit/ds/symlink/tps54302.pdf) · [Cjiang FEXL0550A land pattern and ratings](https://datasheet.lcsc.com/datasheet/pdf/f40adaf039c1475297db7da23c31da4d.pdf) · [Taiyo Yuden C2 bias curve, p. 2](https://static6.arrow.com/aropdfconversion/390ef171f49858851c7ebe9f223658ce3b0cd44a/msast32mab5476mpndt1ss.pdf) · [Murata C4/C5 bias data](https://ds.murata.com/simsurfing/mlcc.html?partnumbers=%5B%22GRM21BR61A476ME15%22%5D) |
-| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces are 3.00 mm long and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.59 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. With 0.100 Ω shunts and a 0.800 A RMS request, TMCStepper selects the 180 mV sense range and IRUN = 23. The nominal winding current is 0.7955 A RMS per phase (1.125 A sine peak). Measure the winding current with the intended motors. Under standard reset settings with open VREF, an enabled driver can request about 1.40 A RMS. These figures exclude resistor tolerance, copper resistance and IC variation. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] · [TMCStepper current calculation](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMCStepper.cpp#L18-L41) |
+| Motor current and layout | U5/U6 have the specified 5 mm QFN, 0.50 mm pitch, nominal 3.7 mm grounded pad and 22 nF / 50 V pump capacitors. ADI recommends short, equal sense paths. Both X pin-to-shunt traces measure 2.54 mm and have the same length at each width. The Y traces measure 2.37 and 2.41 mm. For 35 µm copper at 20 °C, the estimated trace resistance is 3.00 mΩ on both X phases and 3.56/3.61 mΩ on Y, excluding pads and ground returns. With 0.100 Ω shunts and a 0.800 A RMS request, TMCStepper selects the 180 mV sense range and IRUN = 23. The nominal winding current is 0.7955 A RMS per phase (1.125 A sine peak). Measure the winding current with the intended motors. Under standard reset settings with open VREF, an enabled driver can request about 1.40 A RMS. These figures exclude resistor tolerance, copper resistance and IC variation. [ADI datasheet, §§6, 9, 21–22][TMC2209 datasheet] · [TMCStepper current calculation](https://github.com/teemuatlut/TMCStepper/blob/v0.7.3/src/source/TMCStepper.cpp#L18-L41) |
 | Solenoid | U12 drives Q7 through 2.2 kΩ R21. R22 pulls the base to ground during reset or disarm, and R33 returns Q6's gate to its source. The 5 A input fuse and adapter are shared by the board. The solenoid branch has no dedicated current limit or fault feedback. |
 
 ### Q6 switching margins
@@ -581,9 +581,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
 | USB-C and serial | Follow J2 D+/D− past the U3 shunt pads to the south edge of U4. The UART leaves the west side of U4. R28 sits beside the ESP32 TX pad. | TX and RX each make one 45° turn on L4 between their two vias. The A7–B7 crossover runs on L4 to the left of J2. A6–B6 uses L1 on the right. |
 | Reset and interlock | U11 pin 2 runs straight through R40 to SW1’s upper-right pad. From there, ESP_EN continues through TP9 to the ESP32 and branches south to U10. | BOOT_N runs straight beneath the LED feeds between Q4 and GPIO0. A separate branch reaches rear probe TP1. |
 | Status lights | U2 pin 30 runs to R26 and R24 for D7 (IDLE). Pin 31 runs to R27 and R25 for D8 (ALARM). Both rows sit below and to the left of U4. | Both LED signals use L1 throughout. |
-| Solenoid | Follow U2 pin 8 through the interlock at U12, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. From pin 1, the indicator trace angles down and right, then runs straight into R46. It continues left to D9 and straight up to J5 pin 2. | The command and switched output stay on L1. |
-| Shared motor controls | From R10/R11, the UART runs to U6 on the right. From U9 pin 4, the disable line branches left to U5 and right past R9 and TP5 to U6. | The UART branch to U5 crosses the board horizontally and returns to L1 in line with pin 14. |
-| X driver and J3 | From the two control vias, follow STEP through R31 to U5 pin 16 and DIR to pin 19. X_B2 runs from the driver to J3 pin 4 on top. | STEP and DIR each run south, then diagonally toward U5. Three winding traces run to J3 pins 1–3. |
+| Solenoid | Follow U2 pin 8 through the interlock at U12, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. The indicator branch runs right from pin 1 to R46, down to D9, then left to J5 pin 2. | The command and switched output stay on L1. |
+| Shared motor controls | The UART runs east from R10/R11 to U6 and west between U9’s pad rows, then down to U5 pin 14. From U9 pin 4, the disable line branches left to U5 and right past R9 and TP5 to U6. | Both shared motor controls stay on L1. |
+| X driver and J3 | From the two control vias, follow STEP through R31 to U5 pin 16 and DIR to pin 19. X_B2 passes below C13 to a via aligned with J3 pin 4. | STEP and DIR run south, then southeast toward U5. A1, B1 and B2 run straight to J3 pins 1, 3 and 4. A2 turns into pin 2. |
 | Y driver and J4 | DIR leaves U2 pin 36 toward the module center. STEP leaves pin 33 toward the board edge. At U6, STEP passes through R32 to pin 16. DIR rises directly in line with pin 19. | Both controls run south and turn once toward U6. DIR passes just west of the rear IO0 probe. All four winding traces reach J4 in pin order. |
 
 ### Copper details
@@ -609,18 +609,22 @@ on the left. Use `component-reference.svg` to locate components by designator.
   12 V zone fills the area outside the 3.3 V and ground zones. Each
   supply forms one continuous region. Three ground regions connect to L2.
   U2 and U5 share the western region. The eastern control region reaches
-  U6. A separate rounded ground pour
-  beneath J2 and U3 leaves a passage for 3.3 V between USB and the controls.
-  The western ground boundary follows X STEP and DIR toward U5, then
-  widens beneath the motor UART crossing. Along the north edge, a
+  U6. The USB ground region connects U3, the D− crossover stitches and
+  all four J2 shell tabs. The western ground boundary follows X STEP and
+  DIR to U5, then widens beneath all four winding traces to J3.
+  At the X_B2 via and J3 pin 4, plated ground returns to L2 are
+  1.45 mm and 1.88 mm away, respectively.
+  Along the north edge, a
   37 mm stretch of 3.3 V copper links the ESP32 side to the USB side.
   In the east, a rounded 3.3 V
   branch enters U6 between the Y control and winding routes. Ground
-  wraps around its tip to reach the U6 thermal pad. The 12 V plane
-  reaches C21 along the south side of the branch.
-  The production Gerbers show continuous L3 ground under all 30 L4 digital
+  wraps around its tip to reach the U6 thermal pad. The 3.3 V branch
+  measures 1.16 mm across at the Y_DIR via (X = 149.50 mm). The 12 V
+  feed to C21 runs south of that branch and measures 3.17 mm across
+  at X = 141.45 mm. Both widths are measured parallel to the Y axis.
+  The production Gerbers show continuous L3 ground under all 27 L4 digital
   and motor winding segments outside their own via and connector-pad clearances.
-  All 26 routed vias and seven motor connector pins have a plated connection
+  All 25 routed vias and eight motor connector pins have a plated connection
   from the local L3 ground region to L2 within 2.0 mm, measured centre to
   centre. The largest spacing is 1.913 mm at the ESP32 end of ESP_RX.
 - **USB and reset.** The main pair runs from A6/A7 through U3 to U4 on L1.
@@ -682,26 +686,30 @@ on the left. Use `component-reference.svg` to locate components by designator.
   45° diagonal and turns once into R11. The shared bus runs from R10 and R11 between D2's
   pads on L1, then turns diagonally toward U6. Its final straight run
   passes between the pads of C23 and ends at U6 pin 14.
-  For U5, follow the L1 diagonal from R10 to its via. The branch then
-  runs left across the interlock on L4 and continues on the same line
-  on L1 into U5 pin 14.
-  On L1, DRIVERS_DISABLE leaves U9 pin 4 diagonally down and left, then
-  runs straight down to the horizontal trace below the drivers.
+  The branch to U5 runs straight west from R10 between U9’s two pad rows,
+  then south and southwest to pin 14. The full 15.76 mm path stays on L1
+  over L2 ground. C39 sits below the UART with its supply pad in line with
+  U9 pin 5 and the 3.3 V feed via.
+  On L1, DRIVERS_DISABLE runs straight down from U9 pin 4 to the
+  horizontal trace below the drivers.
   Left leads to U5 pin 2. Right passes the R9
   pull-up and TP5 on the way to U6 pin 2.
 - **X motor.** STEP and DIR leave U2 pins 10 and 11 toward the left and
-  drop to L4. Each turns once toward U5. STEP continues diagonally across
-  its via and through the R31 pull-down pad, then turns into pin 16. DIR goes straight
-  from its via to pin 19. U5 and U6 both use a 90° footprint rotation.
-  X_A2 leaves pin 21 to the left and launches diagonally from its via
-  toward J3. The adjacent X_A1 via has copper lands on L1 and L4.
-  The inner planes clear its drill, leaving ground beneath the X_A2 trace.
-  X_B2 runs directly to J3 pin 4 on L1 over L2 ground.
-  X_B1 runs between shunts R17 and R18
-  before joining X_A1 and X_A2 on L4. The three parallel diagonals terminate
-  at J3 pins 1 (A1), 2 (A2) and 3 (B1). R17 and R18 face each other.
-  Follow the matching sense traces from U5 pins 23 and 27 to their inner
-  pads. Each outer pad has two ground vias.
+  drop to L4. Each runs south and turns southeast toward U5. STEP
+  continues across its via to the R31 pull-down pad, then runs straight
+  down to pin 16. DIR rises in line with pin 19. U5 and U6 share a 90°
+  rotation. Each driver centre sits 2.70 mm right and 12.30 mm above pin 1
+  of its connector in component-side view.
+  R17 and R18 sit west of U5 with both sense pads toward the driver and
+  two ground vias at the outer end of each shunt. X_B1 runs straight
+  between them for 5.25 mm on L1 and continues straight on L4 for 11.80 mm
+  to J3 pin 3. X_B2 passes below C13, then drops to L4 for a straight
+  7.42 mm run to pin 4. X_A1 runs straight for 12.68 mm on L4 to pin 1.
+  It lands 0.50 mm left of the hole centre with its full 0.70 mm width
+  inside the pad. X_A2 bends toward pin 2.
+  C13 and C14 flank the shunts. C14 sits slightly farther west to clear
+  C31 and reach the L3 12 V feed. Below U5, C18 and C19 share a row.
+  Pins 4 and 5 fan out symmetrically to C18 over two 2.43 mm traces.
 - **Y motor.** STEP and DIR each run south on L4 and turn 45° toward U6.
   The STEP diagonal continues across its via to R32. Follow it to pin 16.
   DIR changes layers in line with pin 19 and runs straight into it for 1.45 mm. Below U6, pins 4 and 5
@@ -733,12 +741,12 @@ components and cables.
 | J1 through F1 to Q1 | 1.50 mm, with a 0.50 mm long, 1.00 mm wide connection at each F1 pad | 2.50 A steady input |
 | Q1 to L3 12 V | Three 0.80 mm feeds and three 0.30 mm drilled vias | 2.50 A shared |
 | Q6 output to J5 | 0.85 mm drain bus, 1.00 mm to D4 and 1.20 mm to J5 | 0.80 A solenoid |
-| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.60 mm on longer runs | 0.80 A RMS per phase, 1.13 A peak (rounded design values) |
-| U5/U6 current-sense pins to shunts | 0.30 and 0.50 mm on X, 0.25 and 0.45 mm on Y | Same phase current |
+| U5/U6 winding outputs | 0.25–0.35 mm at the driver, 0.55–0.70 mm on longer runs | 0.80 A RMS per phase, 1.13 A peak (rounded design values) |
+| U5/U6 current-sense pins to shunts | 0.30, 0.38 and 0.70 mm on X, 0.25 and 0.45 mm on Y | Same phase current |
 | Buck and ESP32 | 0.55 mm switch trace, 1.00 mm from the inductor to C5, 0.635 mm at U2 | 0.60 A on 3.3 V, including 0.50 A at U2 |
 
 C16 bypasses U5's 3.3 V digital I/O supply. The L3 supply via sits on
-the 1.62 mm trace between C16 and U5 pin 15, 0.83 mm from the capacitor.
+the 1.64 mm trace between C16 and U5 pin 15, 0.825 mm from the capacitor.
 C16's ground pad connects directly to a ground via on its other side.
 Both traces are 0.30 mm wide. U5 takes motor power through its two 12 V
 supply pins.
@@ -746,9 +754,9 @@ supply pins.
 
 With 35 µm outer copper at 70 °C, each 0.50 mm fuse neck dissipates
 about 1.8 mW at 2.5 A. The DC winding paths from U5/U6 to J3/J4 measure
-12–23 mΩ per lead using routed lengths and widths, a 1.53 mm via barrel and
+14–21 mΩ per lead using routed lengths and widths, a 1.53 mm via barrel and
 18 µm via-wall plating. At 0.80 A RMS the highest-loss lead dissipates
-about 14.7 mW. Each 0.100 Ω shunt dissipates up to 0.064 W averaged over a
+about 13.3 mW. Each 0.100 Ω shunt dissipates up to 0.064 W averaged over a
 sine cycle and 0.128 W at a 1.13 A crest. Check shunt temperature against
 the 0.5 W part's derating curve in the assembled enclosure.
 
@@ -863,7 +871,7 @@ are pending.
 | Check | Result on the current order files |
 | --- | --- |
 | Copper and vias | Narrowest routed track 0.150 mm, project clearance 0.150 mm, copper edge setback 0.50 mm. The smallest routed via has a 0.30 mm drill and 0.60 mm land. The closest two drill edges are 0.264 mm apart. JLC lists 0.09/0.09 mm track/space for 1 oz multilayer copper and 0.20 mm between via drills. [JLC China fabrication limits](https://www.jlc.com/portal/vtechnology.html) |
-| Drills and outline | Closed single-board outline, 243 plated holes including seven slots, and two non-plated locating holes. The narrowest plated slots are J2’s 0.60 × 1.20 mm slots with a 0.20 mm nominal ring. JLC’s multilayer slot minima are 0.35 × 0.70 mm. [JLC China fabrication limits](https://www.jlc.com/portal/vtechnology.html) |
+| Drills and outline | Closed single-board outline, 241 plated holes including seven slots, and two non-plated locating holes. The narrowest plated slots are J2’s 0.60 × 1.20 mm slots with a 0.20 mm nominal ring. JLC’s multilayer slot minima are 0.35 × 0.70 mm. [JLC China fabrication limits](https://www.jlc.com/portal/vtechnology.html) |
 | Assembly files | All 100 top-side placement references match the SMT BOM. All 384 front paste apertures match the PCB. The smallest chip is 0402 imperial and the finest IC pitch is 0.50 mm. Both fit Standard SMT. The proposed 70 × 70 mm panel meets its minimum dimensions. [JLC China SMT capabilities](https://www.jlc-smt.com/vtechnology) |
 | Fabrication options | The fill layer, drill file and coordinate list agree on all 44 thermal holes. Quote epoxy fill, planarization and copper caps on both faces at U2 (12), U5 (16) and U6 (16). Confirm the JLC04161H-7628 stack and production impedance coupons for 90 Ω differential on L1 and 45 Ω single-ended on L4, both ±10%. [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication) |
 

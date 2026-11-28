@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Move the USB ground stitching via beside U3 pin 5 to give its copper
+  land 0.232 mm clearance to VBUS.
+
+- Reshape the L3 ground pours around the L4 motor and control traces and
+  connect all four USB-C shell tabs to the local ground region. Open the
+  12 V passage toward C21 from 0.32 to 3.17 mm at its former pinch point
+  and widen the 3.3 V branch beside Y_DIR from 0.69 to 1.16 mm.
+
+- Move the blue SOL indicator and R46 to the right of J5. Align the feed
+  and return with the two connector pins and centre the front crab and
+  wordmark in the space below the connector.
+
+- Match U5’s offset from J3 and its capacitor placement to the U6 layout.
+  Turn both shunts toward U5 for matched 2.54 mm sense traces. Route X_B1
+  between the shunts and X_B2 below C13. X_A1, X_B1 and X_B2 run straight
+  on L4 to J3 pins 1, 3 and 4. Extend L3 ground under all four winding routes.
+
+- Move C39 2.00 mm down and turn its supply pad toward U9. Route the
+  shared motor UART between U9’s pad rows to U5 on the top layer,
+  removing both signal vias and the 4.33 mm bottom-layer crossover.
+
 - Bring R29 beside the USB bridge. The two top-layer traces from J2 through
   R29 to the VBUS sense pin total 6.88 mm, down from 19.64 mm. Run ALARM on
   one diagonal through R27, take both interlock inputs into U10 on parallel
