@@ -188,6 +188,12 @@ class PlacementGeometryTests(unittest.TestCase):
             if values(via, "net") == [net] and values(via, "layers") == ["F.Cu", "B.Cu"]
         }
 
+    def top_trace_length(self, net, start, end):
+        return planar_trace_length(
+            self.board, net, ("F.Cu", start), ("F.Cu", end),
+            top_only=True, segments=self.segments["F.Cu", net],
+        )
+
     def l4_ground_referenced_nets(self):
         return sorted(net for (layer, net), tracks in self.segments.items()
                       if layer == "B.Cu" and tracks and net not in L4_POWER_AND_WINDING_NETS)
@@ -262,6 +268,21 @@ class PlacementGeometryTests(unittest.TestCase):
             angle = math.radians(degree)
             edge = (x + io.size[0] * math.cos(angle) / 2, y + io.size[1] * math.sin(angle) / 2)
             self.assertTrue(in_ground_fill(edge, self.ground_fills["In2.Cu"]), edge)
+
+    def test_boot_crossover_runs_straight_between_its_two_vias(self):
+        net = "BOOT_N"
+        vias = self.through_via_positions(net)
+        crossovers = []
+        for track in self.segments["B.Cu", net]:
+            start, end = (tuple(values(track, key)) for key in ("start", "end"))
+            if start in vias and end in vias:
+                crossovers.append((start, end))
+        self.assertEqual(len(crossovers), 1)
+        upper, lower = sorted(crossovers[0], key=lambda point: point[1])
+        self.assertEqual(upper[0], lower[0])
+        for landing, ref, pin in ((upper, "Q4", "3"), (lower, "U2", "25")):
+            pad = pad_center(self.footprints[ref], pin)
+            self.assertAlmostEqual(self.top_trace_length(net, landing, pad), math.dist(landing, pad))
 
     def test_input_fuse_has_direct_top_layer_power_paths(self):
         for net, start, end, limit in (
@@ -356,6 +377,15 @@ class PlacementGeometryTests(unittest.TestCase):
             self.assertEqual(nets(ref), {"1": "V3V3", "2": "GND"})
             expected = "100n / 16V" if ref in {"C10", "C11", "C29"} else "4.7u / 16V"
             self.assertEqual(self.footprints[ref].fields["Value"], expected)
+
+    def test_usb_vbus_divider_has_short_top_layer_connections(self):
+        for net, start, end, limit in (
+            ("USB_VBUS", ("J2", "B4"), ("R29", "1"), 5.0),
+            ("USB_VBUS_SENSE", ("R29", "2"), ("U4", "8"), 2.2),
+        ):
+            with self.subTest(net=net):
+                a, b = (pad_center(self.footprints[ref], pin) for ref, pin in (start, end))
+                self.assertLess(self.top_trace_length(net, a, b), limit)
 
     def test_usb_c_duplicate_contact_ties(self):
         connector = self.footprints["J2"]
@@ -794,6 +824,20 @@ class PlacementGeometryTests(unittest.TestCase):
             planar_trace_length(self.board, "GND", ("F.Cu", pad), ("F.Cu", via), top_only=True),
             math.dist(pad, via),
         )
+
+    def test_reset_supervisor_runs_straight_through_r40_to_switch(self):
+        resistor = self.footprints["R40"]
+        reset = pad_center(self.footprints["U11"], "2")
+        sink, en = (pad_center(resistor, pin) for pin in ("1", "2"))
+        switch = max((p for p in self.footprints["SW1"].pads if p.net == "ESP_EN"),
+                     key=lambda p: p.xy[0])
+        landing = (en[0], switch.xy[1])
+        self.assertLess(switch.edge_distance(landing), -0.09)  # Entire 0.18 mm trace lands on copper.
+        copper = self.top_trace_length("RESET_SINK", reset, sink)
+        copper += self.top_trace_length("ESP_EN", en, landing)
+        # Equality includes the resistor axis, so a jog on either side also fails.
+        self.assertAlmostEqual(copper + math.dist(sink, en), math.dist(reset, landing))
+        self.assertLess(copper, 3.2)
 
     def test_interlock_signals_stay_on_top(self):
         for net in INTERLOCK_SIGNALS:

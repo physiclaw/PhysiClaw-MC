@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Bring R29 beside the USB bridge. The two top-layer traces from J2 through
+  R29 to the VBUS sense pin total 6.88 mm, down from 19.64 mm. Run ALARM on
+  one diagonal through R27, take both interlock inputs into U10 on parallel
+  diagonals, and straighten the rear BOOT crossover over its ground return.
+  Align the Y direction via with the driver input.
+
+- Move U11 and R40 beside the reset switch SW1. Align U11 pin 2 and both
+  R40 pads with the landing on SW1. The top-layer reset branch now runs
+  straight for 3.08 mm of copper, down from 15.76 mm. Move the PWR LED and its
+  resistor west to make room and keep C33 beside U11's supply pin.
+
 - Straighten the U1 and C29 ground returns and the ESP32 UART RX escape.
   Run the Q6 drain branch horizontally to D4 and take the motor-disable
   line from U9 to the shared driver trace in one turn. Connect U9 pin 3

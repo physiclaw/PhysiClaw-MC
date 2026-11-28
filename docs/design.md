@@ -579,12 +579,12 @@ on the left. Use `component-reference.svg` to locate components by designator.
 | --- | --- | --- |
 | 12 V input and buck | From J1 on the right, follow F1 and Q1 to the 12 V plane. Pick up the supply at C2 beside U1 in the upper left. U1 feeds the inductor, then C4 and C5. | Power distribution uses the inner planes. |
 | USB-C and serial | Follow J2 D+/D− past the U3 shunt pads to the south edge of U4. The UART leaves the west side of U4. R28 sits beside the ESP32 TX pad. | TX and RX each make one 45° turn on L4 between their two vias. The A7–B7 crossover runs on L4 to the left of J2. A6–B6 uses L1 on the right. |
-| Reset and interlock | In the upper left, follow U11 through R40 and down between the pads of C33 and R2. The diagonal meets the switch trace, passes through TP9 and heads east toward the ESP32. From the ESP32 EN trace, a branch runs south to U10. | BOOT_N crosses beneath the LED feeds between Q4 and GPIO0 and also reaches rear probe TP1. |
+| Reset and interlock | U11 pin 2 runs straight through R40 to SW1’s upper-right pad. From there, ESP_EN continues through TP9 to the ESP32 and branches south to U10. | BOOT_N runs straight beneath the LED feeds between Q4 and GPIO0. A separate branch reaches rear probe TP1. |
 | Status lights | U2 pin 30 runs to R26 and R24 for D7 (IDLE). Pin 31 runs to R27 and R25 for D8 (ALARM). Both rows sit below and to the left of U4. | Both LED signals use L1 throughout. |
 | Solenoid | Follow U2 pin 8 through the interlock at U12, then R21, Q7 and Q6. From the Q6 drain bank, the wide trace runs left to D4 and J5 pin 1. From pin 1, the indicator trace angles down and right, then runs straight into R46. It continues left to D9 and straight up to J5 pin 2. | The command and switched output stay on L1. |
 | Shared motor controls | From R10/R11, the UART runs to U6 on the right. From U9 pin 4, the disable line branches left to U5 and right past R9 and TP5 to U6. | The UART branch to U5 crosses the board horizontally and returns to L1 in line with pin 14. |
 | X driver and J3 | From the two control vias, follow STEP through R31 to U5 pin 16 and DIR to pin 19. X_B2 runs from the driver to J3 pin 4 on top. | STEP and DIR each run south, then diagonally toward U5. Three winding traces run to J3 pins 1–3. |
-| Y driver and J4 | DIR leaves U2 pin 36 toward the module center. STEP leaves pin 33 toward the board edge. At U6, STEP passes through R32 to pin 16 and DIR enters pin 19. | Both controls run south and turn once toward U6. DIR passes just west of the rear IO0 probe. All four winding traces reach J4 in pin order. |
+| Y driver and J4 | DIR leaves U2 pin 36 toward the module center. STEP leaves pin 33 toward the board edge. At U6, STEP passes through R32 to pin 16. DIR rises directly in line with pin 19. | Both controls run south and turn once toward U6. DIR passes just west of the rear IO0 probe. All four winding traces reach J4 in pin order. |
 
 ### Copper details
 
@@ -618,7 +618,7 @@ on the left. Use `component-reference.svg` to locate components by designator.
   branch enters U6 between the Y control and winding routes. Ground
   wraps around its tip to reach the U6 thermal pad. The 12 V plane
   reaches C21 along the south side of the branch.
-  The production Gerbers show continuous L3 ground under all 31 L4 digital
+  The production Gerbers show continuous L3 ground under all 30 L4 digital
   and motor winding segments outside their own via and connector-pad clearances.
   All 26 routed vias and seven motor connector pins have a plated connection
   from the local L3 ground region to L2 within 2.0 mm, measured centre to
@@ -628,9 +628,9 @@ on the left. Use `component-reference.svg` to locate components by designator.
   runs on L4 to the left of the contact row in component-side view.
   On the right, a 7.72 mm top-layer VBUS trace joins A9/B4 to A4/B9.
   Both ends approach the straight section at 45°. From A4/B9, VBUS passes
-  between the R12 pads to U3 pin 5 in 4.77 mm. C12 is 1.25 mm from the clamp. U4 pin 8 reaches R30 and R29 on the
-  same vertical sense trace, 8.47 mm from pin 8 to R29. The reset pull-up
-  R47 is 1.51 mm from pin 9.
+  between the R12 pads to U3 pin 5 in 4.77 mm. C12 is 1.25 mm from the clamp. From the upper
+  VBUS contact, a 4.81 mm trace above R13 reaches R29. Its sense pad feeds U4
+  pin 8 in 2.07 mm and branches north to R30. R47 is 2.31 mm from pin 9.
 
   U4 pin 5 feeds C10 on a single diagonal. Its ground pad has a
   dedicated via 0.60 mm away. Pin 7 feeds C11 and C29 horizontally.
@@ -645,18 +645,20 @@ on the left. Use `component-reference.svg` to locate components by designator.
   U2 pin 34 horizontally on L1.
 
   From Q3, follow ESP_EN across the upper end of U2 to its EN pin. On
-  the left, the reset supervisor U11 connects through R40 to the same
-  trace as SW1 and TP9. The rear recovery pads TP1 (IO0) and TP2 (GND)
-  are 2.50 mm apart.
-- **Indicators.** The two GPIO signals leave U2 on L1 and turn south
-  toward the rows below U4. The upper row runs from the R27 pull-down
-  through R25 to D8 (ALARM). The lower row runs from R26 through R24
-  to D7 (IDLE). From the GPIO pad to the series-resistor input the
-  paths measure 6.68 mm and 9.09 mm, respectively. Both GPIO feeds run vertically into their pull-down pads. Each series
-  resistor's output pad connects horizontally to its LED anode in 1.56 mm.
-- **Interlock.** On L1, follow ACTUATOR_ARM from U2 pin 12 through the
-  R35 pull-down junction to U10 pin 2. ESP_EN enters the adjacent pin 1.
-  U10 pin 4 drives both buffers. West of U10, the 4.07 mm enable trace
+  the left, U11 pin 2 reaches R40 over 1.49 mm of copper. The trace from
+  R40 continues on the same axis for 1.59 mm and lands 0.40 mm east of the
+  switch pad center. C33 sits 1.85 mm of trace from
+  the U11 supply pin. The rear recovery pads TP1 (IO0) and TP2 (GND)
+  are 2.50 mm apart. Q4 reaches the upper BOOT_N via on one diagonal. The
+  6.005 mm vertical L4 crossover runs over the eastern L3 ground region.
+- **Indicators.** From U2 pin 31, ALARM runs 5.78 mm on L1 to R25,
+  following one diagonal through the R27 pull-down pad. From U2 pin 30,
+  IDLE enters R26 vertically and continues to R24, a 9.09 mm run.
+  The horizontal traces from R25 to D8 and from R24 to D7 are each 1.56 mm.
+- **Interlock.** On L1, follow ACTUATOR_ARM from U2 pin 12 to U10 pin 2. Its
+  diagonal into U10 has a 1.44 mm branch to the R35 pull-down. ESP_EN
+  approaches pin 1 on the parallel diagonal. U10 pin 4 drives both
+  buffers. West of U10, the 3.45 mm enable trace
   runs straight through TP12 to U12 pin 1. East of U10, it passes through
   the R36 pull-up pad on its way to U9 pin 1. All three ICs face the
   same way. The motor command runs 7.41 mm from U2 pin 16 through
@@ -701,8 +703,8 @@ on the left. Use `component-reference.svg` to locate components by designator.
   Follow the matching sense traces from U5 pins 23 and 27 to their inner
   pads. Each outer pad has two ground vias.
 - **Y motor.** STEP and DIR each run south on L4 and turn 45° toward U6.
-  Both diagonals continue across their driver-side vias onto L1. Follow
-  STEP through R32 to pin 16 and DIR to pin 19. Below U6, pins 4 and 5
+  The STEP diagonal continues across its via to R32. Follow it to pin 16.
+  DIR changes layers in line with pin 19 and runs straight into it for 1.45 mm. Below U6, pins 4 and 5
   fan out symmetrically to C25, with C26 on the same row. The L3
   3.3 V branch feeds the 1.72 mm L1 trace between C23 and VCC_IO
   (pin 15), then continues to the via beside MS1/AD0 (pin 9).
@@ -866,10 +868,10 @@ are pending.
 | Fabrication options | The fill layer, drill file and coordinate list agree on all 44 thermal holes. Quote epoxy fill, planarization and copper caps on both faces at U2 (12), U5 (16) and U6 (16). Confirm the JLC04161H-7628 stack and production impedance coupons for 90 Ω differential on L1 and 45 Ω single-ended on L4, both ±10%. [Fabrication requirements](../manufacturing/process.md#bare-board-fabrication) |
 
 **Panel separation.** JLC China specifies 5 mm from a V-score to a component.
-Fourteen nominal SMT body outlines fall inside that band along the upper rail.
+Twelve nominal SMT body outlines in the revised layout fall inside that band along the upper rail.
 U2 is 0.500 mm from the score, L1 is 0.550 mm away and ceramic capacitor C4
-is 0.625 mm away. The other eleven are C6, R40, C7, C5, Q3, R29, R7, U11,
-C38, R3 and C8. All SMT bodies clear the lower score by at least 5 mm.
+is 0.950 mm away. The other nine are C6, C7, C5, Q3, R7, C38, R3, C8
+and C33. All SMT bodies clear the lower score by at least 5 mm.
 Request a routed upper edge with temporary tabs in clear areas and verify
 tool access and the finished outline on the revised panel drawing.
 [JLC China SMT design rules, V-cut](https://www.jlc.com/portal/q7i64042.html)
@@ -893,9 +895,9 @@ on the first article. The nearest R12 aperture is only 0.511 mm from U3.
 [JLCPCB international capabilities](https://jlcpcb.com/capabilities/pcb-capabilities)
 
 **Placement and secondary soldering.** The closest passive bodies, C11/C29,
-are 0.50 mm apart. U9/U10 are 2.78 mm apart. Both are below the domestic
-guide’s respective 1 mm passive and 3 mm IC spacing guidance. C10 and R47
-are 0.87 and 0.91 mm from U4, below JLC’s package-specific 1 mm recommendation
+are 0.675 mm apart against the domestic guide’s 1 mm passive spacing.
+U9 and U10 are 3.40 mm apart. C10 and R47 are 0.870 and 0.865 mm from
+U4, below JLC’s package-specific 1 mm recommendation
 for a 0402 next to a QFN. Have assembly engineering check nozzle and rework
 access. J2 has paste on its 16 contacts and none on its four plated shell
 tabs. Assign all four tabs to the manual through-hole pass or quote secondary
